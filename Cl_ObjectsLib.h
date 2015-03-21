@@ -7,6 +7,17 @@
 using namespace System;
 using namespace System::Windows::Forms;
 
+struct CROSSPOINT {
+	double x;
+	double y;
+	bool type;	//0 - действительное пересечение, 1 - мнимое пересечение
+	bool current;
+
+	vector<LINE> Lines;
+	vector<CIRCLE> Circles;
+	vector<ELLIPSE> Ellipses;
+	vector<ARC> Arcs;
+};
 
 class WORK: public DXF {
 private:
@@ -15,7 +26,7 @@ private:
 	void CrossLineCircle(LINE l, CIRCLE c);
 	void CrossLineEllipse(LINE l, ELLIPSE e);
 	void CrossLineArc(LINE l, ARC a);
-	void CrossCircles(CIRCLE c1, CIRCLE c2);
+	void CrossCircles(CIRCLE circle1, CIRCLE circle2);
 	void CrossCircleArc(CIRCLE c, ARC a);
 	void CrossArcs(ARC a1, ARC a2);
 
@@ -29,27 +40,30 @@ private:
 	double GetAngle(double x0, double y0, double x1, double y1);
 public:
 	struct BITSFIELD {
-		unsigned int line_line:1;
-		unsigned int line_circle:1;
-		unsigned int line_ellipse:1;
-		unsigned int line_arc:1;
-		unsigned int circle_circle:1;
-		unsigned int circle_ellipse:1;
-		unsigned int circle_arc:1;
-		unsigned int ellipse_ellipse:1;
-		unsigned int ellipse_arc:1;
-		unsigned int arc_arc:1;
-		
-		unsigned int overlap_lines:1;
-		unsigned int overlap_circles:1;
-		unsigned int overlap_ellipses:1;
-		unsigned int overlap_arcs:1;
+		unsigned char crossKind;
 
-		unsigned int overlap_circle_arc:1;
+		bool line_line;
+		bool line_circle;
+		bool line_ellipse;
+		bool line_arc;
+		bool circle_circle;
+		bool circle_ellipse;
+		bool circle_arc;
+		bool ellipse_ellipse;
+		bool ellipse_arc;
+		bool arc_arc;
+		
+		bool overlap_lines;
+		bool overlap_circles;
+		bool overlap_ellipses;
+		bool overlap_arcs;
+
+		bool overlap_circle_arc;
 	};
 
 	SECTION Section;
-	vector<POINT> errPoints;
+	//vector<POINT> errPoints;
+	vector<CROSSPOINT> ErrPoints;
 
 	//WORK();
 	WORK(SECTION s);

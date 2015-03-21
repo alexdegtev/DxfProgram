@@ -14,75 +14,6 @@ using namespace std;
 #define EPS 1e-9
 #define PI 3.1415926535
 
-	/*struct POINT {
-		double x;
-		double y;
-		unsigned short int type;	//0 - обычная, 1 - пересечение, 2 - мнимое пресечение
-		string layer;
-		int number;
-	};
-
-	struct LINE {
-		POINT p[2];
-		unsigned short int type;	//0 - LINE, 1 - XLINE
-		string layer;
-		int number;
-	};
-
-	struct CIRCLE {
-		POINT p;
-		double r;
-		string layer;
-		int number;
-		bool current;
-	};
-
-	struct ELLIPSE {
-		POINT p;
-		double ratio;
-		double width;
-		double height;
-		double angle;	//угол поворота большей оси относительно OX
-		string layer;
-		int number;
-	};
-
-	struct ARC {
-		POINT p;
-		double r;
-		double angleStart;
-		double angleEnd;
-		string layer;
-		int number;
-	};
-
-	struct BLOCK {
-		int beginAddr;
-		string number;
-	};
-
-	struct INSERT {
-		string layer;
-		int number;
-		string blockNumber;
-	};
-
-	struct ENTITIES {
-		vector<POINT> Points;
-		vector<LINE> Lines;
-		vector<CIRCLE> Circles;
-		vector<ELLIPSE> Ellipses;
-		vector<ARC> Arcs;
-		vector<INSERT> Inserts;
-	};
-
-	struct SECTION {
-		ENTITIES Entities;
-	};*/
-
-
-class DXF {
-public:
 	struct POINT {
 		double x;
 		double y;
@@ -148,6 +79,75 @@ public:
 	struct SECTION {
 		ENTITIES Entities;
 	};
+
+
+class DXF {
+public:
+	/*struct POINT {
+		double x;
+		double y;
+		unsigned short int type;	//0 - обычная, 1 - пересечение, 2 - мнимое пресечение
+		string layer;
+		int number;
+	};
+
+	struct LINE {
+		POINT p[2];
+		unsigned short int type;	//0 - LINE, 1 - XLINE
+		string layer;
+		int number;
+	};
+
+	struct CIRCLE {
+		POINT p;
+		double r;
+		string layer;
+		int number;
+		bool current;
+	};
+
+	struct ELLIPSE {
+		POINT p;
+		double ratio;
+		double width;
+		double height;
+		double angle;	//угол поворота большей оси относительно OX
+		string layer;
+		int number;
+	};
+
+	struct ARC {
+		POINT p;
+		double r;
+		double angleStart;
+		double angleEnd;
+		string layer;
+		int number;
+	};
+
+	struct BLOCK {
+		int beginAddr;
+		string number;
+	};
+
+	struct INSERT {
+		string layer;
+		int number;
+		string blockNumber;
+	};
+
+	struct ENTITIES {
+		vector<POINT> Points;
+		vector<LINE> Lines;
+		vector<CIRCLE> Circles;
+		vector<ELLIPSE> Ellipses;
+		vector<ARC> Arcs;
+		vector<INSERT> Inserts;
+	};
+
+	struct SECTION {
+		ENTITIES Entities;
+	};*/
 
 
 private:

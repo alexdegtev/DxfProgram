@@ -5,7 +5,7 @@
 #include "Cl_GraphicsLib.h"
 #include "CheckDialog.h"
 
-struct POINT {
+struct MOUSEPOINT {
 	double x;
 	double y;
 };
@@ -17,8 +17,8 @@ struct DIFFERENT {
 	int oldHeight;
 };
 
-POINT dxfLocation;
-POINT mouseLocation;
+MOUSEPOINT dxfLocation;
+MOUSEPOINT mouseLocation;
 bool fileOpen;
 DIFFERENT diffScreen;
 
@@ -65,13 +65,9 @@ namespace DxfProgram {
 			}
 		}
 	private: System::ComponentModel::IContainer^  components;
-	private:
-		/// <summary>
-		/// Требуется переменная конструктора.
-		/// </summary>
-		GRAPHICS^ GLControl;
-		float scaleNum;
-		CheckDialog^ formCheckDialog;
+	private: GRAPHICS^ GLControl;
+	private: float scaleNum;
+	private: CheckDialog^ formCheckDialog;
 	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
 	private: System::Windows::Forms::SaveFileDialog^  saveFileDialog1;
 	private: System::Windows::Forms::Timer^  timer1;
@@ -91,7 +87,6 @@ namespace DxfProgram {
 	private: System::Windows::Forms::Button^  buttonMinus;
 	private: System::Windows::Forms::Button^  buttonPlus;
 	private: System::Windows::Forms::RichTextBox^  richTextBox1;
-
 	private: System::Windows::Forms::DataGridView^  ObjectInf;
 	private: Tao::Platform::Windows::SimpleOpenGlControl^  renderPanel;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column1;
@@ -390,86 +385,121 @@ namespace DxfProgram {
 		}
 #pragma endregion
 
-	private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
-				 scaleNum = 1;
-				 fileOpen = false;
-				 diffScreen.width = 0;
-				 diffScreen.height = 0;
-				 diffScreen.oldWidth = renderPanel->Width;
-				 diffScreen.oldHeight = renderPanel->Height;
-				 GLControl->GetOpenGlControl(renderPanel);
-				 GLControl->InitGL();
+private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
+				scaleNum = 1;
+				fileOpen = false;
+				diffScreen.width = 0;
+				diffScreen.height = 0;
+				diffScreen.oldWidth = renderPanel->Width;
+				diffScreen.oldHeight = renderPanel->Height;
+				GLControl->GetOpenGlControl(renderPanel);
+				GLControl->InitGL();
 
-				 dxfLocation.x = 0;
-				 dxfLocation.y = 0;
+				dxfLocation.x = 0;
+				dxfLocation.y = 0;
 
-				/*if(!dxf.Open("DxfFiles\\Ellipse.dxf")) {ShowErr(1); return;}
-				int err = 0;
-				if((err = dxf.Read()) != 0) {ShowErr(2); return;}
-				work = new WORK(dxf._Section);
-				fileOpen = true;
-				richTextBox1->Text = "";
-				Painting();*/
+			if(!dxf.Open("DxfFiles\\circles.dxf")) {ShowErr(1); return;}
+			int err = 0;
+			if((err = dxf.Read()) != 0) {ShowErr(2); return;}
+			work = new WORK(dxf._Section);
+			fileOpen = true;
+			richTextBox1->Text = "";
+			Painting();
 				
 
-			 }
-	private: void Painting() {
-				unsigned int i;
-				if(work && !work->Section.Entities.Lines.empty()) for(i=0; i<work->Section.Entities.Lines.size(); i++)
-					GLControl->DrawLine(
-						work->Section.Entities.Lines[i].p[0].x,
-						work->Section.Entities.Lines[i].p[0].y,
-						work->Section.Entities.Lines[i].p[1].x,
-						work->Section.Entities.Lines[i].p[1].y
-					);
+			}
+private: void Painting() {
+			unsigned int i;
+			if(work && !work->Section.Entities.Lines.empty()) for(i=0; i<work->Section.Entities.Lines.size(); i++)
+				GLControl->DrawLine(
+					work->Section.Entities.Lines[i].p[0].x,
+					work->Section.Entities.Lines[i].p[0].y,
+					work->Section.Entities.Lines[i].p[1].x,
+					work->Section.Entities.Lines[i].p[1].y
+				);
 
-				if(work && !work->Section.Entities.Circles.empty()) for(i=0; i<work->Section.Entities.Circles.size(); i++) {
-					if(work->Section.Entities.Circles[i].current) {
-						GLControl->SetColor(0.0, 0.0, 1.0);
-						GLControl->DrawPoint(work->Section.Entities.Circles[i].p.x, work->Section.Entities.Circles[i].p.y, 2.0);
-					}
-					GLControl->DrawCircle(
-						work->Section.Entities.Circles[i].p.x,
-						work->Section.Entities.Circles[i].p.y,
-						work->Section.Entities.Circles[i].r
-					);
-					if(work->Section.Entities.Circles[i].current) GLControl->SetColor(0.0, 0.0, 0.0);
+			if(work && !work->Section.Entities.Circles.empty()) for(i=0; i<work->Section.Entities.Circles.size(); i++) {
+				if(work->Section.Entities.Circles[i].current) {
+					GLControl->SetColor(0.0, 0.0, 1.0);
+					GLControl->DrawPoint(work->Section.Entities.Circles[i].p.x, work->Section.Entities.Circles[i].p.y, 2.0);
 				}
+				GLControl->DrawCircle(
+					work->Section.Entities.Circles[i].p.x,
+					work->Section.Entities.Circles[i].p.y,
+					work->Section.Entities.Circles[i].r
+				);
+				if(work->Section.Entities.Circles[i].current) GLControl->SetColor(0.0, 0.0, 0.0);
+			}
 
-				if(work && !work->errPoints.empty()) {
-					bool fl;
-					if(richTextBox1->Text == "") fl = true;
-					else fl = false;
-					for(i=0; i<work->errPoints.size(); i++) {
-						GLControl->DrawErrorPoint(work->errPoints[i].x, work->errPoints[i].y, work->errPointR);
-						if(fl) richTextBox1->Text += work->errPoints[i].type + "\n" + work->errPoints[i].x + "\n" + work->errPoints[i].y + "\n\n";
-					}
+			/*if(work && !work->errPoints.empty()) {
+				bool fl;
+				if(richTextBox1->Text == "") fl = true;
+				else fl = false;
+				for(i=0; i<work->errPoints.size(); i++) {
+					GLControl->DrawErrorPoint(work->errPoints[i].x, work->errPoints[i].y, work->errPointR);
+					if(fl) richTextBox1->Text += work->errPoints[i].type + "\n" + work->errPoints[i].x + "\n" + work->errPoints[i].y + "\n\n";
 				}
-				if(work && !work->Section.Entities.Ellipses.empty()) for(i=0; i<work->Section.Entities.Ellipses.size(); i++) {
-					GLControl->DrawEllipse(
-						work->Section.Entities.Ellipses[i].p.x,
-						work->Section.Entities.Ellipses[i].p.y,
-						work->Section.Entities.Ellipses[i].width,
-						work->Section.Entities.Ellipses[i].height,
-						work->Section.Entities.Ellipses[i].angle
-					);
+			}*/
+
+			if(work && !work->ErrPoints.empty()) for(i=0; i<work->ErrPoints.size(); i++) {
+				//bool fl;
+				//if(richTextBox1->Text == "") fl = true;
+				//else fl = false;
+
+				if(work->ErrPoints[i].current) {
+					GLControl->SetColor(0.0, 1.0, 0.0);
+					GLControl->DrawPoint(work->ErrPoints[i].x, work->ErrPoints[i].y, 2.0);
 				}
-				if(work && !work->Section.Entities.Arcs.empty()) for(i=0; i<work->Section.Entities.Arcs.size(); i++) {
-					GLControl->DrawArc(
-						work->Section.Entities.Arcs[i].p.x,
-						work->Section.Entities.Arcs[i].p.y,
-						work->Section.Entities.Arcs[i].r,
-						work->Section.Entities.Arcs[i].angleStart,
-						work->Section.Entities.Arcs[i].angleEnd
-					);
-				}
-				GLControl->PrintCursor(0, 0);
-			 }
+				else GLControl->SetColor(1.0, 0.0, 0.0);
+				
+				//GLControl->DrawErrorPoint(work->ErrPoints[i].x, work->ErrPoints[i].y, work->errPointR);
+				GLControl->DrawCircle(
+					work->ErrPoints[i].x,
+					work->ErrPoints[i].y,
+					work->errPointR
+				);
+				//if(fl) richTextBox1->Text += work->ErrPoints[i].type + "\n" + work->ErrPoints[i].x + "\n" + work->ErrPoints[i].y + "\n\n";
+				
+				GLControl->SetColor(0.0, 0.0, 0.0);
+			}
+
+			if(work && !work->Section.Entities.Ellipses.empty()) for(i=0; i<work->Section.Entities.Ellipses.size(); i++) {
+				GLControl->DrawEllipse(
+					work->Section.Entities.Ellipses[i].p.x,
+					work->Section.Entities.Ellipses[i].p.y,
+					work->Section.Entities.Ellipses[i].width,
+					work->Section.Entities.Ellipses[i].height,
+					work->Section.Entities.Ellipses[i].angle
+				);
+			}
+
+			if(work && !work->Section.Entities.Arcs.empty()) for(i=0; i<work->Section.Entities.Arcs.size(); i++) {
+				GLControl->DrawArc(
+					work->Section.Entities.Arcs[i].p.x,
+					work->Section.Entities.Arcs[i].p.y,
+					work->Section.Entities.Arcs[i].r,
+					work->Section.Entities.Arcs[i].angleStart,
+					work->Section.Entities.Arcs[i].angleEnd
+				);
+			}
+
+			GLControl->PrintCursor(0, 0);
+		}
+
 private: System::Void toolStripMenuItem2_Click(System::Object^  sender, System::EventArgs^  e) {
 				openFileDialog1->InitialDirectory = System::IO::Directory::GetCurrentDirectory() + "\\DxfFiles";
-				openFileDialog1->Filter = "dxf files (*.dxf)|*.dxf";
+				openFileDialog1->Filter = "dxf files (*.dxf)|*.dxf|bmp files (*.bmp)|*.bmp";
+				openFileDialog1->FilterIndex = 1;
 				openFileDialog1->FileName = "";
+				openFileDialog1->Multiselect = false;
 				if(openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK){
+					string name = Sysstr2str(openFileDialog1->FileName);
+					if(name[name.length() - 1] == 'p') {
+						MessageBox::Show("Open bmp file.");
+						/*
+							Юркина функция открытия bmp
+						*/
+					}
 					if(!dxf.Open(Sysstr2str(openFileDialog1->FileName))) {ShowErr(1); return;}
 					int err = 0;
 					if((err = dxf.Read()) != 0) {ShowErr(2); return;}
@@ -482,6 +512,9 @@ private: System::Void toolStripMenuItem2_Click(System::Object^  sender, System::
 private: System::Void toolStripMenuItem3_Click(System::Object^  sender, System::EventArgs^  e) {
 			 if(dxf.SaveErrorPoints()) MessageBox::Show("Записано");
 			 else MessageBox::Show("Ошибка записи");
+			 /*
+				Дашкина функция сохранения в БД
+			 */
 		 }
 private: System::Void toolStripMenuItem5_Click(System::Object^  sender, System::EventArgs^  e) {
 			 richTextBox1->Text = "";
@@ -490,24 +523,29 @@ private: System::Void toolStripMenuItem5_Click(System::Object^  sender, System::
 			 formCheckDialog->Activate();
 			 formCheckDialog->Focus();
 		 }
+
 private: System::Void toolStripMenuItem4_Click(System::Object^  sender, System::EventArgs^  e) {
 			 Application::Exit();
 		 }
+
 private: string Sysstr2str(String ^str) {
 	string str1 = "";
 	for(int i=0; i<str->Length; i++) str1 += (char)str[i];
 	return str1;
 }
+
 private: void ShowErr(int number) {
 	switch(number) {
 		case 1: MessageBox::Show("Ошибка открытия файла.");
 	}
 }
+
 private: void ShowErr(int number, int errRead) {
 	switch(number) {
 		case 2: MessageBox::Show("Ошибка чтения файла #" + errRead + ".");
 	}
 }
+
 private: System::Void buttonPlus_Click(System::Object^  sender, System::EventArgs^  e) {
 			 GLControl->Scale(1);
 			 scaleNum *= 2;
@@ -542,6 +580,7 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 private: System::Void renderPanel_SizeChanged(System::Object^  sender, System::EventArgs^  e) {
 			 GLControl->Resize(renderPanel->Width, renderPanel->Height);
 		 }
+
 int ConvertX(int x) { return (x - renderPanel->Width/2); }
 int ConvertY(int y) { return (renderPanel->Height/2 - y); }
 
@@ -569,8 +608,8 @@ private: System::Void renderPanel_MouseMove(System::Object^  sender, System::Win
 			 }
 			 mouseLocation.x = ConvertX(e->X);
 			 mouseLocation.y = ConvertY(e->Y);
-			 int x = (mouseLocation.x - dxfLocation.x) / scaleNum;
-			 int y = (mouseLocation.y - dxfLocation.y) / scaleNum;
+			 int x = (int)((mouseLocation.x - dxfLocation.x) / scaleNum);
+			 int y = (int)((mouseLocation.y - dxfLocation.y) / scaleNum);
 			 textBox1->Text = (x) + " " + (y);
 			 //textBox2->Text = mouseLocation.x + " " + mouseLocation.y;
 			 //textBox3->Text = dxfLocation.x + " " + dxfLocation.y;

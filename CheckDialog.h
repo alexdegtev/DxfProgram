@@ -77,6 +77,10 @@ namespace DxfProgram {
 	private: System::Windows::Forms::CheckBox^  checkBox18;
 	private: System::Windows::Forms::CheckBox^  checkBox17;
 	private: System::Windows::Forms::CheckBox^  checkBox21;
+	private: System::Windows::Forms::TabPage^  tabPage6;
+	private: System::Windows::Forms::RadioButton^  radioButton3;
+	private: System::Windows::Forms::RadioButton^  radioButton2;
+	private: System::Windows::Forms::RadioButton^  radioButton1;
 
 
 		WORK *work;
@@ -105,26 +109,31 @@ namespace DxfProgram {
 			this->checkBox9 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox8 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox7 = (gcnew System::Windows::Forms::CheckBox());
+			this->tabPage5 = (gcnew System::Windows::Forms::TabPage());
+			this->checkBox20 = (gcnew System::Windows::Forms::CheckBox());
+			this->checkBox19 = (gcnew System::Windows::Forms::CheckBox());
+			this->checkBox18 = (gcnew System::Windows::Forms::CheckBox());
+			this->checkBox17 = (gcnew System::Windows::Forms::CheckBox());
 			this->tabPage4 = (gcnew System::Windows::Forms::TabPage());
+			this->checkBox21 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox13 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox12 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox11 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox10 = (gcnew System::Windows::Forms::CheckBox());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
-			this->tabPage5 = (gcnew System::Windows::Forms::TabPage());
-			this->checkBox17 = (gcnew System::Windows::Forms::CheckBox());
-			this->checkBox18 = (gcnew System::Windows::Forms::CheckBox());
-			this->checkBox19 = (gcnew System::Windows::Forms::CheckBox());
-			this->checkBox20 = (gcnew System::Windows::Forms::CheckBox());
-			this->checkBox21 = (gcnew System::Windows::Forms::CheckBox());
+			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
+			this->tabPage6 = (gcnew System::Windows::Forms::TabPage());
+			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
 			this->groupBox1->SuspendLayout();
 			this->tabControl1->SuspendLayout();
 			this->tabPage1->SuspendLayout();
 			this->tabPage2->SuspendLayout();
 			this->tabPage3->SuspendLayout();
-			this->tabPage4->SuspendLayout();
 			this->tabPage5->SuspendLayout();
+			this->tabPage4->SuspendLayout();
+			this->tabPage6->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// groupBox1
@@ -135,23 +144,26 @@ namespace DxfProgram {
 			this->groupBox1->Controls->Add(this->tabControl1);
 			this->groupBox1->Location = System::Drawing::Point(12, 12);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(357, 209);
+			this->groupBox1->Size = System::Drawing::Size(411, 271);
 			this->groupBox1->TabIndex = 0;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Проверить пересечение";
 			// 
 			// tabControl1
 			// 
+			this->tabControl1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom) 
+				| System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->tabControl1->Controls->Add(this->tabPage6);
 			this->tabControl1->Controls->Add(this->tabPage1);
 			this->tabControl1->Controls->Add(this->tabPage2);
 			this->tabControl1->Controls->Add(this->tabPage3);
 			this->tabControl1->Controls->Add(this->tabPage5);
 			this->tabControl1->Controls->Add(this->tabPage4);
-			this->tabControl1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->tabControl1->Location = System::Drawing::Point(3, 16);
 			this->tabControl1->Name = L"tabControl1";
 			this->tabControl1->SelectedIndex = 0;
-			this->tabControl1->Size = System::Drawing::Size(351, 190);
+			this->tabControl1->Size = System::Drawing::Size(405, 249);
 			this->tabControl1->TabIndex = 0;
 			// 
 			// tabPage1
@@ -163,7 +175,7 @@ namespace DxfProgram {
 			this->tabPage1->Location = System::Drawing::Point(4, 22);
 			this->tabPage1->Name = L"tabPage1";
 			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage1->Size = System::Drawing::Size(343, 164);
+			this->tabPage1->Size = System::Drawing::Size(397, 223);
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"Прямая";
 			this->tabPage1->UseVisualStyleBackColor = true;
@@ -217,7 +229,7 @@ namespace DxfProgram {
 			this->tabPage2->Location = System::Drawing::Point(4, 22);
 			this->tabPage2->Name = L"tabPage2";
 			this->tabPage2->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage2->Size = System::Drawing::Size(343, 164);
+			this->tabPage2->Size = System::Drawing::Size(397, 223);
 			this->tabPage2->TabIndex = 1;
 			this->tabPage2->Text = L"Окружность";
 			this->tabPage2->UseVisualStyleBackColor = true;
@@ -270,7 +282,7 @@ namespace DxfProgram {
 			this->tabPage3->Controls->Add(this->checkBox7);
 			this->tabPage3->Location = System::Drawing::Point(4, 22);
 			this->tabPage3->Name = L"tabPage3";
-			this->tabPage3->Size = System::Drawing::Size(343, 164);
+			this->tabPage3->Size = System::Drawing::Size(397, 223);
 			this->tabPage3->TabIndex = 2;
 			this->tabPage3->Text = L"Эллипс";
 			this->tabPage3->UseVisualStyleBackColor = true;
@@ -315,6 +327,60 @@ namespace DxfProgram {
 			this->checkBox7->Text = L"Прямая";
 			this->checkBox7->UseVisualStyleBackColor = true;
 			// 
+			// tabPage5
+			// 
+			this->tabPage5->Controls->Add(this->checkBox20);
+			this->tabPage5->Controls->Add(this->checkBox19);
+			this->tabPage5->Controls->Add(this->checkBox18);
+			this->tabPage5->Controls->Add(this->checkBox17);
+			this->tabPage5->Location = System::Drawing::Point(4, 22);
+			this->tabPage5->Name = L"tabPage5";
+			this->tabPage5->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage5->Size = System::Drawing::Size(397, 223);
+			this->tabPage5->TabIndex = 4;
+			this->tabPage5->Text = L"Дуга";
+			this->tabPage5->UseVisualStyleBackColor = true;
+			// 
+			// checkBox20
+			// 
+			this->checkBox20->AutoSize = true;
+			this->checkBox20->Location = System::Drawing::Point(6, 75);
+			this->checkBox20->Name = L"checkBox20";
+			this->checkBox20->Size = System::Drawing::Size(51, 17);
+			this->checkBox20->TabIndex = 3;
+			this->checkBox20->Text = L"Дуга";
+			this->checkBox20->UseVisualStyleBackColor = true;
+			// 
+			// checkBox19
+			// 
+			this->checkBox19->AutoSize = true;
+			this->checkBox19->Location = System::Drawing::Point(6, 52);
+			this->checkBox19->Name = L"checkBox19";
+			this->checkBox19->Size = System::Drawing::Size(63, 17);
+			this->checkBox19->TabIndex = 2;
+			this->checkBox19->Text = L"Эллипс";
+			this->checkBox19->UseVisualStyleBackColor = true;
+			// 
+			// checkBox18
+			// 
+			this->checkBox18->AutoSize = true;
+			this->checkBox18->Location = System::Drawing::Point(6, 29);
+			this->checkBox18->Name = L"checkBox18";
+			this->checkBox18->Size = System::Drawing::Size(88, 17);
+			this->checkBox18->TabIndex = 1;
+			this->checkBox18->Text = L"Окружность";
+			this->checkBox18->UseVisualStyleBackColor = true;
+			// 
+			// checkBox17
+			// 
+			this->checkBox17->AutoSize = true;
+			this->checkBox17->Location = System::Drawing::Point(6, 6);
+			this->checkBox17->Name = L"checkBox17";
+			this->checkBox17->Size = System::Drawing::Size(66, 17);
+			this->checkBox17->TabIndex = 0;
+			this->checkBox17->Text = L"Прямая";
+			this->checkBox17->UseVisualStyleBackColor = true;
+			// 
 			// tabPage4
 			// 
 			this->tabPage4->Controls->Add(this->checkBox21);
@@ -325,10 +391,20 @@ namespace DxfProgram {
 			this->tabPage4->Location = System::Drawing::Point(4, 22);
 			this->tabPage4->Name = L"tabPage4";
 			this->tabPage4->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage4->Size = System::Drawing::Size(343, 164);
+			this->tabPage4->Size = System::Drawing::Size(397, 223);
 			this->tabPage4->TabIndex = 3;
 			this->tabPage4->Text = L"Совпадения";
 			this->tabPage4->UseVisualStyleBackColor = true;
+			// 
+			// checkBox21
+			// 
+			this->checkBox21->AutoSize = true;
+			this->checkBox21->Location = System::Drawing::Point(6, 75);
+			this->checkBox21->Name = L"checkBox21";
+			this->checkBox21->Size = System::Drawing::Size(51, 17);
+			this->checkBox21->TabIndex = 4;
+			this->checkBox21->Text = L"Дуги";
+			this->checkBox21->UseVisualStyleBackColor = true;
 			// 
 			// checkBox13
 			// 
@@ -373,7 +449,7 @@ namespace DxfProgram {
 			// button1
 			// 
 			this->button1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
-			this->button1->Location = System::Drawing::Point(213, 231);
+			this->button1->Location = System::Drawing::Point(267, 289);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(75, 23);
 			this->button1->TabIndex = 1;
@@ -384,7 +460,7 @@ namespace DxfProgram {
 			// button2
 			// 
 			this->button2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
-			this->button2->Location = System::Drawing::Point(294, 231);
+			this->button2->Location = System::Drawing::Point(348, 289);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(75, 23);
 			this->button2->TabIndex = 2;
@@ -392,75 +468,57 @@ namespace DxfProgram {
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &CheckDialog::button2_Click);
 			// 
-			// tabPage5
+			// radioButton1
 			// 
-			this->tabPage5->Controls->Add(this->checkBox20);
-			this->tabPage5->Controls->Add(this->checkBox19);
-			this->tabPage5->Controls->Add(this->checkBox18);
-			this->tabPage5->Controls->Add(this->checkBox17);
-			this->tabPage5->Location = System::Drawing::Point(4, 22);
-			this->tabPage5->Name = L"tabPage5";
-			this->tabPage5->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage5->Size = System::Drawing::Size(343, 164);
-			this->tabPage5->TabIndex = 4;
-			this->tabPage5->Text = L"Дуга";
-			this->tabPage5->UseVisualStyleBackColor = true;
+			this->radioButton1->AutoSize = true;
+			this->radioButton1->Location = System::Drawing::Point(6, 6);
+			this->radioButton1->Name = L"radioButton1";
+			this->radioButton1->Size = System::Drawing::Size(112, 17);
+			this->radioButton1->TabIndex = 1;
+			this->radioButton1->TabStop = true;
+			this->radioButton1->Text = L"Все пересечения";
+			this->radioButton1->UseVisualStyleBackColor = true;
 			// 
-			// checkBox17
+			// tabPage6
 			// 
-			this->checkBox17->AutoSize = true;
-			this->checkBox17->Location = System::Drawing::Point(6, 6);
-			this->checkBox17->Name = L"checkBox17";
-			this->checkBox17->Size = System::Drawing::Size(66, 17);
-			this->checkBox17->TabIndex = 0;
-			this->checkBox17->Text = L"Прямая";
-			this->checkBox17->UseVisualStyleBackColor = true;
+			this->tabPage6->Controls->Add(this->radioButton3);
+			this->tabPage6->Controls->Add(this->radioButton2);
+			this->tabPage6->Controls->Add(this->radioButton1);
+			this->tabPage6->Location = System::Drawing::Point(4, 22);
+			this->tabPage6->Name = L"tabPage6";
+			this->tabPage6->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage6->Size = System::Drawing::Size(397, 223);
+			this->tabPage6->TabIndex = 5;
+			this->tabPage6->Text = L"Виды пересечений";
+			this->tabPage6->UseVisualStyleBackColor = true;
 			// 
-			// checkBox18
+			// radioButton2
 			// 
-			this->checkBox18->AutoSize = true;
-			this->checkBox18->Location = System::Drawing::Point(6, 29);
-			this->checkBox18->Name = L"checkBox18";
-			this->checkBox18->Size = System::Drawing::Size(88, 17);
-			this->checkBox18->TabIndex = 1;
-			this->checkBox18->Text = L"Окружность";
-			this->checkBox18->UseVisualStyleBackColor = true;
+			this->radioButton2->AutoSize = true;
+			this->radioButton2->Location = System::Drawing::Point(6, 29);
+			this->radioButton2->Name = L"radioButton2";
+			this->radioButton2->Size = System::Drawing::Size(112, 17);
+			this->radioButton2->TabIndex = 2;
+			this->radioButton2->TabStop = true;
+			this->radioButton2->Text = L"Действительные";
+			this->radioButton2->UseVisualStyleBackColor = true;
 			// 
-			// checkBox19
+			// radioButton3
 			// 
-			this->checkBox19->AutoSize = true;
-			this->checkBox19->Location = System::Drawing::Point(6, 52);
-			this->checkBox19->Name = L"checkBox19";
-			this->checkBox19->Size = System::Drawing::Size(63, 17);
-			this->checkBox19->TabIndex = 2;
-			this->checkBox19->Text = L"Эллипс";
-			this->checkBox19->UseVisualStyleBackColor = true;
-			// 
-			// checkBox20
-			// 
-			this->checkBox20->AutoSize = true;
-			this->checkBox20->Location = System::Drawing::Point(6, 75);
-			this->checkBox20->Name = L"checkBox20";
-			this->checkBox20->Size = System::Drawing::Size(51, 17);
-			this->checkBox20->TabIndex = 3;
-			this->checkBox20->Text = L"Дуга";
-			this->checkBox20->UseVisualStyleBackColor = true;
-			// 
-			// checkBox21
-			// 
-			this->checkBox21->AutoSize = true;
-			this->checkBox21->Location = System::Drawing::Point(6, 75);
-			this->checkBox21->Name = L"checkBox21";
-			this->checkBox21->Size = System::Drawing::Size(51, 17);
-			this->checkBox21->TabIndex = 4;
-			this->checkBox21->Text = L"Дуги";
-			this->checkBox21->UseVisualStyleBackColor = true;
+			this->radioButton3->AutoSize = true;
+			this->radioButton3->Location = System::Drawing::Point(6, 52);
+			this->radioButton3->Name = L"radioButton3";
+			this->radioButton3->Size = System::Drawing::Size(68, 17);
+			this->radioButton3->TabIndex = 3;
+			this->radioButton3->TabStop = true;
+			this->radioButton3->Text = L"Мнимые";
+			this->radioButton3->UseVisualStyleBackColor = true;
 			// 
 			// CheckDialog
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(384, 262);
+			this->ClientSize = System::Drawing::Size(438, 320);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->groupBox1);
@@ -481,49 +539,52 @@ namespace DxfProgram {
 			this->tabPage2->PerformLayout();
 			this->tabPage3->ResumeLayout(false);
 			this->tabPage3->PerformLayout();
-			this->tabPage4->ResumeLayout(false);
-			this->tabPage4->PerformLayout();
 			this->tabPage5->ResumeLayout(false);
 			this->tabPage5->PerformLayout();
+			this->tabPage4->ResumeLayout(false);
+			this->tabPage4->PerformLayout();
+			this->tabPage6->ResumeLayout(false);
+			this->tabPage6->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
 	private: System::Void CheckDialog_Load(System::Object^  sender, System::EventArgs^  e) {
 			 }
-void InitCheckBoxes() {
-	//if(f.line_line == 1
-}
 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 			 //WithOGL::bitsField
 			 WORK::BITSFIELD f;
 			 work->InitBitsField(f);
 
-			 if(checkBox1->Checked) f.line_line = 1;
-			 if(checkBox2->Checked) f.line_circle = 1;
-			 if(checkBox3->Checked) f.line_ellipse = 1;
-			 if(checkBox14->Checked) f.line_arc = 1;
+			 if(radioButton1->Checked) f.crossKind = 0;
+			 else if(radioButton2->Checked) f.crossKind = 1;
+			 else f.crossKind = 2;
 
-			 if(checkBox4->Checked) f.line_circle = 1;
-			 if(checkBox5->Checked) f.circle_circle = 1;
-			 if(checkBox6->Checked) f.circle_ellipse = 1;
-			 if(checkBox15->Checked) f.circle_arc = 1;
+			 if(checkBox1->Checked) f.line_line = true;
+			 if(checkBox2->Checked) f.line_circle = true;
+			 if(checkBox3->Checked) f.line_ellipse = true;
+			 if(checkBox14->Checked) f.line_arc = true;
 
-			 if(checkBox7->Checked) f.line_ellipse = 1;
-			 if(checkBox8->Checked) f.circle_ellipse = 1;
-			 if(checkBox9->Checked) f.ellipse_ellipse = 1;
-			 if(checkBox16->Checked) f.ellipse_arc = 1;
+			 if(checkBox4->Checked) f.line_circle = true;
+			 if(checkBox5->Checked) f.circle_circle = true;
+			 if(checkBox6->Checked) f.circle_ellipse = true;
+			 if(checkBox15->Checked) f.circle_arc = true;
 
-			 if(checkBox17->Checked) f.line_arc = 1;
-			 if(checkBox18->Checked) f.circle_arc = 1;
-			 if(checkBox19->Checked) f.ellipse_arc = 1;
-			 if(checkBox20->Checked) f.arc_arc = 1;
+			 if(checkBox7->Checked) f.line_ellipse = true;
+			 if(checkBox8->Checked) f.circle_ellipse = true;
+			 if(checkBox9->Checked) f.ellipse_ellipse = true;
+			 if(checkBox16->Checked) f.ellipse_arc = true;
 
-			 if(checkBox10->Checked) f.overlap_lines = 1;
-			 if(checkBox11->Checked) f.overlap_circles = 1;
-			 if(checkBox12->Checked) f.overlap_ellipses = 1;
-			 if(checkBox21->Checked) f.overlap_arcs = 1;
-			 if(checkBox13->Checked) f.overlap_circle_arc = 1;
+			 if(checkBox17->Checked) f.line_arc = true;
+			 if(checkBox18->Checked) f.circle_arc = true;
+			 if(checkBox19->Checked) f.ellipse_arc = true;
+			 if(checkBox20->Checked) f.arc_arc = true;
+
+			 if(checkBox10->Checked) f.overlap_lines = true;
+			 if(checkBox11->Checked) f.overlap_circles = true;
+			 if(checkBox12->Checked) f.overlap_ellipses = true;
+			 if(checkBox21->Checked) f.overlap_arcs = true;
+			 if(checkBox13->Checked) f.overlap_circle_arc = true;
 
 			 work->CheckCross(f);
 			 this->Close();
