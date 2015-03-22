@@ -10,7 +10,7 @@ using namespace System::Windows::Forms;
 struct CROSSPOINT {
 	double x;
 	double y;
-	bool type;	//0 - действительное пересечение, 1 - мнимое пересечение
+	bool type;	//true - действительное пересечение, false - мнимое пересечение
 	bool current;
 
 	vector<LINE> Lines;
@@ -62,14 +62,15 @@ public:
 	};
 
 	SECTION Section;
-	//vector<POINT> errPoints;
 	vector<CROSSPOINT> ErrPoints;
 
-	//WORK();
 	WORK(SECTION s);
 	void CheckCross(BITSFIELD bitsfield);
 	void InitBitsField(BITSFIELD &field);
 
+	bool IsPointOnLine(LINE line, double x, double y);
+
+	bool IsLineCircleCross(LINE line, CIRCLE circle);
 	bool IsCirclesCross(CIRCLE c1, CIRCLE c2);
 	void ClickOnObject(double x, double y, double scale, DataGridView^ table);
 };

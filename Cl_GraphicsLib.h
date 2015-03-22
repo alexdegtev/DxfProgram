@@ -38,6 +38,5 @@ public:
 	void DrawEllipse(double x, double y, double a, double b, double angle);
 	void PrintCursor(int x, int y);
 	void SetColor(float red, float green, float blue);
-	
 };
 #endif

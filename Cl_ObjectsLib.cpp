@@ -3,7 +3,6 @@
 
 WORK::WORK(SECTION s) {
 	Section = s;
-	//errPoints.clear();
 	ErrPoints.clear();
 }
 
@@ -46,19 +45,19 @@ void WORK::CrossLines(LINE line1, LINE line2) {
 		if((u1 >= 0 && u1 <= 1) && (u2 >= 0 && u2 <= 1)) type = true;
 		else type = false;
 
-		CROSSPOINT tmp1;
-		if(type) tmp1.type = true;
-		else tmp1.type = false;
-		tmp1.current = false;
-		tmp1.x = x;
-		tmp1.y = y;
-		tmp1.Lines.clear();
-		tmp1.Circles.clear();
-		tmp1.Ellipses.clear();
-		tmp1.Arcs.clear();
-		tmp1.Lines.push_back(line1);
-		tmp1.Lines.push_back(line2);
-		ErrPoints.push_back(tmp1);
+		CROSSPOINT tmp;
+		if(type) tmp.type = true;
+		else tmp.type = false;
+		tmp.current = false;
+		tmp.x = x;
+		tmp.y = y;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line1);
+		tmp.Lines.push_back(line2);
+		ErrPoints.push_back(tmp);
 
 	}
 	else return;
@@ -86,35 +85,35 @@ void WORK::CrossCircles(CIRCLE circle1, CIRCLE circle2) {
 	tx1 = x0 + (y2 - y1) * h / d;
 	ty1 = y0 - (x2 - x1) * h / d;
 	
-	CROSSPOINT tmp1;
-	tmp1.type = true;
-	tmp1.current = false;
-	tmp1.x = tx1;
-	tmp1.y = ty1;
-	tmp1.Lines.clear();
-	tmp1.Circles.clear();
-	tmp1.Ellipses.clear();
-	tmp1.Arcs.clear();
-	tmp1.Circles.push_back(circle1);
-	tmp1.Circles.push_back(circle2);
-	ErrPoints.push_back(tmp1);
+	CROSSPOINT tmp;
+	tmp.type = true;
+	tmp.current = false;
+	tmp.x = tx1;
+	tmp.y = ty1;
+	tmp.Lines.clear();
+	tmp.Circles.clear();
+	tmp.Ellipses.clear();
+	tmp.Arcs.clear();
+	tmp.Circles.push_back(circle1);
+	tmp.Circles.push_back(circle2);
+	ErrPoints.push_back(tmp);
 
 	tx2 = x0 - (y2 - y1) * h / d;
 	ty2 = y0 + (x2 - x1) * h / d;
 
 	if(tx1 == tx2 && ty1 == ty2) return;
 
-	tmp1.type = true;
-	tmp1.current = false;
-	tmp1.x = tx2;
-	tmp1.y = ty2;
-	tmp1.Lines.clear();
-	tmp1.Circles.clear();
-	tmp1.Ellipses.clear();
-	tmp1.Arcs.clear();
-	tmp1.Circles.push_back(circle1);
-	tmp1.Circles.push_back(circle2);
-	ErrPoints.push_back(tmp1);
+	tmp.type = true;
+	tmp.current = false;
+	tmp.x = tx2;
+	tmp.y = ty2;
+	tmp.Lines.clear();
+	tmp.Circles.clear();
+	tmp.Ellipses.clear();
+	tmp.Arcs.clear();
+	tmp.Circles.push_back(circle1);
+	tmp.Circles.push_back(circle2);
+	ErrPoints.push_back(tmp);
 }
 
 void WORK::CrossLineCircle(LINE line, CIRCLE circle) {
@@ -133,48 +132,41 @@ void WORK::CrossLineCircle(LINE line, CIRCLE circle) {
 	double beta = 2 * (a * (b - y0) - x0);
 	double gamma = x0 * x0 + pow(b - y0, 2) - r * r;
 
-	long double q = beta * beta  - 4 * alpha * gamma;
-	long double tx1 = (-beta + sqrt(beta * beta  - 4 * alpha * gamma)) / (2 * alpha);
-	long double tx2 = (-beta - sqrt(beta * beta  - 4 * alpha * gamma)) / (2 * alpha);
+	long double det = beta * beta  - 4 * alpha * gamma;
+	if(det < 0) return;
+	long double tx1 = (-beta + sqrt(det)) / (2 * alpha);
+	long double tx2 = (-beta - sqrt(det)) / (2 * alpha);
 	long double ty1 = a * tx1 + b;
 	long double ty2 = a * tx2 + b;
 
-	/*POINT tmp;
-	tmp.type = 0;
+	CROSSPOINT tmp;
+	if(IsPointOnLine(line, tx1, ty1)) tmp.type = true;
+	else tmp.type = false;
+	tmp.current = false;
 	tmp.x = tx1;
 	tmp.y = ty1;
-	errPoints.insert(errPoints.end(), tmp);*/
-
-	CROSSPOINT tmp1;
-	tmp1.type = true;
-	tmp1.current = false;
-	tmp1.x = tx1;
-	tmp1.y = ty1;
-	tmp1.Lines.clear();
-	tmp1.Circles.clear();
-	tmp1.Ellipses.clear();
-	tmp1.Arcs.clear();
-	tmp1.Lines.push_back(line);
-	tmp1.Circles.push_back(circle);
-	ErrPoints.push_back(tmp1);
+	tmp.Lines.clear();
+	tmp.Circles.clear();
+	tmp.Ellipses.clear();
+	tmp.Arcs.clear();
+	tmp.Lines.push_back(line);
+	tmp.Circles.push_back(circle);
+	ErrPoints.push_back(tmp);
 
 	if(tx1 == tx2 && ty1 == ty2) return;
 
-	/*tmp.x = tx2;
+	if(IsPointOnLine(line, tx2, ty2)) tmp.type = true;
+	else tmp.type = false;
+	tmp.current = false;
+	tmp.x = tx2;
 	tmp.y = ty2;
-	errPoints.insert(errPoints.end(), tmp);*/
-
-	tmp1.type = true;
-	tmp1.current = false;
-	tmp1.x = tx2;
-	tmp1.y = ty2;
-	tmp1.Lines.clear();
-	tmp1.Circles.clear();
-	tmp1.Ellipses.clear();
-	tmp1.Arcs.clear();
-	tmp1.Lines.push_back(line);
-	tmp1.Circles.push_back(circle);
-	ErrPoints.push_back(tmp1);
+	tmp.Lines.clear();
+	tmp.Circles.clear();
+	tmp.Ellipses.clear();
+	tmp.Arcs.clear();
+	tmp.Lines.push_back(line);
+	tmp.Circles.push_back(circle);
+	ErrPoints.push_back(tmp);
 }
 
 void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse) {
@@ -201,42 +193,34 @@ void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse) {
 	double ty1 = k * tx1 + c;
 	double ty2 = k * tx2 + c;
 
-	/*POINT tmp;
-	tmp.type = 0;
+	CROSSPOINT tmp;
+	if(IsPointOnLine(line, tx1, ty1)) tmp.type = true;
+	else tmp.type = false;
+	tmp.current = false;
 	tmp.x = tx1;
 	tmp.y = ty1;
-	errPoints.insert(errPoints.end(), tmp);*/
-
-	CROSSPOINT tmp1;
-	tmp1.type = true;
-	tmp1.current = false;
-	tmp1.x = tx1;
-	tmp1.y = ty1;
-	tmp1.Lines.clear();
-	tmp1.Circles.clear();
-	tmp1.Ellipses.clear();
-	tmp1.Arcs.clear();
-	tmp1.Lines.push_back(line);
-	tmp1.Ellipses.push_back(ellipse);
-	ErrPoints.push_back(tmp1);
+	tmp.Lines.clear();
+	tmp.Circles.clear();
+	tmp.Ellipses.clear();
+	tmp.Arcs.clear();
+	tmp.Lines.push_back(line);
+	tmp.Ellipses.push_back(ellipse);
+	ErrPoints.push_back(tmp);
 
 	if(tx1 == tx2 && ty1 == ty2) return;
 
-	/*tmp.x = tx2;
+	if(IsPointOnLine(line, tx2, ty2)) tmp.type = true;
+	else tmp.type = false;
+	tmp.current = false;
+	tmp.x = tx2;
 	tmp.y = ty2;
-	errPoints.insert(errPoints.end(), tmp);*/
-
-	tmp1.type = true;
-	tmp1.current = false;
-	tmp1.x = tx2;
-	tmp1.y = ty2;
-	tmp1.Lines.clear();
-	tmp1.Circles.clear();
-	tmp1.Ellipses.clear();
-	tmp1.Arcs.clear();
-	tmp1.Lines.push_back(line);
-	tmp1.Ellipses.push_back(ellipse);
-	ErrPoints.push_back(tmp1);
+	tmp.Lines.clear();
+	tmp.Circles.clear();
+	tmp.Ellipses.clear();
+	tmp.Arcs.clear();
+	tmp.Lines.push_back(line);
+	tmp.Ellipses.push_back(ellipse);
+	ErrPoints.push_back(tmp);
 }
 
 void WORK::CrossLineArc(LINE line, ARC arc) {
@@ -264,48 +248,38 @@ void WORK::CrossLineArc(LINE line, ARC arc) {
 
 	double angle = GetAngle(x0, y0, tx1, ty1);
 	if(angle >= arc.angleStart && angle <= arc.angleEnd){
-		/*POINT tmp;
-		tmp.type = 0;
+		CROSSPOINT tmp;
+		if(IsPointOnLine(line, tx1, ty1)) tmp.type = true;
+		else tmp.type = false;
+		tmp.current = false;
 		tmp.x = tx1;
 		tmp.y = ty1;
-		errPoints.insert(errPoints.end(), tmp);*/
-
-		CROSSPOINT tmp1;
-		tmp1.type = true;
-		tmp1.current = false;
-		tmp1.x = tx1;
-		tmp1.y = ty1;
-		tmp1.Lines.clear();
-		tmp1.Circles.clear();
-		tmp1.Ellipses.clear();
-		tmp1.Arcs.clear();
-		tmp1.Lines.push_back(line);
-		tmp1.Arcs.push_back(arc);
-		ErrPoints.push_back(tmp1);
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line);
+		tmp.Arcs.push_back(arc);
+		ErrPoints.push_back(tmp);
 	}
 
 	if(tx1 == tx2 && ty1 == ty2) return;
 
 	angle = GetAngle(x0, y0, tx2, ty2);
 	if(angle >= arc.angleStart && angle <= arc.angleEnd){
-		/*POINT tmp;
-		tmp.type = 0;
+		CROSSPOINT tmp;
+		if(IsPointOnLine(line, tx2, ty2)) tmp.type = true;
+		else tmp.type = false;
+		tmp.current = false;
 		tmp.x = tx2;
 		tmp.y = ty2;
-		errPoints.insert(errPoints.end(), tmp);*/
-
-		CROSSPOINT tmp1;
-		tmp1.type = true;
-		tmp1.current = false;
-		tmp1.x = tx2;
-		tmp1.y = ty2;
-		tmp1.Lines.clear();
-		tmp1.Circles.clear();
-		tmp1.Ellipses.clear();
-		tmp1.Arcs.clear();
-		tmp1.Lines.push_back(line);
-		tmp1.Arcs.push_back(arc);
-		ErrPoints.push_back(tmp1);
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line);
+		tmp.Arcs.push_back(arc);
+		ErrPoints.push_back(tmp);
 	}
 }
 
@@ -337,48 +311,36 @@ void WORK::CrossCircleArc(CIRCLE circle, ARC arc) {
 
 	double angle = GetAngle(x2, y2, tx1, ty1);
 	if(angle >= arc.angleStart && angle <= arc.angleEnd){
-		/*POINT tmp;
-		tmp.type = 0;
+		CROSSPOINT tmp;
+		tmp.type = true;
+		tmp.current = false;
 		tmp.x = tx1;
 		tmp.y = ty1;
-		errPoints.insert(errPoints.end(), tmp);*/
-
-		CROSSPOINT tmp1;
-		tmp1.type = true;
-		tmp1.current = false;
-		tmp1.x = tx1;
-		tmp1.y = ty1;
-		tmp1.Lines.clear();
-		tmp1.Circles.clear();
-		tmp1.Ellipses.clear();
-		tmp1.Arcs.clear();
-		tmp1.Circles.push_back(circle);
-		tmp1.Arcs.push_back(arc);
-		ErrPoints.push_back(tmp1);
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Circles.push_back(circle);
+		tmp.Arcs.push_back(arc);
+		ErrPoints.push_back(tmp);
 	}
 
 	if(tx1 == tx2 && ty1 == ty2) return;
 
 	angle = GetAngle(x2, y2, tx2, ty2);
 	if(angle >= arc.angleStart && angle <= arc.angleEnd){
-		/*POINT tmp;
-		tmp.type = 0;
+		CROSSPOINT tmp;
+		tmp.type = true;
+		tmp.current = false;
 		tmp.x = tx2;
 		tmp.y = ty2;
-		errPoints.insert(errPoints.end(), tmp);*/
-
-		CROSSPOINT tmp1;
-		tmp1.type = true;
-		tmp1.current = false;
-		tmp1.x = tx2;
-		tmp1.y = ty2;
-		tmp1.Lines.clear();
-		tmp1.Circles.clear();
-		tmp1.Ellipses.clear();
-		tmp1.Arcs.clear();
-		tmp1.Circles.push_back(circle);
-		tmp1.Arcs.push_back(arc);
-		ErrPoints.push_back(tmp1);
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Circles.push_back(circle);
+		tmp.Arcs.push_back(arc);
+		ErrPoints.push_back(tmp);
 	}
 }
 
@@ -411,60 +373,49 @@ void WORK::CrossArcs(ARC arc1, ARC arc2) {
 	double angle1 = GetAngle(x1, y1, tx1, ty1);
 	double angle2 = GetAngle(x2, y2, tx1, ty1);
 	if(angle1 >= arc1.angleStart && angle1 <= arc1.angleEnd && angle2 >= arc2.angleStart && angle2 <= arc2.angleEnd){
-		/*POINT tmp;
-		tmp.type = 0;
+		CROSSPOINT tmp;
+		tmp.type = true;
+		tmp.current = false;
 		tmp.x = tx1;
 		tmp.y = ty1;
-		errPoints.insert(errPoints.end(), tmp);*/
-
-		CROSSPOINT tmp1;
-		tmp1.type = true;
-		tmp1.current = false;
-		tmp1.x = tx1;
-		tmp1.y = ty1;
-		tmp1.Lines.clear();
-		tmp1.Circles.clear();
-		tmp1.Ellipses.clear();
-		tmp1.Arcs.clear();
-		tmp1.Arcs.push_back(arc1);
-		tmp1.Arcs.push_back(arc2);
-		ErrPoints.push_back(tmp1);
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Arcs.push_back(arc1);
+		tmp.Arcs.push_back(arc2);
+		ErrPoints.push_back(tmp);
 	}
 
 	angle1 = GetAngle(x1, y1, tx2, ty2);
 	angle2 = GetAngle(x2, y2, tx2, ty2);
 	if(angle1 >= arc1.angleStart && angle1 <= arc1.angleEnd && angle2 >= arc2.angleStart && angle2 <= arc2.angleEnd){
-		/*POINT tmp;
-		tmp.type = 0;
+		CROSSPOINT tmp;
+		tmp.type = true;
+		tmp.current = false;
 		tmp.x = tx2;
 		tmp.y = ty2;
-		errPoints.insert(errPoints.end(), tmp);*/
-
-		CROSSPOINT tmp1;
-		tmp1.type = true;
-		tmp1.current = false;
-		tmp1.x = tx2;
-		tmp1.y = ty2;
-		tmp1.Lines.clear();
-		tmp1.Circles.clear();
-		tmp1.Ellipses.clear();
-		tmp1.Arcs.clear();
-		tmp1.Arcs.push_back(arc1);
-		tmp1.Arcs.push_back(arc2);
-		ErrPoints.push_back(tmp1);
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Arcs.push_back(arc1);
+		tmp.Arcs.push_back(arc2);
+		ErrPoints.push_back(tmp);
 	}
 }
 
-bool WORK::OverlapLines(LINE l1, LINE l2) {
-	if((l1.p[0].x == l2.p[0].x) && (l1.p[1].x == l2.p[1].x) && (l1.p[0].y == l2.p[0].y) && (l1.p[1].y == l2.p[1].y)) return true;
-	double x1 = l1.p[0].x;
-	double y1 = l1.p[0].y;
-	double x2 = l1.p[1].x;
-	double y2 = l1.p[1].y;
-	double x3 = l2.p[0].x;
-	double y3 = l2.p[0].y;
-	double x4 = l2.p[1].x;
-	double y4 = l2.p[1].y;
+bool WORK::OverlapLines(LINE line1, LINE line2) {
+	if((line1.p[0].x == line2.p[0].x) && (line1.p[1].x == line2.p[1].x) && (line1.p[0].y == line2.p[0].y) && (line1.p[1].y == line2.p[1].y)) return true;
+	double x1 = line1.p[0].x;
+	double y1 = line1.p[0].y;
+	double x2 = line1.p[1].x;
+	double y2 = line1.p[1].y;
+	double x3 = line2.p[0].x;
+	double y3 = line2.p[0].y;
+	double x4 = line2.p[1].x;
+	double y4 = line2.p[1].y;
+
 	if(x1 > x2 && y1 > y2) {
 		double tmp = x2;
 		x2 = x1;
@@ -506,12 +457,15 @@ bool WORK::OverlapLines(LINE l1, LINE l2) {
 		tmp = y4; y4 = y2; y2 = tmp;
 	}
 
-	if(x2 - x1 == 0) return false;						//!!!!!!!!
+	/*if(x2 - x1 == 0) return false;						//!!!!!!!!
 	double a = (y2 - y1) / (x2 - x1);
 	double b = y1 - x1 * a;
 	if(x1 <= x3 && x2 >= x4 && y1 <= y3 && y2 >= y4 && ((float)y3 == (float)(a*x3 + b)) && ((float)y4 == (float)(a*x4 + b))) return true;
 	if(x1 <= x3 && x2 >= x4 && y1 >= y3 && y2 <= y4 && ((float)y3 == (float)(a*x3 + b)) && ((float)y4 == (float)(a*x4 + b))) return true;
 
+	return false;*/
+
+	if(IsPointOnLine(line1, x3, y3) && IsPointOnLine(line1, x4, y4)) return true;
 	return false;
 }
 
@@ -537,7 +491,6 @@ bool WORK::OverlapCircleArc(CIRCLE c, ARC a) {
 
 void WORK::CheckCross(BITSFIELD bitsfield) {
 	ErrPoints.clear();
-	//errPoints.clear();
 	unsigned int i, j;
 
 	if(bitsfield.line_line) for(i=0; i<Section.Entities.Lines.size(); i++) {
@@ -643,6 +596,48 @@ double WORK::GetAngle(double x0, double y0, double x1, double y1) {
 	return angle;
 }
 
+bool WORK::IsPointOnLine(LINE line, double x, double y) {
+	double x1 = line.p[0].x;
+	double y1 = line.p[0].y;
+	double x2 = line.p[1].x;
+	double y2 = line.p[1].y;
+
+	if(x2 - x1 == 0) return false;						//!!!!!!!!
+	double a = (y2 - y1) / (x2 - x1);
+	double b = y1 - x1 * a;
+	if(x1 <= x && x2 >= x && y1 <= y && y2 >= y && ((float)y == (float)(a*x + b))) return true;
+	if(x1 <= x && x2 >= x && y1 >= y && y2 <= y && ((float)y == (float)(a*x + b))) return true;
+
+	return false;
+}
+
+bool WORK::IsLineCircleCross(LINE line, CIRCLE circle) {
+	double x1 = line.p[0].x;
+	double y1 = line.p[0].y;
+	double x2 = line.p[1].x;
+	double y2 = line.p[1].y;
+	double x0 = circle.p.x;
+	double y0 = circle.p.y;
+	double r = circle.r;
+
+	if(x2 - x1 == 0) return false;						//!!!!!!!!
+	double a = (y2 - y1) / (x2 - x1);
+	double b = y1 - x1 * a;
+	double alpha = a * a + 1;
+	double beta = 2 * (a * (b - y0) - x0);
+	double gamma = x0 * x0 + pow(b - y0, 2) - r * r;
+
+	long double det = beta * beta  - 4 * alpha * gamma;
+	if(det < 0) return false;
+	long double tx1 = (-beta + sqrt(det)) / (2 * alpha);
+	long double tx2 = (-beta - sqrt(det)) / (2 * alpha);
+	long double ty1 = a * tx1 + b;
+	long double ty2 = a * tx2 + b;
+
+	if(IsPointOnLine(line, tx1, ty1) || IsPointOnLine(line, tx2, ty2)) return true;
+	return false;
+}
+
 bool WORK::IsCirclesCross(CIRCLE c1, CIRCLE c2) {
 	double d = sqrt(pow(c2.p.x - c1.p.x, 2) + pow(c2.p.y - c1.p.y, 2));
 	if((c1.r + c2.r < d) || (abs(c1.r - c2.r) > d)) return false;
@@ -653,18 +648,44 @@ void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) 
 	unsigned int i;
 	int numRow = 0;
 	//Убрать метки
-	for(i=0; i<Section.Entities.Circles.size(); i++){
-		if(Section.Entities.Circles[i].current) Section.Entities.Circles[i].current = false;
-	}
-	for(i=0; i<ErrPoints.size(); i++){
-		if(ErrPoints[i].current) ErrPoints[i].current = false;
-	}
+	for(i=0; i<Section.Entities.Lines.size(); i++) if(Section.Entities.Lines[i].current) Section.Entities.Lines[i].current = false;
+	for(i=0; i<Section.Entities.Circles.size(); i++) if(Section.Entities.Circles[i].current) Section.Entities.Circles[i].current = false;
+	for(i=0; i<ErrPoints.size(); i++) if(ErrPoints[i].current) ErrPoints[i].current = false;
 	table->Rows->Clear();
 
 	CIRCLE tmp;
 	tmp.p.x = x;
 	tmp.p.y = y;
 	tmp.r = 4 / scale;
+
+	for(i=0; i<Section.Entities.Lines.size(); i++) {
+		if(IsLineCircleCross(Section.Entities.Lines[i], tmp)) {
+			if(Section.Entities.Lines[i].current) return;
+
+			Section.Entities.Lines[i].current = true;
+			table->Rows->Add();
+			table->Rows[0]->Cells[0]->Value = "Тип";
+			table->Rows[0]->Cells[1]->Value = "LINE";
+			table->Rows->Add();
+			table->Rows[1]->Cells[0]->Value = "X[1]";
+			table->Rows[1]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[0].x;
+			table->Rows->Add();
+			table->Rows[2]->Cells[0]->Value = "Y[1]";
+			table->Rows[2]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[0].y;
+			table->Rows->Add();
+			table->Rows[3]->Cells[0]->Value = "X[2]";
+			table->Rows[3]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[1].x;
+			table->Rows->Add();
+			table->Rows[4]->Cells[0]->Value = "Y[2]";
+			table->Rows[4]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[1].y;
+			table->Rows->Add();
+			table->Rows[5]->Cells[0]->Value = "Слой";
+			table->Rows[5]->Cells[1]->Value = gcnew System::String(Section.Entities.Lines[i].layer.c_str());
+
+			return;
+		}
+	}
+
 	for(i=0; i<Section.Entities.Circles.size(); i++){
 		if(IsCirclesCross(Section.Entities.Circles[i], tmp)) {
 			if(Section.Entities.Circles[i].current) return;
@@ -690,13 +711,13 @@ void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) 
 		}
 	}
 
-	CIRCLE err;
-	err.r = errPointR;
-
 	for(i=0; i<ErrPoints.size(); i++) {
 		numRow = 0;
+		CIRCLE err;
+		err.r = errPointR;
 		err.p.x = ErrPoints[i].x;
 		err.p.y = ErrPoints[i].y;
+
 		if(IsCirclesCross(err, tmp)) {
 			if(ErrPoints[i].current) return;
 
@@ -713,6 +734,10 @@ void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) 
 			table->Rows->Add();
 			table->Rows[numRow]->Cells[0]->Value = "Радиус";
 			table->Rows[numRow++]->Cells[1]->Value = "" + errPointR;
+			table->Rows->Add();
+			table->Rows[numRow]->Cells[0]->Value = "Пересечение";
+			if(ErrPoints[i].type) table->Rows[numRow++]->Cells[1]->Value = "Действительное";
+			else table->Rows[numRow++]->Cells[1]->Value = "Мнимое";
 			table->Rows->Add();
 			numRow++;
 
@@ -806,11 +831,8 @@ void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) 
 	}
 
 	//Убрать метки
-	for(i=0; i<Section.Entities.Circles.size(); i++){
-		if(Section.Entities.Circles[i].current) Section.Entities.Circles[i].current = false;
-	}
-	for(i=0; i<ErrPoints.size(); i++){
-		if(ErrPoints[i].current) ErrPoints[i].current = false;
-	}
+	for(i=0; i<Section.Entities.Lines.size(); i++) if(Section.Entities.Lines[i].current) Section.Entities.Lines[i].current = false;
+	for(i=0; i<Section.Entities.Circles.size(); i++) if(Section.Entities.Circles[i].current) Section.Entities.Circles[i].current = false;
+	for(i=0; i<ErrPoints.size(); i++) if(ErrPoints[i].current) ErrPoints[i].current = false;
 	table->Rows->Clear();
 }

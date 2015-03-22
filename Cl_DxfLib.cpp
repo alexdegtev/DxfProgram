@@ -16,7 +16,6 @@ bool DXF::Open(string dxfFileName) {
 	file.open(fileName);
 	LastNumberOfObject = 0;
 	EndEntitiesPointer = 0;
-	//errPoints.clear();
 	Blocks.clear();
 	NumBlock = 0;
 	SECTION tmp;
@@ -76,6 +75,7 @@ void DXF::ReadLine() {
 	file >> line >> line;
 	tmp.p[1].y = atof(line.c_str());
 	tmp.type = 0;
+	tmp.current = false;
 	EndEntitiesPointer = (int)file.tellg();
 	_Section.Entities.Lines.push_back(tmp);
 }

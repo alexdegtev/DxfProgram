@@ -19,11 +19,8 @@ int GRAPHICS::InitGL() {
 	if(!IsInit) return -1;
 	OpenGlControl->InitializeContexts();
 
-	// инициализация Glut 
 	Glut::glutInit();
 	Glut::glutInitDisplayMode(Glut::GLUT_RGB | Glut::GLUT_DOUBLE); 
-
-	// отчитка окна 
 	Gl::glClearColor(255, 255, 255, 1);
 
 	Resize((double)OpenGlControl->Width, (double)OpenGlControl->Height);
@@ -137,8 +134,8 @@ void GRAPHICS::DrawArc(double x, double y, double r, double begin, double end) {
 		}
 	Gl::glEnd();
 }
-/*good*/
 
+/*good*/
 void GRAPHICS::DrawEllipse(double x, double y, double a, double b, double angle) {
 	int segments = 300;
 	Gl::glPushMatrix();
@@ -188,10 +185,11 @@ void GRAPHICS::DrawEllipse(double x, double y, double a, double b, double angle)
 	Gl::glPopMatrix();
 }
 */
+
 void GRAPHICS::PrintCursor(int x, int y) {
 	Gl::glColor3f(1.0f, 0.0f, 0.0f);
 	Gl::glPointSize(20.0);
-	Gl::glBegin(Gl::GL_POINT);
+	Gl::glBegin(Gl::GL_POINTS);
 		Gl::glVertex2i(x, y);
 	Gl::glEnd();
 	Gl::glPointSize(1.0);

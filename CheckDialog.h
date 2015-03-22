@@ -92,8 +92,13 @@ namespace DxfProgram {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(CheckDialog::typeid));
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
+			this->tabPage6 = (gcnew System::Windows::Forms::TabPage());
+			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
 			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
 			this->checkBox14 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox3 = (gcnew System::Windows::Forms::CheckBox());
@@ -122,18 +127,14 @@ namespace DxfProgram {
 			this->checkBox10 = (gcnew System::Windows::Forms::CheckBox());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
-			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
-			this->tabPage6 = (gcnew System::Windows::Forms::TabPage());
-			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
 			this->groupBox1->SuspendLayout();
 			this->tabControl1->SuspendLayout();
+			this->tabPage6->SuspendLayout();
 			this->tabPage1->SuspendLayout();
 			this->tabPage2->SuspendLayout();
 			this->tabPage3->SuspendLayout();
 			this->tabPage5->SuspendLayout();
 			this->tabPage4->SuspendLayout();
-			this->tabPage6->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// groupBox1
@@ -165,6 +166,52 @@ namespace DxfProgram {
 			this->tabControl1->SelectedIndex = 0;
 			this->tabControl1->Size = System::Drawing::Size(405, 249);
 			this->tabControl1->TabIndex = 0;
+			// 
+			// tabPage6
+			// 
+			this->tabPage6->Controls->Add(this->radioButton3);
+			this->tabPage6->Controls->Add(this->radioButton2);
+			this->tabPage6->Controls->Add(this->radioButton1);
+			this->tabPage6->Location = System::Drawing::Point(4, 22);
+			this->tabPage6->Name = L"tabPage6";
+			this->tabPage6->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage6->Size = System::Drawing::Size(397, 223);
+			this->tabPage6->TabIndex = 5;
+			this->tabPage6->Text = L"Виды пересечений";
+			this->tabPage6->UseVisualStyleBackColor = true;
+			// 
+			// radioButton3
+			// 
+			this->radioButton3->AutoSize = true;
+			this->radioButton3->Location = System::Drawing::Point(6, 52);
+			this->radioButton3->Name = L"radioButton3";
+			this->radioButton3->Size = System::Drawing::Size(68, 17);
+			this->radioButton3->TabIndex = 3;
+			this->radioButton3->TabStop = true;
+			this->radioButton3->Text = L"Мнимые";
+			this->radioButton3->UseVisualStyleBackColor = true;
+			// 
+			// radioButton2
+			// 
+			this->radioButton2->AutoSize = true;
+			this->radioButton2->Location = System::Drawing::Point(6, 29);
+			this->radioButton2->Name = L"radioButton2";
+			this->radioButton2->Size = System::Drawing::Size(112, 17);
+			this->radioButton2->TabIndex = 2;
+			this->radioButton2->TabStop = true;
+			this->radioButton2->Text = L"Действительные";
+			this->radioButton2->UseVisualStyleBackColor = true;
+			// 
+			// radioButton1
+			// 
+			this->radioButton1->AutoSize = true;
+			this->radioButton1->Location = System::Drawing::Point(6, 6);
+			this->radioButton1->Name = L"radioButton1";
+			this->radioButton1->Size = System::Drawing::Size(112, 17);
+			this->radioButton1->TabIndex = 1;
+			this->radioButton1->TabStop = true;
+			this->radioButton1->Text = L"Все пересечения";
+			this->radioButton1->UseVisualStyleBackColor = true;
 			// 
 			// tabPage1
 			// 
@@ -468,52 +515,6 @@ namespace DxfProgram {
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &CheckDialog::button2_Click);
 			// 
-			// radioButton1
-			// 
-			this->radioButton1->AutoSize = true;
-			this->radioButton1->Location = System::Drawing::Point(6, 6);
-			this->radioButton1->Name = L"radioButton1";
-			this->radioButton1->Size = System::Drawing::Size(112, 17);
-			this->radioButton1->TabIndex = 1;
-			this->radioButton1->TabStop = true;
-			this->radioButton1->Text = L"Все пересечения";
-			this->radioButton1->UseVisualStyleBackColor = true;
-			// 
-			// tabPage6
-			// 
-			this->tabPage6->Controls->Add(this->radioButton3);
-			this->tabPage6->Controls->Add(this->radioButton2);
-			this->tabPage6->Controls->Add(this->radioButton1);
-			this->tabPage6->Location = System::Drawing::Point(4, 22);
-			this->tabPage6->Name = L"tabPage6";
-			this->tabPage6->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage6->Size = System::Drawing::Size(397, 223);
-			this->tabPage6->TabIndex = 5;
-			this->tabPage6->Text = L"Виды пересечений";
-			this->tabPage6->UseVisualStyleBackColor = true;
-			// 
-			// radioButton2
-			// 
-			this->radioButton2->AutoSize = true;
-			this->radioButton2->Location = System::Drawing::Point(6, 29);
-			this->radioButton2->Name = L"radioButton2";
-			this->radioButton2->Size = System::Drawing::Size(112, 17);
-			this->radioButton2->TabIndex = 2;
-			this->radioButton2->TabStop = true;
-			this->radioButton2->Text = L"Действительные";
-			this->radioButton2->UseVisualStyleBackColor = true;
-			// 
-			// radioButton3
-			// 
-			this->radioButton3->AutoSize = true;
-			this->radioButton3->Location = System::Drawing::Point(6, 52);
-			this->radioButton3->Name = L"radioButton3";
-			this->radioButton3->Size = System::Drawing::Size(68, 17);
-			this->radioButton3->TabIndex = 3;
-			this->radioButton3->TabStop = true;
-			this->radioButton3->Text = L"Мнимые";
-			this->radioButton3->UseVisualStyleBackColor = true;
-			// 
 			// CheckDialog
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -522,6 +523,7 @@ namespace DxfProgram {
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->groupBox1);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->MinimizeBox = false;
 			this->MinimumSize = System::Drawing::Size(400, 300);
@@ -533,6 +535,8 @@ namespace DxfProgram {
 			this->Load += gcnew System::EventHandler(this, &CheckDialog::CheckDialog_Load);
 			this->groupBox1->ResumeLayout(false);
 			this->tabControl1->ResumeLayout(false);
+			this->tabPage6->ResumeLayout(false);
+			this->tabPage6->PerformLayout();
 			this->tabPage1->ResumeLayout(false);
 			this->tabPage1->PerformLayout();
 			this->tabPage2->ResumeLayout(false);
@@ -543,8 +547,6 @@ namespace DxfProgram {
 			this->tabPage5->PerformLayout();
 			this->tabPage4->ResumeLayout(false);
 			this->tabPage4->PerformLayout();
-			this->tabPage6->ResumeLayout(false);
-			this->tabPage6->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
