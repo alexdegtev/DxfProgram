@@ -9,10 +9,12 @@
 #include <vector>
 #include <math.h>
 #include <string>
+//#include "Cl_ObjectsLib.h"
 using namespace std;
 
 #define EPS 1e-9
 #define PI 3.1415926535
+#define ErrorLayerName "ErrorsLayer"
 
 struct POINT {
 	double x;
@@ -81,6 +83,17 @@ struct SECTION {
 	ENTITIES Entities;
 };
 
+struct CROSSPOINT {
+	double x;
+	double y;
+	bool type;	//true - действительное пересечение, false - мнимое пересечение
+	bool current;
+
+	vector<LINE> Lines;
+	vector<CIRCLE> Circles;
+	vector<ELLIPSE> Ellipses;
+	vector<ARC> Arcs;
+};
 
 class DXF {
 public:
@@ -150,7 +163,6 @@ public:
 		ENTITIES Entities;
 	};*/
 
-
 private:
 	fstream file;
 	string fileName;
@@ -163,7 +175,8 @@ private:
 	int TextToHex(string str);
 	string LineToString(LINE l);
 	string CircleToString(CIRCLE c);
-	string ErrPointToString(POINT p);
+	string ErrPointToString(CROSSPOINT point);
+	string LayerToString(string name);
 	void ReadLine();
 	void ReadXLine();
 	void ReadCircle();
@@ -176,11 +189,6 @@ private:
 public:
 	SECTION _Section;	//сделать private или protected
 
-	int NumPoint;
-	int NumLine;
-	int NumCircle;
-	int NumEllipse;
-	int NumInsert;
 	int NumBlock;
 	float errPointR;
 	vector<BLOCK> Blocks;
@@ -191,7 +199,7 @@ public:
 	bool Open(string dxfFileName);
 	int Read();
 	bool Save();
-	bool SaveErrorPoints();
+	bool SaveErrorPoints(vector<CROSSPOINT> errPoints);
 
 };
 #endif

@@ -34,7 +34,7 @@ string DXF::PrintDxf() {
 	stringstream str;
 
 
-	if(NumLine) for(int i=0;i<NumLine;i++){
+	if(!_Section.Entities.Lines.empty()) for(int i=0;i<_Section.Entities.Lines.size();i++){
 		str << setprecision(20)
 			 << "LINE " << i << endl
 			 << "number: " << hex << _Section.Entities.Lines[i].number << endl
@@ -45,7 +45,7 @@ string DXF::PrintDxf() {
 			 << "Layer: " << _Section.Entities.Lines[i].layer << endl
 			 << "Type: " << _Section.Entities.Lines[i].type << endl << endl;
 	}
-	if(NumCircle) for(int i=0;i<NumCircle;i++){
+	if(!_Section.Entities.Circles.empty()) for(int i=0;i<_Section.Entities.Circles.size();i++){
 		str << setprecision(20)
 			 << "CIRCLE " << i << endl
 			 << "number: " << _Section.Entities.Circles[i].number << endl
@@ -60,8 +60,8 @@ string DXF::PrintDxf() {
 void DXF::ReadLine() {
 	string line;
 	LINE tmp;
-	file >> line >> line;
-	LastNumberOfObject = tmp.number = TextToHex(line);
+	//file >> line >> line;
+	//LastNumberOfObject = tmp.number = TextToHex(line);
 	while(line != "AcDbEntity") file >> line;
 	file >> line >> line;
 	tmp.layer = line;
@@ -83,8 +83,8 @@ void DXF::ReadLine() {
 void DXF::ReadXLine() {
 	string line;
 	LINE tmp;
-	file >> line >> line;
-	LastNumberOfObject = tmp.number = TextToHex(line);
+	//file >> line >> line;
+	//LastNumberOfObject = tmp.number = TextToHex(line);
 	while(line != "AcDbEntity") file >> line;
 	file >> line >> line;
 	tmp.layer = line;
@@ -105,8 +105,8 @@ void DXF::ReadXLine() {
 void DXF::ReadCircle() {
 	string line;
 	CIRCLE tmp;
-	file >> line >> line;
-	LastNumberOfObject = tmp.number = TextToHex(line);
+	//file >> line >> line;
+	//LastNumberOfObject = tmp.number = TextToHex(line);
 	while(line != "AcDbEntity") file >> line;
 	file >> line >> line;
 	tmp.layer = line;
@@ -143,8 +143,8 @@ void DXF::ReadBlock() {
 void DXF::ReadInsert() {
 	string line;
 	INSERT tmp;
-	file >> line >> line;
-	LastNumberOfObject = tmp.number = TextToHex(line);
+	//file >> line >> line;
+	//LastNumberOfObject = tmp.number = TextToHex(line);
 	while(line != "AcDbEntity") file >> line;
 	file >> line >> line;
 	tmp.layer = line;
@@ -158,8 +158,8 @@ void DXF::ReadInsert() {
 void DXF::ReadEllipse() {
 	string line;
 	ELLIPSE tmp;
-	file >> line >> line;
-	LastNumberOfObject = tmp.number = TextToHex(line);
+	//file >> line >> line;
+	//LastNumberOfObject = tmp.number = TextToHex(line);
 	while(line != "AcDbEntity") file >> line;
 	file >> line >> line;
 	tmp.layer = line;
@@ -206,8 +206,8 @@ void DXF::ReadEllipse() {
 void DXF::ReadArc() {
 	string line;
 	ARC tmp;
-	file >> line >> line;
-	LastNumberOfObject = tmp.number = TextToHex(line);
+	//file >> line >> line;
+	//LastNumberOfObject = tmp.number = TextToHex(line);
 	while(line != "AcDbEntity") file >> line;
 	file >> line >> line;
 	tmp.layer = line;
@@ -231,6 +231,16 @@ int DXF::Read() {
 	string line;
 	int beginEntitiesPointer = -1;	//Указатель на начало раздела ENTITIES в файле
 	
+	line = "";
+	while(line != "EOF") {
+		file >> line;
+		if(line == "$HANDSEED") {
+			file >> line >> line;
+			LastNumberOfObject = TextToHex(line);
+			break;
+		}
+	}
+
 	//Получение указателя на начало раздела "ENTITIES"
 	while(line != "EOF") {
 		file >> line;
@@ -240,18 +250,6 @@ int DXF::Read() {
 		}
 	}
 	if(beginEntitiesPointer == -1) return 1;
-
-	//Подсчёт количества объектов
-	/*while(line != "EOF") {
-		file >> line;
-		if(line == "POINT") NumPoint++;
-		if(line == "LINE") NumLine++;
-		if(line == "XLINE") NumLine++;
-		if(line == "CIRCLE") NumCircle++;
-		if(line == "ELLIPSE") NumEllipse++;
-		if(line == "INSERT") NumInsert++;
-		if(line == "BLOCK") NumBlock++;
-	}*/
 
 	line = "";
 
@@ -291,8 +289,8 @@ bool DXF::Save() {
 		saveFile << line << endl;
 	}
 
-	if(NumLine) for(int i=0; i<NumLine; i++) saveFile << LineToString(_Section.Entities.Lines[i]);
-	if(NumCircle) for(int i=0; i<NumCircle; i++) saveFile << CircleToString(_Section.Entities.Circles[i]);
+	if(!_Section.Entities.Lines.empty()) for(int i=0; i<_Section.Entities.Lines.size(); i++) saveFile << LineToString(_Section.Entities.Lines[i]);
+	if(!_Section.Entities.Circles.empty()) for(int i=0; i<_Section.Entities.Circles.size(); i++) saveFile << CircleToString(_Section.Entities.Circles[i]);
 
 	saveFile << "ENDSEC\n";
 
@@ -305,9 +303,10 @@ bool DXF::Save() {
 	return true;
 }
 
-bool DXF::SaveErrorPoints() {
+bool DXF::SaveErrorPoints(vector<CROSSPOINT> errPoints) {
 	if(saveFile.is_open()) saveFile.close();
-	saveFileName = "_" + fileName;
+
+	saveFileName = fileName + "_";
 	string line;
 
 	saveFile.open(saveFileName);
@@ -315,22 +314,37 @@ bool DXF::SaveErrorPoints() {
 
 	file.seekg(0, ios::beg);
 
-	bool fl_entities = false;
+	//Изменение $HANDSEED, вставка слоя ошибок, вставка точек ошибок
+	unsigned char fl_layer = 0;
+	unsigned char fl_entities = 0;
 	while(!file.eof()){
 		getline(file, line);
-		if(line == "ENTITIES") fl_entities = true;
-		if(fl_entities) if(line == "ENDSEC") break;
-		saveFile << line << endl;
-	}
 
-	/*if(!errPoints.empty()) for(unsigned int i=0; i<errPoints.size(); i++) {
-		saveFile << ErrPointToString(errPoints[i]);
-	}*/
+		if(line == "$HANDSEED") {
+			saveFile << line << endl;
+			getline(file, line);
+			saveFile << line << endl;
+			getline(file, line);
+			saveFile << hex << uppercase << LastNumberOfObject + 2 + errPoints.size() << endl;
+			getline(file, line);
+		}
 
-	saveFile << "ENDSEC\n";
+		if(fl_layer == 0 && line == "LAYER") fl_layer = 1;
+		if(fl_layer == 1 && line == "ENDTAB") {
+			saveFile << LayerToString(ErrorLayerName);
+			//saveFile << "ENDTAB\n";
+			fl_layer = 2;
+		}
 
-	while(!file.eof()){
-		getline(file, line);
+		if(fl_entities == 0 && line == "ENTITIES") fl_entities = 1;
+		if(fl_entities == 1 && line == "ENDSEC") {
+			if(!errPoints.empty()) for(unsigned int i=0; i<errPoints.size(); i++) {
+				saveFile << ErrPointToString(errPoints[i]);
+			}
+			//saveFile << "ENDSEC\n";
+			fl_entities = 3;
+		}
+
 		saveFile << line << endl;
 	}
 
@@ -366,16 +380,24 @@ string DXF::CircleToString(CIRCLE c) {
 	return str.str();
 }
 
-string DXF::ErrPointToString(POINT p) {
+string DXF::ErrPointToString(CROSSPOINT point) {
 	stringstream str;
 	str << "CIRCLE\n  5\n" << hex << uppercase << ++LastNumberOfObject << "\n";
-	str << "330\n1F\n100\nAcDbEntity\n  8\n" << /*p.layer*/ "ErrPoints" << "\n";
+	str << "330\n1F\n100\nAcDbEntity\n  8\n" << ErrorLayerName << "\n";
 	str << "100\nAcDbCircle\n";
 	str << setprecision(20)
-		<< " 10\n" << p.x << "\n"
-		<< " 20\n" << p.y << "\n"
+		<< " 10\n" << point.x << "\n"
+		<< " 20\n" << point.y << "\n"
 		<< " 30\n0.0\n"
 		<< " 40\n" << errPointR << "\n  0\n";
+	return str.str();
+}
+
+string DXF::LayerToString(string name) {
+	stringstream str;
+	str << "LAYER\n  5\n" << hex << uppercase << ++LastNumberOfObject << "\n";
+	str << "330\n2\n100\nAcDbSymbolTableRecord\n100\nAcDbLayerTableRecord\n  2\n" << name << "\n";
+	str << " 70\n     0\n 62\n     7\n  6\nContinuous\n370\n    -3\n390\nF\n347\n3E\n  0\n";
 	return str.str();
 }
 

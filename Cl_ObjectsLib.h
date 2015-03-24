@@ -7,17 +7,17 @@
 using namespace System;
 using namespace System::Windows::Forms;
 
-struct CROSSPOINT {
-	double x;
-	double y;
-	bool type;	//true - действительное пересечение, false - мнимое пересечение
-	bool current;
-
-	vector<LINE> Lines;
-	vector<CIRCLE> Circles;
-	vector<ELLIPSE> Ellipses;
-	vector<ARC> Arcs;
-};
+//struct CROSSPOINT {
+//	double x;
+//	double y;
+//	bool type;	//true - действительное пересечение, false - мнимое пересечение
+//	bool current;
+//
+//	vector<LINE> Lines;
+//	vector<CIRCLE> Circles;
+//	vector<ELLIPSE> Ellipses;
+//	vector<ARC> Arcs;
+//};
 
 class WORK: public DXF {
 private:
