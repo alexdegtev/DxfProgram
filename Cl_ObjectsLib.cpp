@@ -10,7 +10,7 @@ double WORK::Det(double x1, double x2, double x3, double x4) {
 	return (x1 * x4 - x2 * x3);
 }
 
-void WORK::CrossLines(LINE line1, LINE line2) {
+void WORK::CrossLines(LINE line1, LINE line2, unsigned char crossKind) {
 	double x1 = line1.p[0].x;
 	double y1 = line1.p[0].y;
 	double x2 = line1.p[1].x;
@@ -45,22 +45,149 @@ void WORK::CrossLines(LINE line1, LINE line2) {
 		if((u1 >= 0 && u1 <= 1) && (u2 >= 0 && u2 <= 1)) type = true;
 		else type = false;
 
+		if(crossKind == 0 || crossKind == 1 && type || crossKind == 2 && !type) {
+			CROSSPOINT tmp;
+			if(type) tmp.type = true;
+			else tmp.type = false;
+			tmp.current = false;
+			tmp.x = x;
+			tmp.y = y;
+			tmp.Lines.clear();
+			tmp.Circles.clear();
+			tmp.Ellipses.clear();
+			tmp.Arcs.clear();
+			tmp.Lines.push_back(line1);
+			tmp.Lines.push_back(line2);
+			ErrPoints.push_back(tmp);
+		}
+	}
+	else return;
+}
+
+void WORK::CrossLineCircle(LINE line, CIRCLE circle, unsigned char crossKind) {
+	double x1 = line.p[0].x;
+	double y1 = line.p[0].y;
+	double x2 = line.p[1].x;
+	double y2 = line.p[1].y;
+	double x0 = circle.p.x;
+	double y0 = circle.p.y;
+	double r = circle.r;
+
+	if(x2 - x1 == 0) return;						//!!!!!!!!
+	double a = (y2 - y1) / (x2 - x1);
+	double b = y1 - x1 * a;
+	double alpha = a * a + 1;
+	double beta = 2 * (a * (b - y0) - x0);
+	double gamma = x0 * x0 + pow(b - y0, 2) - r * r;
+
+	long double det = beta * beta  - 4 * alpha * gamma;
+	if(det < 0) return;
+	long double tx1 = (-beta + sqrt(det)) / (2 * alpha);
+	long double tx2 = (-beta - sqrt(det)) / (2 * alpha);
+	long double ty1 = a * tx1 + b;
+	long double ty2 = a * tx2 + b;
+
+	bool type = IsPointOnLine(line, tx1, ty1);
+	if(crossKind == 0 || crossKind == 1 && type || crossKind == 2 && !type) {
 		CROSSPOINT tmp;
 		if(type) tmp.type = true;
 		else tmp.type = false;
 		tmp.current = false;
-		tmp.x = x;
-		tmp.y = y;
+		tmp.x = tx1;
+		tmp.y = ty1;
 		tmp.Lines.clear();
 		tmp.Circles.clear();
 		tmp.Ellipses.clear();
 		tmp.Arcs.clear();
-		tmp.Lines.push_back(line1);
-		tmp.Lines.push_back(line2);
+		tmp.Lines.push_back(line);
+		tmp.Circles.push_back(circle);
 		ErrPoints.push_back(tmp);
-
 	}
-	else return;
+
+	if(tx1 == tx2 && ty1 == ty2) return;
+
+	type = IsPointOnLine(line, tx2, ty2);
+	if(crossKind == 0 || crossKind == 1 && type || crossKind == 2 && !type) {
+		CROSSPOINT tmp;
+		if(type) tmp.type = true;
+		else tmp.type = false;
+		tmp.current = false;
+		tmp.x = tx2;
+		tmp.y = ty2;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line);
+		tmp.Circles.push_back(circle);
+		ErrPoints.push_back(tmp);
+	}
+}
+
+void WORK::CrossLineArc(LINE line, ARC arc, unsigned char crossKind) {
+	double x1 = line.p[0].x;
+	double y1 = line.p[0].y;
+	double x2 = line.p[1].x;
+	double y2 = line.p[1].y;
+	double x0 = arc.p.x;
+	double y0 = arc.p.y;
+	double r = arc.r;
+
+	if(x2 - x1 == 0) return;						//!!!!!!!!
+	double a = (y2 - y1) / (x2 - x1);
+	double b = y1 - x1 * a;
+	double alpha = a * a + 1;
+	double beta = 2 * (a * (b - y0) - x0);
+	double gamma = x0 * x0 + pow(b - y0, 2) - r * r;
+
+	long double q = beta * beta  - 4 * alpha * gamma;
+	long double tx1 = (-beta + sqrt(beta * beta  - 4 * alpha * gamma)) / (2 * alpha);
+	long double tx2 = (-beta - sqrt(beta * beta  - 4 * alpha * gamma)) / (2 * alpha);
+	long double ty1 = a * tx1 + b;
+	long double ty2 = a * tx2 + b;
+
+
+	double angle = GetAngle(x0, y0, tx1, ty1);
+	if(angle >= arc.angleStart && angle <= arc.angleEnd){
+		bool type = IsPointOnLine(line, tx1, ty1);
+		if(crossKind == 0 || crossKind == 1 && type || crossKind == 2 && !type) {
+			CROSSPOINT tmp;
+			if(type) tmp.type = true;
+			else tmp.type = false;
+			tmp.current = false;
+			tmp.x = tx1;
+			tmp.y = ty1;
+			tmp.Lines.clear();
+			tmp.Circles.clear();
+			tmp.Ellipses.clear();
+			tmp.Arcs.clear();
+			tmp.Lines.push_back(line);
+			tmp.Arcs.push_back(arc);
+			ErrPoints.push_back(tmp);
+		}
+	}
+
+	if(tx1 == tx2 && ty1 == ty2) return;
+
+	angle = GetAngle(x0, y0, tx2, ty2);
+	if(angle >= arc.angleStart && angle <= arc.angleEnd){
+		bool type = IsPointOnLine(line, tx2, ty2);
+		if(crossKind == 0 || crossKind == 1 && type || crossKind == 2 && !type) {
+			CROSSPOINT tmp;
+			if(type) tmp.type = true;
+			else tmp.type = false;
+			tmp.current = false;
+			tmp.x = tx2;
+			tmp.y = ty2;
+			tmp.Lines.clear();
+			tmp.Circles.clear();
+			tmp.Ellipses.clear();
+			tmp.Arcs.clear();
+			tmp.Lines.push_back(line);
+			tmp.Arcs.push_back(arc);
+			ErrPoints.push_back(tmp);
+		}
+	}
 }
 
 void WORK::CrossCircles(CIRCLE circle1, CIRCLE circle2) {
@@ -116,59 +243,6 @@ void WORK::CrossCircles(CIRCLE circle1, CIRCLE circle2) {
 	ErrPoints.push_back(tmp);
 }
 
-void WORK::CrossLineCircle(LINE line, CIRCLE circle) {
-	double x1 = line.p[0].x;
-	double y1 = line.p[0].y;
-	double x2 = line.p[1].x;
-	double y2 = line.p[1].y;
-	double x0 = circle.p.x;
-	double y0 = circle.p.y;
-	double r = circle.r;
-
-	if(x2 - x1 == 0) return;						//!!!!!!!!
-	double a = (y2 - y1) / (x2 - x1);
-	double b = y1 - x1 * a;
-	double alpha = a * a + 1;
-	double beta = 2 * (a * (b - y0) - x0);
-	double gamma = x0 * x0 + pow(b - y0, 2) - r * r;
-
-	long double det = beta * beta  - 4 * alpha * gamma;
-	if(det < 0) return;
-	long double tx1 = (-beta + sqrt(det)) / (2 * alpha);
-	long double tx2 = (-beta - sqrt(det)) / (2 * alpha);
-	long double ty1 = a * tx1 + b;
-	long double ty2 = a * tx2 + b;
-
-	CROSSPOINT tmp;
-	if(IsPointOnLine(line, tx1, ty1)) tmp.type = true;
-	else tmp.type = false;
-	tmp.current = false;
-	tmp.x = tx1;
-	tmp.y = ty1;
-	tmp.Lines.clear();
-	tmp.Circles.clear();
-	tmp.Ellipses.clear();
-	tmp.Arcs.clear();
-	tmp.Lines.push_back(line);
-	tmp.Circles.push_back(circle);
-	ErrPoints.push_back(tmp);
-
-	if(tx1 == tx2 && ty1 == ty2) return;
-
-	if(IsPointOnLine(line, tx2, ty2)) tmp.type = true;
-	else tmp.type = false;
-	tmp.current = false;
-	tmp.x = tx2;
-	tmp.y = ty2;
-	tmp.Lines.clear();
-	tmp.Circles.clear();
-	tmp.Ellipses.clear();
-	tmp.Arcs.clear();
-	tmp.Lines.push_back(line);
-	tmp.Circles.push_back(circle);
-	ErrPoints.push_back(tmp);
-}
-
 void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse) {
 	double x1 = line.p[0].x;
 	double y1 = line.p[0].y;
@@ -221,66 +295,6 @@ void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse) {
 	tmp.Lines.push_back(line);
 	tmp.Ellipses.push_back(ellipse);
 	ErrPoints.push_back(tmp);
-}
-
-void WORK::CrossLineArc(LINE line, ARC arc) {
-	double x1 = line.p[0].x;
-	double y1 = line.p[0].y;
-	double x2 = line.p[1].x;
-	double y2 = line.p[1].y;
-	double x0 = arc.p.x;
-	double y0 = arc.p.y;
-	double r = arc.r;
-
-	if(x2 - x1 == 0) return;						//!!!!!!!!
-	double a = (y2 - y1) / (x2 - x1);
-	double b = y1 - x1 * a;
-	double alpha = a * a + 1;
-	double beta = 2 * (a * (b - y0) - x0);
-	double gamma = x0 * x0 + pow(b - y0, 2) - r * r;
-
-	long double q = beta * beta  - 4 * alpha * gamma;
-	long double tx1 = (-beta + sqrt(beta * beta  - 4 * alpha * gamma)) / (2 * alpha);
-	long double tx2 = (-beta - sqrt(beta * beta  - 4 * alpha * gamma)) / (2 * alpha);
-	long double ty1 = a * tx1 + b;
-	long double ty2 = a * tx2 + b;
-
-
-	double angle = GetAngle(x0, y0, tx1, ty1);
-	if(angle >= arc.angleStart && angle <= arc.angleEnd){
-		CROSSPOINT tmp;
-		if(IsPointOnLine(line, tx1, ty1)) tmp.type = true;
-		else tmp.type = false;
-		tmp.current = false;
-		tmp.x = tx1;
-		tmp.y = ty1;
-		tmp.Lines.clear();
-		tmp.Circles.clear();
-		tmp.Ellipses.clear();
-		tmp.Arcs.clear();
-		tmp.Lines.push_back(line);
-		tmp.Arcs.push_back(arc);
-		ErrPoints.push_back(tmp);
-	}
-
-	if(tx1 == tx2 && ty1 == ty2) return;
-
-	angle = GetAngle(x0, y0, tx2, ty2);
-	if(angle >= arc.angleStart && angle <= arc.angleEnd){
-		CROSSPOINT tmp;
-		if(IsPointOnLine(line, tx2, ty2)) tmp.type = true;
-		else tmp.type = false;
-		tmp.current = false;
-		tmp.x = tx2;
-		tmp.y = ty2;
-		tmp.Lines.clear();
-		tmp.Circles.clear();
-		tmp.Ellipses.clear();
-		tmp.Arcs.clear();
-		tmp.Lines.push_back(line);
-		tmp.Arcs.push_back(arc);
-		ErrPoints.push_back(tmp);
-	}
 }
 
 void WORK::CrossCircleArc(CIRCLE circle, ARC arc) {
@@ -495,13 +509,13 @@ void WORK::CheckCross(BITSFIELD bitsfield) {
 
 	if(bitsfield.line_line) for(i=0; i<Section.Entities.Lines.size(); i++) {
 		for(j=i+1; j<Section.Entities.Lines.size(); j++) {
-			CrossLines(Section.Entities.Lines[i], Section.Entities.Lines[j]);
+			CrossLines(Section.Entities.Lines[i], Section.Entities.Lines[j], bitsfield.crossKind);
 		}
 	}
 
 	if(bitsfield.line_circle) for(i=0; i<Section.Entities.Lines.size(); i++) {
 		for(j=0; j<Section.Entities.Circles.size(); j++) {
-			CrossLineCircle(Section.Entities.Lines[i], Section.Entities.Circles[j]);
+			CrossLineCircle(Section.Entities.Lines[i], Section.Entities.Circles[j], bitsfield.crossKind);
 		}
 	}
 
@@ -549,7 +563,7 @@ void WORK::CheckCross(BITSFIELD bitsfield) {
 
 	if(bitsfield.line_arc) for(i=0; i<Section.Entities.Lines.size(); i++) {
 		for(j=0; j<Section.Entities.Arcs.size(); j++) {
-			CrossLineArc(Section.Entities.Lines[i], Section.Entities.Arcs[j]);
+			CrossLineArc(Section.Entities.Lines[i], Section.Entities.Arcs[j], bitsfield.crossKind);
 		}
 	}
 

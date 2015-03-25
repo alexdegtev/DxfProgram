@@ -19,13 +19,14 @@ namespace DxfProgram {
 	public ref class CheckDialog : public System::Windows::Forms::Form
 	{
 	public:
-		CheckDialog(WORK *w)
+		CheckDialog(WORK *w, bool fileIsOpen)
 		{
 			InitializeComponent();
 			//
 			//TODO: добавьте код конструктора
 			//
 			work = w;
+			fl_fileIsOpen = fileIsOpen;
 		}
 
 	protected:
@@ -42,7 +43,6 @@ namespace DxfProgram {
 	private: System::Windows::Forms::GroupBox^  groupBox1;
 	private: System::Windows::Forms::TabControl^  tabControl1;
 	private: System::Windows::Forms::TabPage^  tabPage1;
-
 	private: System::Windows::Forms::CheckBox^  checkBox3;
 	private: System::Windows::Forms::CheckBox^  checkBox2;
 	private: System::Windows::Forms::CheckBox^  checkBox1;
@@ -56,13 +56,7 @@ namespace DxfProgram {
 	private: System::Windows::Forms::CheckBox^  checkBox7;
 	private: System::Windows::Forms::Button^  button1;
 	private: System::Windows::Forms::Button^  button2;
-
-
-	private:
-		/// <summary>
-		/// Требуется переменная конструктора.
-		/// </summary>
-		System::ComponentModel::Container ^components;
+	private: System::ComponentModel::Container ^components;
 	private: System::Windows::Forms::TabPage^  tabPage4;
 	private: System::Windows::Forms::CheckBox^  checkBox12;
 	private: System::Windows::Forms::CheckBox^  checkBox11;
@@ -84,6 +78,7 @@ namespace DxfProgram {
 
 
 		WORK *work;
+		bool fl_fileIsOpen;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -187,7 +182,6 @@ namespace DxfProgram {
 			this->radioButton3->Name = L"radioButton3";
 			this->radioButton3->Size = System::Drawing::Size(68, 17);
 			this->radioButton3->TabIndex = 3;
-			this->radioButton3->TabStop = true;
 			this->radioButton3->Text = L"Мнимые";
 			this->radioButton3->UseVisualStyleBackColor = true;
 			// 
@@ -198,13 +192,13 @@ namespace DxfProgram {
 			this->radioButton2->Name = L"radioButton2";
 			this->radioButton2->Size = System::Drawing::Size(112, 17);
 			this->radioButton2->TabIndex = 2;
-			this->radioButton2->TabStop = true;
 			this->radioButton2->Text = L"Действительные";
 			this->radioButton2->UseVisualStyleBackColor = true;
 			// 
 			// radioButton1
 			// 
 			this->radioButton1->AutoSize = true;
+			this->radioButton1->Checked = true;
 			this->radioButton1->Location = System::Drawing::Point(6, 6);
 			this->radioButton1->Name = L"radioButton1";
 			this->radioButton1->Size = System::Drawing::Size(112, 17);
@@ -554,7 +548,11 @@ namespace DxfProgram {
 	private: System::Void CheckDialog_Load(System::Object^  sender, System::EventArgs^  e) {
 			 }
 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-			 //WithOGL::bitsField
+			 if(!fl_fileIsOpen) {
+				 MessageBox::Show("Нет открытых файлов", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+				 return;
+			 }
+
 			 WORK::BITSFIELD f;
 			 work->InitBitsField(f);
 

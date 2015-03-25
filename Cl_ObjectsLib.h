@@ -7,25 +7,13 @@
 using namespace System;
 using namespace System::Windows::Forms;
 
-//struct CROSSPOINT {
-//	double x;
-//	double y;
-//	bool type;	//true - действительное пересечение, false - мнимое пересечение
-//	bool current;
-//
-//	vector<LINE> Lines;
-//	vector<CIRCLE> Circles;
-//	vector<ELLIPSE> Ellipses;
-//	vector<ARC> Arcs;
-//};
-
 class WORK: public DXF {
 private:
 	double Det(double x1, double x2, double x3, double x4);
-	void CrossLines(LINE l1, LINE l2);
-	void CrossLineCircle(LINE l, CIRCLE c);
+	void CrossLines(LINE line1, LINE line2, unsigned char crossKind);
+	void CrossLineCircle(LINE line, CIRCLE circle, unsigned char crossKind);
 	void CrossLineEllipse(LINE l, ELLIPSE e);
-	void CrossLineArc(LINE l, ARC a);
+	void CrossLineArc(LINE line, ARC arc, unsigned char crossKind);
 	void CrossCircles(CIRCLE circle1, CIRCLE circle2);
 	void CrossCircleArc(CIRCLE c, ARC a);
 	void CrossArcs(ARC a1, ARC a2);
@@ -37,10 +25,10 @@ private:
 
 	bool OverlapCircleArc(CIRCLE c, ARC a);
 
-	double GetAngle(double x0, double y0, double x1, double y1);
+	double GetAngle(double x0, double y0, double x1, double y1);	//Вычисляет угол между осью OX и прямой, проведённой через точки X и Y
 public:
 	struct BITSFIELD {
-		unsigned char crossKind;
+		unsigned char crossKind;	//0 - все пересечения, 1 - только действительные, 2 - только мнимые
 
 		bool line_line;
 		bool line_circle;

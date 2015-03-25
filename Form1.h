@@ -19,7 +19,6 @@ struct DIFFERENT {
 
 MOUSEPOINT dxfLocation;
 MOUSEPOINT mouseLocation;
-bool fileOpen;
 DIFFERENT diffScreen;
 
 namespace DxfProgram {
@@ -68,6 +67,7 @@ namespace DxfProgram {
 	private: GRAPHICS^ GLControl;
 	private: float scaleNum;
 	private: CheckDialog^ formCheckDialog;
+	private: bool fileIsOpen;
 	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
 	private: System::Windows::Forms::SaveFileDialog^  saveFileDialog1;
 	private: System::Windows::Forms::Timer^  timer1;
@@ -314,7 +314,7 @@ namespace DxfProgram {
 
 private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
 	scaleNum = 1;
-	fileOpen = false;
+	fileIsOpen = false;
 	diffScreen.width = 0;
 	diffScreen.height = 0;
 	diffScreen.oldWidth = renderPanel->Width;
@@ -329,7 +329,7 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	int err = 0;
 	if((err = dxf.Read()) != 0) {ShowErr(2); return;}
 	work = new WORK(dxf._Section);
-	fileOpen = true;
+	fileIsOpen = true;
 	richTextBox1->Text = "";
 	Painting();*/
 }
@@ -416,21 +416,21 @@ private: System::Void toolStripMenuItem2_Click(System::Object^  sender, System::
 					int err = 0;
 					if((err = dxf.Read()) != 0) {ShowErr(2); return;}
 					work = new WORK(dxf._Section);
-					fileOpen = true;
+					fileIsOpen = true;
 					richTextBox1->Text = "";
 					Painting();
 				}
 		 }
 private: System::Void toolStripMenuItem3_Click(System::Object^  sender, System::EventArgs^  e) {
 			 if(dxf.SaveErrorPoints(work->ErrPoints)) MessageBox::Show("Записано");
-			 else MessageBox::Show("Ошибка записи");
+			 else MessageBox::Show("Ошибка записи", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 			 /*
 				Дашкина функция сохранения в БД
 			 */
 		 }
 private: System::Void toolStripMenuItem5_Click(System::Object^  sender, System::EventArgs^  e) {
 			 richTextBox1->Text = "";
-			 formCheckDialog = gcnew CheckDialog(work);
+			 formCheckDialog = gcnew CheckDialog(work, fileIsOpen);
 			 formCheckDialog->Show();
 			 formCheckDialog->Activate();
 			 formCheckDialog->Focus();
@@ -509,7 +509,7 @@ Point point;
 private: System::Void renderPanel_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 			if(e->Button == System::Windows::Forms::MouseButtons::Left) {
 				point = e->Location;
-				if(fileOpen) work->ClickOnObject(
+				if(fileIsOpen) work->ClickOnObject(
 					(mouseLocation.x - dxfLocation.x) / scaleNum,
 					(mouseLocation.y - dxfLocation.y) / scaleNum,
 					scaleNum, ObjectInf
