@@ -56,6 +56,7 @@ struct ARC {
 	double angleEnd;
 	string layer;
 	int number;
+	bool current;
 };
 
 struct BLOCK {
@@ -87,6 +88,7 @@ struct CROSSPOINT {
 	double y;
 	bool type;	//true - действительное пересечение, false - мнимое пересечение
 	bool current;
+	bool isCrossPoint;	//true - точка пересечения, false - наложение
 
 	vector<LINE> Lines;
 	vector<CIRCLE> Circles;

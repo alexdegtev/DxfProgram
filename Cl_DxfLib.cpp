@@ -222,6 +222,7 @@ void DXF::ReadArc() {
 	tmp.angleStart = atof(line.c_str());
 	file >> line >> line;
 	tmp.angleEnd = atof(line.c_str());
+	tmp.current = false;
 	EndEntitiesPointer = (int)file.tellg();
 	_Section.Entities.Arcs.push_back(tmp);
 }
@@ -332,16 +333,14 @@ bool DXF::SaveErrorPoints(vector<CROSSPOINT> errPoints) {
 		if(fl_layer == 0 && line == "LAYER") fl_layer = 1;
 		if(fl_layer == 1 && line == "ENDTAB") {
 			saveFile << LayerToString(ErrorLayerName);
-			//saveFile << "ENDTAB\n";
 			fl_layer = 2;
 		}
 
 		if(fl_entities == 0 && line == "ENTITIES") fl_entities = 1;
 		if(fl_entities == 1 && line == "ENDSEC") {
 			if(!errPoints.empty()) for(unsigned int i=0; i<errPoints.size(); i++) {
-				saveFile << ErrPointToString(errPoints[i]);
+				if(errPoints[i].isCrossPoint) saveFile << ErrPointToString(errPoints[i]);
 			}
-			//saveFile << "ENDSEC\n";
 			fl_entities = 3;
 		}
 

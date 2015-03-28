@@ -134,40 +134,71 @@ namespace DxfProgram {
 			this->panel2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->ObjectInf))->BeginInit();
 			this->SuspendLayout();
+			// 
+			// openFileDialog1
+			// 
 			this->openFileDialog1->FileName = L"openFileDialog1";
+			// 
+			// timer1
+			// 
 			this->timer1->Enabled = true;
 			this->timer1->Interval = 30;
 			this->timer1->Tick += gcnew System::EventHandler(this, &Form1::timer1_Tick);
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {this->toolStripMenuItem1, this->toolStripMenuItem5});
+			// 
+			// menuStrip1
+			// 
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {this->toolStripMenuItem1, 
+				this->toolStripMenuItem5});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
 			this->menuStrip1->RenderMode = System::Windows::Forms::ToolStripRenderMode::System;
 			this->menuStrip1->Size = System::Drawing::Size(910, 24);
 			this->menuStrip1->TabIndex = 0;
 			this->menuStrip1->Text = L"menuStrip1";
+			// 
+			// toolStripMenuItem1
+			// 
 			this->toolStripMenuItem1->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {this->toolStripMenuItem2, 
 				this->toolStripMenuItem3, this->toolStripSeparator1, this->toolStripMenuItem4});
 			this->toolStripMenuItem1->Name = L"toolStripMenuItem1";
 			this->toolStripMenuItem1->Size = System::Drawing::Size(48, 20);
 			this->toolStripMenuItem1->Text = L"Файл";
+			// 
+			// toolStripMenuItem2
+			// 
 			this->toolStripMenuItem2->Name = L"toolStripMenuItem2";
 			this->toolStripMenuItem2->Size = System::Drawing::Size(132, 22);
 			this->toolStripMenuItem2->Text = L"Открыть";
 			this->toolStripMenuItem2->Click += gcnew System::EventHandler(this, &Form1::toolStripMenuItem2_Click);
+			// 
+			// toolStripMenuItem3
+			// 
 			this->toolStripMenuItem3->Name = L"toolStripMenuItem3";
 			this->toolStripMenuItem3->Size = System::Drawing::Size(132, 22);
 			this->toolStripMenuItem3->Text = L"Сохранить";
 			this->toolStripMenuItem3->Click += gcnew System::EventHandler(this, &Form1::toolStripMenuItem3_Click);
+			// 
+			// toolStripSeparator1
+			// 
 			this->toolStripSeparator1->Name = L"toolStripSeparator1";
 			this->toolStripSeparator1->Size = System::Drawing::Size(129, 6);
+			// 
+			// toolStripMenuItem4
+			// 
 			this->toolStripMenuItem4->Name = L"toolStripMenuItem4";
 			this->toolStripMenuItem4->Size = System::Drawing::Size(132, 22);
 			this->toolStripMenuItem4->Text = L"Выход";
 			this->toolStripMenuItem4->Click += gcnew System::EventHandler(this, &Form1::toolStripMenuItem4_Click);
+			// 
+			// toolStripMenuItem5
+			// 
 			this->toolStripMenuItem5->Name = L"toolStripMenuItem5";
 			this->toolStripMenuItem5->Size = System::Drawing::Size(74, 20);
 			this->toolStripMenuItem5->Text = L"Проверки";
 			this->toolStripMenuItem5->Click += gcnew System::EventHandler(this, &Form1::toolStripMenuItem5_Click);
+			// 
+			// panel1
+			// 
 			this->panel1->BackColor = System::Drawing::Color::White;
 			this->panel1->Controls->Add(this->coordLabel);
 			this->panel1->Dock = System::Windows::Forms::DockStyle::Bottom;
@@ -176,6 +207,9 @@ namespace DxfProgram {
 			this->panel1->Padding = System::Windows::Forms::Padding(0, 3, 2, 0);
 			this->panel1->Size = System::Drawing::Size(910, 20);
 			this->panel1->TabIndex = 1;
+			// 
+			// coordLabel
+			// 
 			this->coordLabel->AutoSize = true;
 			this->coordLabel->Dock = System::Windows::Forms::DockStyle::Right;
 			this->coordLabel->Location = System::Drawing::Point(886, 3);
@@ -183,6 +217,9 @@ namespace DxfProgram {
 			this->coordLabel->Size = System::Drawing::Size(22, 13);
 			this->coordLabel->TabIndex = 6;
 			this->coordLabel->Text = L"0 0";
+			// 
+			// panel2
+			// 
 			this->panel2->BackColor = System::Drawing::Color::White;
 			this->panel2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->panel2->Controls->Add(this->buttonRight);
@@ -196,6 +233,9 @@ namespace DxfProgram {
 			this->panel2->Name = L"panel2";
 			this->panel2->Size = System::Drawing::Size(47, 457);
 			this->panel2->TabIndex = 2;
+			// 
+			// buttonRight
+			// 
 			this->buttonRight->Location = System::Drawing::Point(12, 161);
 			this->buttonRight->Name = L"buttonRight";
 			this->buttonRight->Size = System::Drawing::Size(23, 23);
@@ -203,6 +243,9 @@ namespace DxfProgram {
 			this->buttonRight->Text = L"→";
 			this->buttonRight->UseVisualStyleBackColor = true;
 			this->buttonRight->Click += gcnew System::EventHandler(this, &Form1::buttonRight_Click);
+			// 
+			// buttonLeft
+			// 
 			this->buttonLeft->Location = System::Drawing::Point(12, 132);
 			this->buttonLeft->Name = L"buttonLeft";
 			this->buttonLeft->Size = System::Drawing::Size(23, 23);
@@ -210,6 +253,9 @@ namespace DxfProgram {
 			this->buttonLeft->Text = L"←";
 			this->buttonLeft->UseVisualStyleBackColor = true;
 			this->buttonLeft->Click += gcnew System::EventHandler(this, &Form1::buttonLeft_Click);
+			// 
+			// buttonBottom
+			// 
 			this->buttonBottom->Location = System::Drawing::Point(12, 103);
 			this->buttonBottom->Name = L"buttonBottom";
 			this->buttonBottom->Size = System::Drawing::Size(23, 23);
@@ -217,6 +263,9 @@ namespace DxfProgram {
 			this->buttonBottom->Text = L"↓";
 			this->buttonBottom->UseVisualStyleBackColor = true;
 			this->buttonBottom->Click += gcnew System::EventHandler(this, &Form1::buttonBottom_Click);
+			// 
+			// buttonTop
+			// 
 			this->buttonTop->Location = System::Drawing::Point(12, 74);
 			this->buttonTop->Name = L"buttonTop";
 			this->buttonTop->Size = System::Drawing::Size(23, 23);
@@ -224,6 +273,9 @@ namespace DxfProgram {
 			this->buttonTop->Text = L"↑";
 			this->buttonTop->UseVisualStyleBackColor = true;
 			this->buttonTop->Click += gcnew System::EventHandler(this, &Form1::buttonTop_Click);
+			// 
+			// buttonMinus
+			// 
 			this->buttonMinus->Location = System::Drawing::Point(12, 32);
 			this->buttonMinus->Name = L"buttonMinus";
 			this->buttonMinus->Size = System::Drawing::Size(23, 23);
@@ -231,6 +283,9 @@ namespace DxfProgram {
 			this->buttonMinus->Text = L"-";
 			this->buttonMinus->UseVisualStyleBackColor = true;
 			this->buttonMinus->Click += gcnew System::EventHandler(this, &Form1::buttonMinus_Click);
+			// 
+			// buttonPlus
+			// 
 			this->buttonPlus->Location = System::Drawing::Point(12, 3);
 			this->buttonPlus->Name = L"buttonPlus";
 			this->buttonPlus->Size = System::Drawing::Size(23, 23);
@@ -238,6 +293,9 @@ namespace DxfProgram {
 			this->buttonPlus->Text = L"+";
 			this->buttonPlus->UseVisualStyleBackColor = true;
 			this->buttonPlus->Click += gcnew System::EventHandler(this, &Form1::buttonPlus_Click);
+			// 
+			// richTextBox1
+			// 
 			this->richTextBox1->Dock = System::Windows::Forms::DockStyle::Right;
 			this->richTextBox1->Location = System::Drawing::Point(810, 24);
 			this->richTextBox1->Name = L"richTextBox1";
@@ -245,6 +303,9 @@ namespace DxfProgram {
 			this->richTextBox1->TabIndex = 3;
 			this->richTextBox1->Text = L"";
 			this->richTextBox1->Visible = false;
+			// 
+			// ObjectInf
+			// 
 			this->ObjectInf->AllowUserToAddRows = false;
 			this->ObjectInf->AllowUserToDeleteRows = false;
 			this->ObjectInf->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
@@ -257,14 +318,23 @@ namespace DxfProgram {
 			this->ObjectInf->Size = System::Drawing::Size(250, 457);
 			this->ObjectInf->TabIndex = 0;
 			this->ObjectInf->SizeChanged += gcnew System::EventHandler(this, &Form1::ObjectInf_SizeChanged);
+			// 
+			// Column1
+			// 
 			this->Column1->HeaderText = L"Свойство";
 			this->Column1->Name = L"Column1";
 			this->Column1->ReadOnly = true;
 			this->Column1->Width = 123;
+			// 
+			// Column2
+			// 
 			this->Column2->HeaderText = L"Значение";
 			this->Column2->Name = L"Column2";
 			this->Column2->ReadOnly = true;
 			this->Column2->Width = 123;
+			// 
+			// renderPanel
+			// 
 			this->renderPanel->AccumBits = static_cast<System::Byte>(0);
 			this->renderPanel->AutoCheckErrors = false;
 			this->renderPanel->AutoFinish = false;
@@ -273,6 +343,7 @@ namespace DxfProgram {
 			this->renderPanel->BackColor = System::Drawing::Color::White;
 			this->renderPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->renderPanel->ColorBits = static_cast<System::Byte>(32);
+			this->renderPanel->Cursor = System::Windows::Forms::Cursors::Default;
 			this->renderPanel->DepthBits = static_cast<System::Byte>(16);
 			this->renderPanel->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->renderPanel->Location = System::Drawing::Point(297, 24);
@@ -283,7 +354,11 @@ namespace DxfProgram {
 			this->renderPanel->SizeChanged += gcnew System::EventHandler(this, &Form1::renderPanel_SizeChanged);
 			this->renderPanel->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::renderPanel_MouseDown);
 			this->renderPanel->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::renderPanel_MouseMove);
+			this->renderPanel->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::renderPanel_MouseUp);
 			this->renderPanel->MouseWheel += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::renderPanel_MouseWheel);
+			// 
+			// Form1
+			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(910, 501);
@@ -325,16 +400,16 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	dxfLocation.x = 0;
 	dxfLocation.y = 0;
 
-	/*if(!dxf.Open("DxfFiles\\CrossLineCircle.dxf")) {ShowErr(1); return;}
+	if(!dxf.Open("DxfFiles\\OverlapArcs.dxf")) {ShowErr(1); return;}
 	int err = 0;
 	if((err = dxf.Read()) != 0) {ShowErr(2); return;}
 	work = new WORK(dxf._Section);
 	fileIsOpen = true;
 	richTextBox1->Text = "";
-	Painting();*/
+	Painting();
 }
 private: void Painting() {
-			unsigned int i;
+			unsigned int i, j;
 			if(work && !work->Section.Entities.Lines.empty()) for(i=0; i<work->Section.Entities.Lines.size(); i++) {
 				if(work->Section.Entities.Lines[i].current) {
 					GLControl->SetColor(0.0, 0.0, 1.0);
@@ -363,20 +438,6 @@ private: void Painting() {
 				if(work->Section.Entities.Circles[i].current) GLControl->SetColor(0.0, 0.0, 0.0);
 			}
 
-			if(work && !work->ErrPoints.empty()) for(i=0; i<work->ErrPoints.size(); i++) {
-				if(work->ErrPoints[i].current) {
-					GLControl->SetColor(0.0, 1.0, 0.0);
-					GLControl->DrawPoint(work->ErrPoints[i].x, work->ErrPoints[i].y, 3.0);
-				}
-				else GLControl->SetColor(1.0, 0.0, 0.0);
-				GLControl->DrawCircle(
-					work->ErrPoints[i].x,
-					work->ErrPoints[i].y,
-					work->errPointR
-				);
-				GLControl->SetColor(0.0, 0.0, 0.0);
-			}
-
 			if(work && !work->Section.Entities.Ellipses.empty()) for(i=0; i<work->Section.Entities.Ellipses.size(); i++) {
 				GLControl->DrawEllipse(
 					work->Section.Entities.Ellipses[i].p.x,
@@ -388,6 +449,10 @@ private: void Painting() {
 			}
 
 			if(work && !work->Section.Entities.Arcs.empty()) for(i=0; i<work->Section.Entities.Arcs.size(); i++) {
+				if(work->Section.Entities.Arcs[i].current) {
+					GLControl->SetColor(0.0, 0.0, 1.0);
+					GLControl->DrawPoint(work->Section.Entities.Arcs[i].p.x, work->Section.Entities.Arcs[i].p.y, 3.0);
+				}
 				GLControl->DrawArc(
 					work->Section.Entities.Arcs[i].p.x,
 					work->Section.Entities.Arcs[i].p.y,
@@ -395,6 +460,54 @@ private: void Painting() {
 					work->Section.Entities.Arcs[i].angleStart,
 					work->Section.Entities.Arcs[i].angleEnd
 				);
+				if(work->Section.Entities.Arcs[i].current) GLControl->SetColor(0.0, 0.0, 0.0);
+			}
+
+			if(work && !work->ErrPoints.empty()) for(i=0; i<work->ErrPoints.size(); i++) {
+				if(work->ErrPoints[i].isCrossPoint) {
+					if(work->ErrPoints[i].current) {
+						GLControl->SetColor(0.0, 1.0, 0.0);
+						GLControl->DrawPoint(work->ErrPoints[i].x, work->ErrPoints[i].y, 3.0);
+					}
+					else GLControl->SetColor(1.0, 0.0, 0.0);
+					GLControl->DrawCircle(
+						work->ErrPoints[i].x,
+						work->ErrPoints[i].y,
+						work->errPointR
+					);
+					GLControl->SetColor(0.0, 0.0, 0.0);
+				}
+				else {
+					if(!work->ErrPoints[i].Circles.empty()) for(j=0; j<work->ErrPoints[i].Circles.size(); j++) {
+						if(work->ErrPoints[i].current) {
+							GLControl->SetColor(0.0, 1.0, 0.0);
+							GLControl->DrawPoint(work->ErrPoints[i].Circles[j].p.x, work->ErrPoints[i].Circles[j].p.y, 3.0);
+						}
+						else GLControl->SetColor(1.0, 0.0, 0.0);
+						GLControl->DrawCircle(
+							work->ErrPoints[i].Circles[j].p.x,
+							work->ErrPoints[i].Circles[j].p.y,
+							work->ErrPoints[i].Circles[j].r
+						);
+						GLControl->SetColor(0.0, 0.0, 0.0);
+					}
+
+					if(!work->ErrPoints[i].Arcs.empty()) for(j=0; j<work->ErrPoints[i].Arcs.size(); j++) {
+						if(work->ErrPoints[i].current) {
+							GLControl->SetColor(0.0, 1.0, 0.0);
+							GLControl->DrawPoint(work->ErrPoints[i].Arcs[j].p.x, work->ErrPoints[i].Arcs[j].p.y, 3.0);
+						}
+						else GLControl->SetColor(1.0, 0.0, 0.0);
+						GLControl->DrawArc(
+							work->ErrPoints[i].Arcs[j].p.x,
+							work->ErrPoints[i].Arcs[j].p.y,
+							work->ErrPoints[i].Arcs[j].r,
+							work->ErrPoints[i].Arcs[j].angleStart,
+							work->ErrPoints[i].Arcs[j].angleEnd
+						);
+						if(work->ErrPoints[i].Arcs[j].current) GLControl->SetColor(0.0, 0.0, 0.0);
+					}
+				}
 			}
 		}
 
@@ -507,18 +620,22 @@ int ConvertY(int y) { return (renderPanel->Height/2 - y); }
 Point point;
 
 private: System::Void renderPanel_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-			if(e->Button == System::Windows::Forms::MouseButtons::Left) {
-				point = e->Location;
-				if(fileIsOpen) work->ClickOnObject(
+			point = e->Location;
+			if(e->Button == System::Windows::Forms::MouseButtons::Left && fileIsOpen) {
+				work->ClickOnObject(
 					(mouseLocation.x - dxfLocation.x) / scaleNum,
 					(mouseLocation.y - dxfLocation.y) / scaleNum,
 					scaleNum, ObjectInf
 				);
 			}
+			if(e->Button == System::Windows::Forms::MouseButtons::Middle) renderPanel->Cursor = System::Windows::Forms::Cursors::SizeAll;
 		}
+private: System::Void renderPanel_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+			 if(e->Button == System::Windows::Forms::MouseButtons::Middle) renderPanel->Cursor = System::Windows::Forms::Cursors::Default;
+		 }
 
 private: System::Void renderPanel_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-			 if(e->Button == System::Windows::Forms::MouseButtons::Left) {
+			 if(e->Button == System::Windows::Forms::MouseButtons::Middle) {
 				 double dx = (ConvertX(e->X) - ConvertX(point.X)) / scaleNum;
 				 double dy = (ConvertY(e->Y) - ConvertY(point.Y)) / scaleNum;
 				 GLControl->Translate(dx, dy);

@@ -12,20 +12,26 @@ private:
 	double Det(double x1, double x2, double x3, double x4);
 	void CrossLines(LINE line1, LINE line2, unsigned char crossKind);
 	void CrossLineCircle(LINE line, CIRCLE circle, unsigned char crossKind);
-	void CrossLineEllipse(LINE l, ELLIPSE e);
+	void CrossLineEllipse(LINE l, ELLIPSE e, unsigned char crossKind);
 	void CrossLineArc(LINE line, ARC arc, unsigned char crossKind);
 	void CrossCircles(CIRCLE circle1, CIRCLE circle2);
 	void CrossCircleArc(CIRCLE c, ARC a);
 	void CrossArcs(ARC a1, ARC a2);
 
-	bool OverlapLines(LINE l1, LINE l2);
-	bool OverlapCircles(CIRCLE c1, CIRCLE c2);
-	bool OverlapEllipses(ELLIPSE e1, ELLIPSE e2);
-	bool OverlapArcs(ARC a1, ARC a2);
-
-	bool OverlapCircleArc(CIRCLE c, ARC a);
+	void OverlapLines(LINE line1, LINE line2);
+	void OverlapCircles(CIRCLE circle1, CIRCLE circle2);
+	void OverlapEllipses(ELLIPSE e1, ELLIPSE e2);
+	void OverlapArcs(ARC a1, ARC a2);
+	void OverlapCircleArc(CIRCLE c, ARC a);
 
 	double GetAngle(double x0, double y0, double x1, double y1);	//Вычисляет угол между осью OX и прямой, проведённой через точки X и Y
+
+	bool IsPointOnLine(LINE line, double x, double y);
+
+	bool IsLineCircleCross(LINE line, CIRCLE circle);
+	bool IsCirclesCross(CIRCLE c1, CIRCLE c2);
+	bool IsArcCircleCross(ARC arc, CIRCLE circle);
+
 public:
 	struct BITSFIELD {
 		unsigned char crossKind;	//0 - все пересечения, 1 - только действительные, 2 - только мнимые
@@ -56,10 +62,6 @@ public:
 	void CheckCross(BITSFIELD bitsfield);
 	void InitBitsField(BITSFIELD &field);
 
-	bool IsPointOnLine(LINE line, double x, double y);
-
-	bool IsLineCircleCross(LINE line, CIRCLE circle);
-	bool IsCirclesCross(CIRCLE c1, CIRCLE c2);
 	void ClickOnObject(double x, double y, double scale, DataGridView^ table);
 };
 #endif

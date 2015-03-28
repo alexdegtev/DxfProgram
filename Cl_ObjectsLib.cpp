@@ -50,6 +50,7 @@ void WORK::CrossLines(LINE line1, LINE line2, unsigned char crossKind) {
 			if(type) tmp.type = true;
 			else tmp.type = false;
 			tmp.current = false;
+			tmp.isCrossPoint = true;
 			tmp.x = x;
 			tmp.y = y;
 			tmp.Lines.clear();
@@ -93,6 +94,7 @@ void WORK::CrossLineCircle(LINE line, CIRCLE circle, unsigned char crossKind) {
 		if(type) tmp.type = true;
 		else tmp.type = false;
 		tmp.current = false;
+		tmp.isCrossPoint = true;
 		tmp.x = tx1;
 		tmp.y = ty1;
 		tmp.Lines.clear();
@@ -112,6 +114,7 @@ void WORK::CrossLineCircle(LINE line, CIRCLE circle, unsigned char crossKind) {
 		if(type) tmp.type = true;
 		else tmp.type = false;
 		tmp.current = false;
+		tmp.isCrossPoint = true;
 		tmp.x = tx2;
 		tmp.y = ty2;
 		tmp.Lines.clear();
@@ -155,6 +158,7 @@ void WORK::CrossLineArc(LINE line, ARC arc, unsigned char crossKind) {
 			if(type) tmp.type = true;
 			else tmp.type = false;
 			tmp.current = false;
+			tmp.isCrossPoint = true;
 			tmp.x = tx1;
 			tmp.y = ty1;
 			tmp.Lines.clear();
@@ -177,6 +181,7 @@ void WORK::CrossLineArc(LINE line, ARC arc, unsigned char crossKind) {
 			if(type) tmp.type = true;
 			else tmp.type = false;
 			tmp.current = false;
+			tmp.isCrossPoint = true;
 			tmp.x = tx2;
 			tmp.y = ty2;
 			tmp.Lines.clear();
@@ -215,6 +220,7 @@ void WORK::CrossCircles(CIRCLE circle1, CIRCLE circle2) {
 	CROSSPOINT tmp;
 	tmp.type = true;
 	tmp.current = false;
+	tmp.isCrossPoint = true;
 	tmp.x = tx1;
 	tmp.y = ty1;
 	tmp.Lines.clear();
@@ -232,6 +238,7 @@ void WORK::CrossCircles(CIRCLE circle1, CIRCLE circle2) {
 
 	tmp.type = true;
 	tmp.current = false;
+	tmp.isCrossPoint = true;
 	tmp.x = tx2;
 	tmp.y = ty2;
 	tmp.Lines.clear();
@@ -243,7 +250,7 @@ void WORK::CrossCircles(CIRCLE circle1, CIRCLE circle2) {
 	ErrPoints.push_back(tmp);
 }
 
-void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse) {
+void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse, unsigned char crossKind) {
 	double x1 = line.p[0].x;
 	double y1 = line.p[0].y;
 	double x2 = line.p[1].x;
@@ -267,34 +274,44 @@ void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse) {
 	double ty1 = k * tx1 + c;
 	double ty2 = k * tx2 + c;
 
-	CROSSPOINT tmp;
-	if(IsPointOnLine(line, tx1, ty1)) tmp.type = true;
-	else tmp.type = false;
-	tmp.current = false;
-	tmp.x = tx1;
-	tmp.y = ty1;
-	tmp.Lines.clear();
-	tmp.Circles.clear();
-	tmp.Ellipses.clear();
-	tmp.Arcs.clear();
-	tmp.Lines.push_back(line);
-	tmp.Ellipses.push_back(ellipse);
-	ErrPoints.push_back(tmp);
+
+	bool type = IsPointOnLine(line, tx1, ty1);
+	if(crossKind == 0 || crossKind == 1 && type || crossKind == 2 && !type) {
+		CROSSPOINT tmp;
+		if(type) tmp.type = true;
+		else tmp.type = false;
+		tmp.current = false;
+		tmp.isCrossPoint = true;
+		tmp.x = tx1;
+		tmp.y = ty1;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line);
+		tmp.Ellipses.push_back(ellipse);
+		ErrPoints.push_back(tmp);
+	}
 
 	if(tx1 == tx2 && ty1 == ty2) return;
 
-	if(IsPointOnLine(line, tx2, ty2)) tmp.type = true;
-	else tmp.type = false;
-	tmp.current = false;
-	tmp.x = tx2;
-	tmp.y = ty2;
-	tmp.Lines.clear();
-	tmp.Circles.clear();
-	tmp.Ellipses.clear();
-	tmp.Arcs.clear();
-	tmp.Lines.push_back(line);
-	tmp.Ellipses.push_back(ellipse);
-	ErrPoints.push_back(tmp);
+	type = IsPointOnLine(line, tx2, ty2);
+	if(crossKind == 0 || crossKind == 1 && type || crossKind == 2 && !type) {
+		CROSSPOINT tmp;
+		if(type) tmp.type = true;
+		else tmp.type = false;
+		tmp.current = false;
+		tmp.isCrossPoint = true;
+		tmp.x = tx2;
+		tmp.y = ty2;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line);
+		tmp.Ellipses.push_back(ellipse);
+		ErrPoints.push_back(tmp);
+	}
 }
 
 void WORK::CrossCircleArc(CIRCLE circle, ARC arc) {
@@ -328,6 +345,7 @@ void WORK::CrossCircleArc(CIRCLE circle, ARC arc) {
 		CROSSPOINT tmp;
 		tmp.type = true;
 		tmp.current = false;
+		tmp.isCrossPoint = true;
 		tmp.x = tx1;
 		tmp.y = ty1;
 		tmp.Lines.clear();
@@ -346,6 +364,7 @@ void WORK::CrossCircleArc(CIRCLE circle, ARC arc) {
 		CROSSPOINT tmp;
 		tmp.type = true;
 		tmp.current = false;
+		tmp.isCrossPoint = true;
 		tmp.x = tx2;
 		tmp.y = ty2;
 		tmp.Lines.clear();
@@ -390,6 +409,7 @@ void WORK::CrossArcs(ARC arc1, ARC arc2) {
 		CROSSPOINT tmp;
 		tmp.type = true;
 		tmp.current = false;
+		tmp.isCrossPoint = true;
 		tmp.x = tx1;
 		tmp.y = ty1;
 		tmp.Lines.clear();
@@ -407,6 +427,7 @@ void WORK::CrossArcs(ARC arc1, ARC arc2) {
 		CROSSPOINT tmp;
 		tmp.type = true;
 		tmp.current = false;
+		tmp.isCrossPoint = true;
 		tmp.x = tx2;
 		tmp.y = ty2;
 		tmp.Lines.clear();
@@ -419,8 +440,20 @@ void WORK::CrossArcs(ARC arc1, ARC arc2) {
 	}
 }
 
-bool WORK::OverlapLines(LINE line1, LINE line2) {
-	if((line1.p[0].x == line2.p[0].x) && (line1.p[1].x == line2.p[1].x) && (line1.p[0].y == line2.p[0].y) && (line1.p[1].y == line2.p[1].y)) return true;
+void WORK::OverlapLines(LINE line1, LINE line2) {
+	if((line1.p[0].x == line2.p[0].x) && (line1.p[1].x == line2.p[1].x) && (line1.p[0].y == line2.p[0].y) && (line1.p[1].y == line2.p[1].y)) {
+		CROSSPOINT tmp;
+		tmp.current = false;
+		tmp.isCrossPoint = false;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line1);
+		ErrPoints.push_back(tmp);
+		return;
+	}
+
 	double x1 = line1.p[0].x;
 	double y1 = line1.p[0].y;
 	double x2 = line1.p[1].x;
@@ -479,28 +512,83 @@ bool WORK::OverlapLines(LINE line1, LINE line2) {
 
 	return false;*/
 
-	if(IsPointOnLine(line1, x3, y3) && IsPointOnLine(line1, x4, y4)) return true;
-	return false;
+	if(IsPointOnLine(line1, x3, y3) && IsPointOnLine(line1, x4, y4)) {
+		CROSSPOINT tmp;
+		tmp.current = false;
+		tmp.isCrossPoint = false;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line1);	//Нужно сохранить только общую часть
+		ErrPoints.push_back(tmp);
+		//return true;
+	}
+	//return false;
 }
 
-bool WORK::OverlapCircles(CIRCLE c1, CIRCLE c2) {
-	if((c1.p.x == c2.p.x) && (c1.p.y == c2.p.y) && (c1.r == c2.r)) return true;
-	else return false;
+void WORK::OverlapCircles(CIRCLE circle1, CIRCLE circle2) {
+	if((circle1.p.x == circle2.p.x) && (circle1.p.y == circle2.p.y) && (circle1.r == circle2.r)) {
+		CROSSPOINT tmp;
+		tmp.current = false;
+		tmp.isCrossPoint = false;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Circles.push_back(circle1);
+		ErrPoints.push_back(tmp);
+		//return true;
+	}
+	//return false;
 }
 
-bool WORK::OverlapEllipses(ELLIPSE e1, ELLIPSE e2) {
-	if((e1.p.x == e2.p.x) && (e1.p.y == e2.p.y) && (e1.ratio == e1.ratio)) return true;
-	else return false;
+void WORK::OverlapEllipses(ELLIPSE e1, ELLIPSE e2) {
+	if((e1.p.x == e2.p.x) && (e1.p.y == e2.p.y) && (e1.ratio == e1.ratio)) {
+		CROSSPOINT tmp;
+		tmp.current = false;
+		tmp.isCrossPoint = false;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Ellipses.push_back(e1);
+		ErrPoints.push_back(tmp);
+		//return true;
+	}
+	//return false;
 }
 
-bool WORK::OverlapArcs(ARC a1, ARC a2) {
-	if((a1.p.x == a2.p.x) && (a1.p.y == a2.p.y) && (a1.r == a2.r) && (a1.angleStart == a2.angleStart) && (a1.angleEnd == a2.angleEnd)) return true;
-	else return false;
+void WORK::OverlapArcs(ARC a1, ARC a2) {
+	if((a1.p.x == a2.p.x) && (a1.p.y == a2.p.y) && (a1.r == a2.r) && (a1.angleStart == a2.angleStart) && (a1.angleEnd == a2.angleEnd)) {
+		CROSSPOINT tmp;
+		tmp.current = false;
+		tmp.isCrossPoint = false;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Arcs.push_back(a1);
+		ErrPoints.push_back(tmp);
+		//return true;
+	}
+	//return false;
 }
 
-bool WORK::OverlapCircleArc(CIRCLE c, ARC a) {
-	if((c.p.x == a.p.x) && (c.p.y == a.p.y) && (c.r == a.r)) return true;
-	else return false;
+void WORK::OverlapCircleArc(CIRCLE c, ARC a) {
+	if((c.p.x == a.p.x) && (c.p.y == a.p.y) && (c.r == a.r)) {
+		CROSSPOINT tmp;
+		tmp.current = false;
+		tmp.isCrossPoint = false;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Arcs.push_back(a);
+		ErrPoints.push_back(tmp);
+		//return true;
+	}
+	//return false;
 }
 
 void WORK::CheckCross(BITSFIELD bitsfield) {
@@ -521,43 +609,7 @@ void WORK::CheckCross(BITSFIELD bitsfield) {
 
 	if(bitsfield.line_ellipse) for(i=0; i<Section.Entities.Lines.size(); i++) {
 		for(j=0; j<Section.Entities.Ellipses.size(); j++) {
-			CrossLineEllipse(Section.Entities.Lines[i], Section.Entities.Ellipses[j]);
-		}
-	}
-
-	if(bitsfield.circle_circle) for(i=0; i<Section.Entities.Circles.size(); i++) {
-		for(j=i+1; j<Section.Entities.Circles.size(); j++) {
-			CrossCircles(Section.Entities.Circles[i], Section.Entities.Circles[j]);
-		}
-	}
-
-	if(bitsfield.overlap_lines) for(i=0; i<Section.Entities.Lines.size(); i++) {
-		for(j=i+1; j<Section.Entities.Lines.size(); j++) {
-			bool rez = OverlapLines(Section.Entities.Lines[i], Section.Entities.Lines[j]);
-		}
-	}
-
-	if(bitsfield.overlap_circles) for(i=0; i<Section.Entities.Circles.size(); i++) {
-		for(j=i+1; j<Section.Entities.Circles.size(); j++) {
-			bool rez = OverlapCircles(Section.Entities.Circles[i], Section.Entities.Circles[j]);
-		}
-	}
-
-	if(bitsfield.overlap_ellipses) for(i=0; i<Section.Entities.Ellipses.size(); i++) {
-		for(j=i+1; j<Section.Entities.Ellipses.size(); j++) {
-			bool rez = OverlapEllipses(Section.Entities.Ellipses[i], Section.Entities.Ellipses[j]);
-		}
-	}
-
-	if(bitsfield.overlap_arcs) for(i=0; i<Section.Entities.Arcs.size(); i++) {
-		for(j=i+1; j<Section.Entities.Arcs.size(); j++) {
-			bool rez = OverlapArcs(Section.Entities.Arcs[i], Section.Entities.Arcs[j]);
-		}
-	}
-
-	if(bitsfield.overlap_circle_arc) for(i=0; i<Section.Entities.Circles.size(); i++) {
-		for(j=0; j<Section.Entities.Arcs.size(); j++) {
-			bool rez = OverlapCircleArc(Section.Entities.Circles[i], Section.Entities.Arcs[j]);
+			CrossLineEllipse(Section.Entities.Lines[i], Section.Entities.Ellipses[j], bitsfield.crossKind);
 		}
 	}
 
@@ -566,16 +618,52 @@ void WORK::CheckCross(BITSFIELD bitsfield) {
 			CrossLineArc(Section.Entities.Lines[i], Section.Entities.Arcs[j], bitsfield.crossKind);
 		}
 	}
-
+	
+	if(bitsfield.circle_circle) for(i=0; i<Section.Entities.Circles.size(); i++) {
+		for(j=i+1; j<Section.Entities.Circles.size(); j++) {
+			CrossCircles(Section.Entities.Circles[i], Section.Entities.Circles[j]);
+		}
+	}
+	
 	if(bitsfield.circle_arc) for(i=0; i<Section.Entities.Circles.size(); i++) {
 		for(j=0; j<Section.Entities.Arcs.size(); j++) {
 			CrossCircleArc(Section.Entities.Circles[i], Section.Entities.Arcs[j]);
 		}
 	}
-
+	
 	if(bitsfield.arc_arc) for(i=0; i<Section.Entities.Arcs.size(); i++) {
 		for(j=i+1; j<Section.Entities.Arcs.size(); j++) {
 			CrossArcs(Section.Entities.Arcs[i], Section.Entities.Arcs[j]);
+		}
+	}
+
+	if(bitsfield.overlap_lines) for(i=0; i<Section.Entities.Lines.size(); i++) {
+		for(j=i+1; j<Section.Entities.Lines.size(); j++) {
+			OverlapLines(Section.Entities.Lines[i], Section.Entities.Lines[j]);
+		}
+	}
+
+	if(bitsfield.overlap_circles) for(i=0; i<Section.Entities.Circles.size(); i++) {
+		for(j=i+1; j<Section.Entities.Circles.size(); j++) {
+			OverlapCircles(Section.Entities.Circles[i], Section.Entities.Circles[j]);
+		}
+	}
+
+	if(bitsfield.overlap_ellipses) for(i=0; i<Section.Entities.Ellipses.size(); i++) {
+		for(j=i+1; j<Section.Entities.Ellipses.size(); j++) {
+			OverlapEllipses(Section.Entities.Ellipses[i], Section.Entities.Ellipses[j]);
+		}
+	}
+
+	if(bitsfield.overlap_arcs) for(i=0; i<Section.Entities.Arcs.size(); i++) {
+		for(j=i+1; j<Section.Entities.Arcs.size(); j++) {
+			OverlapArcs(Section.Entities.Arcs[i], Section.Entities.Arcs[j]);
+		}
+	}
+
+	if(bitsfield.overlap_circle_arc) for(i=0; i<Section.Entities.Circles.size(); i++) {
+		for(j=0; j<Section.Entities.Arcs.size(); j++) {
+			OverlapCircleArc(Section.Entities.Circles[i], Section.Entities.Arcs[j]);
 		}
 	}
 }
@@ -658,12 +746,19 @@ bool WORK::IsCirclesCross(CIRCLE c1, CIRCLE c2) {
 	return true;
 }
 
+bool WORK::IsArcCircleCross(ARC arc, CIRCLE circle) {
+	double d = sqrt(pow(arc.p.x - circle.p.x, 2) + pow(arc.p.y - circle.p.y, 2));
+	if((circle.r + arc.r < d) || (abs(circle.r - arc.r) > d)) return false;
+	return true;
+}
+
 void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) {
-	unsigned int i;
+	unsigned int i, j;
 	int numRow = 0;
 	//Убрать метки
 	for(i=0; i<Section.Entities.Lines.size(); i++) if(Section.Entities.Lines[i].current) Section.Entities.Lines[i].current = false;
 	for(i=0; i<Section.Entities.Circles.size(); i++) if(Section.Entities.Circles[i].current) Section.Entities.Circles[i].current = false;
+	for(i=0; i<Section.Entities.Arcs.size(); i++) if(Section.Entities.Arcs[i].current) Section.Entities.Arcs[i].current = false;
 	for(i=0; i<ErrPoints.size(); i++) if(ErrPoints[i].current) ErrPoints[i].current = false;
 	table->Rows->Clear();
 
@@ -672,181 +767,267 @@ void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) 
 	tmp.p.y = y;
 	tmp.r = 4 / scale;
 
+	for(i=0; i<ErrPoints.size(); i++) {
+		if(ErrPoints[i].isCrossPoint) {
+			numRow = 0;
+			CIRCLE err;
+			err.r = errPointR;
+			err.p.x = ErrPoints[i].x;
+			err.p.y = ErrPoints[i].y;
+
+			if(IsCirclesCross(err, tmp)) {
+				if(ErrPoints[i].current) return;
+
+				ErrPoints[i].current = true;
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "Тип";
+				table->Rows[numRow++]->Cells[1]->Value = "ErrPoint";
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "X";
+				table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].x;
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "Y";
+				table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].y;
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "Радиус";
+				table->Rows[numRow++]->Cells[1]->Value = "" + errPointR;
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "Пересечение";
+				if(ErrPoints[i].type) table->Rows[numRow++]->Cells[1]->Value = "Действительное";
+				else table->Rows[numRow++]->Cells[1]->Value = "Мнимое";
+				table->Rows->Add();
+				numRow++;
+
+				if(!ErrPoints[i].Lines.empty()) {
+					unsigned int j;
+					for(j=0; j<ErrPoints[i].Lines.size(); j++) {
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Тип";
+						table->Rows[numRow++]->Cells[1]->Value = "LINE";
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "X[1]";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Lines[j].p[0].x;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Y[1]";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Lines[j].p[0].y;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "X[2]";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Lines[j].p[1].x;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Y[2]";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Lines[j].p[1].y;
+					}
+				}
+
+				if(!ErrPoints[i].Circles.empty()) {
+					unsigned int j;
+					for(j=0; j<ErrPoints[i].Circles.size(); j++) {
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Тип";
+						table->Rows[numRow++]->Cells[1]->Value = "CIRCLE";
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "X";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Circles[j].p.x;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Y";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Circles[j].p.y;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Радиус";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Circles[j].r;
+					}
+				}
+
+				if(!ErrPoints[i].Ellipses.empty()) {
+					unsigned int j;
+					for(j=0; j<ErrPoints[i].Ellipses.size(); j++) {
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Тип";
+						table->Rows[numRow++]->Cells[1]->Value = "ELLIPSE";
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "X";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Ellipses[j].p.x;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Y";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Ellipses[j].p.y;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Угол наклона наибольшей оси";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Ellipses[j].angle;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Отношение наибольшей к наименьшей оси";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Ellipses[j].ratio;
+					}
+				}
+
+				if(!ErrPoints[i].Arcs.empty()) {
+					unsigned int j;
+					for(j=0; j<ErrPoints[i].Arcs.size(); j++) {
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Тип";
+						table->Rows[numRow++]->Cells[1]->Value = "ELLIPSE";
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "X";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Arcs[j].p.x;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Y";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Arcs[j].p.y;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Радиус";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Arcs[j].r;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Начальный угол";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Arcs[j].angleStart;
+						table->Rows->Add();
+						table->Rows[numRow]->Cells[0]->Value = "Конечный угол";
+						table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Arcs[j].angleEnd;
+					}
+				}
+
+				return;
+			}
+		}
+		else {
+			numRow = 0;
+			if(!ErrPoints[i].Circles.empty()) for(j=0; j<ErrPoints[i].Circles.size(); j++) {
+				CIRCLE err;
+				err.r = ErrPoints[i].Circles[j].r;
+				err.p.x = ErrPoints[i].Circles[j].p.x;
+				err.p.y = ErrPoints[i].Circles[j].p.y;
+
+				if(!IsCirclesCross(err, tmp)) break;
+
+				if(ErrPoints[i].current) return;
+
+				ErrPoints[i].current = true;
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "Тип";
+				table->Rows[numRow++]->Cells[1]->Value = "ErrPoint";
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "Подтип";
+				table->Rows[numRow++]->Cells[1]->Value = "Совпадение";
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "Тип совпавших объектов";
+				table->Rows[numRow++]->Cells[1]->Value = "CIRCLE";
+
+				return;
+			}
+
+			if(!ErrPoints[i].Arcs.empty()) for(j=0; j<ErrPoints[i].Arcs.size(); j++) {
+				ARC err;
+				err.r = ErrPoints[i].Arcs[j].r;
+				err.p.x = ErrPoints[i].Arcs[j].p.x;
+				err.p.y = ErrPoints[i].Arcs[j].p.y;
+
+				if(!IsArcCircleCross(err, tmp)) break;
+
+				if(ErrPoints[i].current) return;
+
+				ErrPoints[i].current = true;
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "Тип";
+				table->Rows[numRow++]->Cells[1]->Value = "ErrPoint";
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "Подтип";
+				table->Rows[numRow++]->Cells[1]->Value = "Совпадение";
+				table->Rows->Add();
+				table->Rows[numRow]->Cells[0]->Value = "Тип совпавших объектов";
+				table->Rows[numRow++]->Cells[1]->Value = "ARC";
+
+				return;
+			}
+		}
+	}
+
 	for(i=0; i<Section.Entities.Lines.size(); i++) {
 		if(IsLineCircleCross(Section.Entities.Lines[i], tmp)) {
 			if(Section.Entities.Lines[i].current) return;
 
 			Section.Entities.Lines[i].current = true;
+			numRow = 0;
 			table->Rows->Add();
-			table->Rows[0]->Cells[0]->Value = "Тип";
-			table->Rows[0]->Cells[1]->Value = "LINE";
+			table->Rows[numRow]->Cells[0]->Value = "Тип";
+			table->Rows[numRow++]->Cells[1]->Value = "LINE";
 			table->Rows->Add();
-			table->Rows[1]->Cells[0]->Value = "X[1]";
-			table->Rows[1]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[0].x;
+			table->Rows[numRow]->Cells[0]->Value = "X[1]";
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[0].x;
 			table->Rows->Add();
-			table->Rows[2]->Cells[0]->Value = "Y[1]";
-			table->Rows[2]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[0].y;
+			table->Rows[numRow]->Cells[0]->Value = "Y[1]";
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[0].y;
 			table->Rows->Add();
-			table->Rows[3]->Cells[0]->Value = "X[2]";
-			table->Rows[3]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[1].x;
+			table->Rows[numRow]->Cells[0]->Value = "X[2]";
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[1].x;
 			table->Rows->Add();
-			table->Rows[4]->Cells[0]->Value = "Y[2]";
-			table->Rows[4]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[1].y;
+			table->Rows[numRow]->Cells[0]->Value = "Y[2]";
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Lines[i].p[1].y;
 			table->Rows->Add();
-			table->Rows[5]->Cells[0]->Value = "Слой";
-			table->Rows[5]->Cells[1]->Value = gcnew System::String(Section.Entities.Lines[i].layer.c_str());
+			table->Rows[numRow]->Cells[0]->Value = "Слой";
+			table->Rows[numRow++]->Cells[1]->Value = gcnew System::String(Section.Entities.Lines[i].layer.c_str());
 
 			return;
 		}
 	}
 
-	for(i=0; i<Section.Entities.Circles.size(); i++){
+	for(i=0; i<Section.Entities.Circles.size(); i++) {
 		if(IsCirclesCross(Section.Entities.Circles[i], tmp)) {
 			if(Section.Entities.Circles[i].current) return;
 
 			Section.Entities.Circles[i].current = true;
+			numRow = 0;
 			table->Rows->Add();
-			table->Rows[0]->Cells[0]->Value = "Тип";
-			table->Rows[0]->Cells[1]->Value = "CIRCLE";
+			table->Rows[numRow]->Cells[0]->Value = "Тип";
+			table->Rows[numRow++]->Cells[1]->Value = "CIRCLE";
 			table->Rows->Add();
-			table->Rows[1]->Cells[0]->Value = "X";
-			table->Rows[1]->Cells[1]->Value = "" + Section.Entities.Circles[i].p.x;
+			table->Rows[numRow]->Cells[0]->Value = "X";
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Circles[i].p.x;
 			table->Rows->Add();
-			table->Rows[2]->Cells[0]->Value = "Y";
-			table->Rows[2]->Cells[1]->Value = "" + Section.Entities.Circles[i].p.y;
+			table->Rows[numRow]->Cells[0]->Value = "Y";
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Circles[i].p.y;
 			table->Rows->Add();
-			table->Rows[3]->Cells[0]->Value = "Радиус";
-			table->Rows[3]->Cells[1]->Value = "" + Section.Entities.Circles[i].r;
+			table->Rows[numRow]->Cells[0]->Value = "Радиус";
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Circles[i].r;
 			table->Rows->Add();
-			table->Rows[4]->Cells[0]->Value = "Слой";
-			table->Rows[4]->Cells[1]->Value = gcnew System::String(Section.Entities.Circles[i].layer.c_str());
+			table->Rows[numRow]->Cells[0]->Value = "Слой";
+			table->Rows[numRow++]->Cells[1]->Value = gcnew System::String(Section.Entities.Circles[i].layer.c_str());
 
 			return;
 		}
 	}
 
-	for(i=0; i<ErrPoints.size(); i++) {
-		numRow = 0;
-		CIRCLE err;
-		err.r = errPointR;
-		err.p.x = ErrPoints[i].x;
-		err.p.y = ErrPoints[i].y;
+	for(i=0; i<Section.Entities.Arcs.size(); i++) {
+		if(IsArcCircleCross(Section.Entities.Arcs[i], tmp)) {
+			if(Section.Entities.Arcs[i].current) return;
 
-		if(IsCirclesCross(err, tmp)) {
-			if(ErrPoints[i].current) return;
-
-			ErrPoints[i].current = true;
+			Section.Entities.Arcs[i].current = true;
+			numRow = 0;
 			table->Rows->Add();
 			table->Rows[numRow]->Cells[0]->Value = "Тип";
-			table->Rows[numRow++]->Cells[1]->Value = "ErrPoint";
+			table->Rows[numRow++]->Cells[1]->Value = "ARC";
 			table->Rows->Add();
 			table->Rows[numRow]->Cells[0]->Value = "X";
-			table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].x;
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Arcs[i].p.x;
 			table->Rows->Add();
 			table->Rows[numRow]->Cells[0]->Value = "Y";
-			table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].y;
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Arcs[i].p.y;
 			table->Rows->Add();
 			table->Rows[numRow]->Cells[0]->Value = "Радиус";
-			table->Rows[numRow++]->Cells[1]->Value = "" + errPointR;
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Arcs[i].r;
 			table->Rows->Add();
-			table->Rows[numRow]->Cells[0]->Value = "Пересечение";
-			if(ErrPoints[i].type) table->Rows[numRow++]->Cells[1]->Value = "Действительное";
-			else table->Rows[numRow++]->Cells[1]->Value = "Мнимое";
+			table->Rows[numRow]->Cells[0]->Value = "Начальный угол";
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Arcs[i].angleStart;
 			table->Rows->Add();
-			numRow++;
-
-			if(!ErrPoints[i].Lines.empty()) {
-				unsigned int j;
-				for(j=0; j<ErrPoints[i].Lines.size(); j++) {
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Тип";
-					table->Rows[numRow++]->Cells[1]->Value = "LINE";
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "X[1]";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Lines[j].p[0].x;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Y[1]";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Lines[j].p[0].y;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "X[2]";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Lines[j].p[1].x;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Y[2]";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Lines[j].p[1].y;
-				}
-			}
-
-			if(!ErrPoints[i].Circles.empty()) {
-				unsigned int j;
-				for(j=0; j<ErrPoints[i].Circles.size(); j++) {
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Тип";
-					table->Rows[numRow++]->Cells[1]->Value = "CIRCLE";
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "X";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Circles[j].p.x;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Y";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Circles[j].p.y;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Радиус";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Circles[j].r;
-				}
-			}
-
-			if(!ErrPoints[i].Ellipses.empty()) {
-				unsigned int j;
-				for(j=0; j<ErrPoints[i].Ellipses.size(); j++) {
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Тип";
-					table->Rows[numRow++]->Cells[1]->Value = "ELLIPSE";
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "X";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Ellipses[j].p.x;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Y";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Ellipses[j].p.y;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Угол наклона наибольшей оси";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Ellipses[j].angle;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Отношение наибольшей к наименьшей оси";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Ellipses[j].ratio;
-				}
-			}
-
-			if(!ErrPoints[i].Arcs.empty()) {
-				unsigned int j;
-				for(j=0; j<ErrPoints[i].Arcs.size(); j++) {
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Тип";
-					table->Rows[numRow++]->Cells[1]->Value = "ELLIPSE";
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "X";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Arcs[j].p.x;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Y";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Arcs[j].p.y;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Радиус";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Arcs[j].r;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Начальный угол";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Arcs[j].angleStart;
-					table->Rows->Add();
-					table->Rows[numRow]->Cells[0]->Value = "Конечный угол";
-					table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].Arcs[j].angleEnd;
-				}
-			}
+			table->Rows[numRow]->Cells[0]->Value = "Конечный угол";
+			table->Rows[numRow++]->Cells[1]->Value = "" + Section.Entities.Arcs[i].angleEnd;
+			table->Rows->Add();
+			table->Rows[numRow]->Cells[0]->Value = "Слой";
+			table->Rows[numRow++]->Cells[1]->Value = gcnew System::String(Section.Entities.Arcs[i].layer.c_str());
 
 			return;
 		}
-		
 	}
 
 	//Убрать метки
 	for(i=0; i<Section.Entities.Lines.size(); i++) if(Section.Entities.Lines[i].current) Section.Entities.Lines[i].current = false;
 	for(i=0; i<Section.Entities.Circles.size(); i++) if(Section.Entities.Circles[i].current) Section.Entities.Circles[i].current = false;
+	for(i=0; i<Section.Entities.Arcs.size(); i++) if(Section.Entities.Arcs[i].current) Section.Entities.Arcs[i].current = false;
 	for(i=0; i<ErrPoints.size(); i++) if(ErrPoints[i].current) ErrPoints[i].current = false;
 	table->Rows->Clear();
 }
