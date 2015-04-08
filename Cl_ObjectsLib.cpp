@@ -325,7 +325,8 @@ void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse, unsigned char crossKind)
 	double ty2 = _ty2 + y0;
 
 	CROSSPOINT tmp;
-	tmp.type = true;
+	if(IsPointOnLine(line, tx1, ty1)) tmp.type = true;
+	else tmp.type = false;
 	tmp.current = false;
 	tmp.isCrossPoint = true;
 	tmp.x = tx1;
@@ -338,7 +339,8 @@ void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse, unsigned char crossKind)
 	tmp.Ellipses.push_back(ellipse);
 	ErrPoints.push_back(tmp);
 
-	tmp.type = true;
+	if(IsPointOnLine(line, tx2, ty2)) tmp.type = true;
+	else tmp.type = false;
 	tmp.current = false;
 	tmp.isCrossPoint = true;
 	tmp.x = tx2;
