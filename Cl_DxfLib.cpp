@@ -199,6 +199,7 @@ void DXF::ReadEllipse() {
 		if(endPointMainAxisX >= 0 && endPointMainAxisY < 0) alpha = 360 - alpha;
 		tmp.angle = alpha;
 	}
+	//tmp.angle = 0;
 	EndEntitiesPointer = (int)file.tellg();
 	_Section.Entities.Ellipses.push_back(tmp);
 }

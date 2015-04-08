@@ -590,6 +590,10 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			 this->Close();
 		 }
 private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+			 WORK::BITSFIELD f;
+			 work->InitBitsField(f);
+			 f.line_ellipse = true;
+			 work->CheckCross(f);
 			 this->Close();
 		 }
 };

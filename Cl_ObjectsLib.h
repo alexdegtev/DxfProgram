@@ -10,6 +10,11 @@ using namespace System::Windows::Forms;
 class WORK: public DXF {
 private:
 	double Det(double x1, double x2, double x3, double x4);
+	double GetAngle(double x0, double y0, double x1, double y1);	//Вычисляет угол между осью OX и прямой, проведённой через точки X и Y
+	double GetAngle1(double x1, double y1, double c);
+	bool IsPointOnLine(LINE line, double x, double y);
+	double GetDistance(double x0, double y0, double x1, double y1);
+
 	void CrossLines(LINE line1, LINE line2, unsigned char crossKind);
 	void CrossLineCircle(LINE line, CIRCLE circle, unsigned char crossKind);
 	void CrossLineEllipse(LINE l, ELLIPSE e, unsigned char crossKind);
@@ -23,10 +28,6 @@ private:
 	void OverlapEllipses(ELLIPSE e1, ELLIPSE e2);
 	void OverlapArcs(ARC a1, ARC a2);
 	void OverlapCircleArc(CIRCLE c, ARC a);
-
-	double GetAngle(double x0, double y0, double x1, double y1);	//Вычисляет угол между осью OX и прямой, проведённой через точки X и Y
-
-	bool IsPointOnLine(LINE line, double x, double y);
 
 	bool IsLineCircleCross(LINE line, CIRCLE circle);
 	bool IsCirclesCross(CIRCLE c1, CIRCLE c2);
