@@ -3,6 +3,7 @@
 
 #include "Cl_DxfLib.h"
 #include "Cl_GraphicsLib.h"
+//#include "Gte\GteIntrEllipse2Ellipse2.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -17,9 +18,10 @@ private:
 
 	void CrossLines(LINE line1, LINE line2, unsigned char crossKind);
 	void CrossLineCircle(LINE line, CIRCLE circle, unsigned char crossKind);
-	void CrossLineEllipse(LINE l, ELLIPSE e, unsigned char crossKind);
+	void CrossLineEllipse(LINE line, ELLIPSE ellipse, unsigned char crossKind);
 	void CrossLineArc(LINE line, ARC arc, unsigned char crossKind);
 	void CrossCircles(CIRCLE circle1, CIRCLE circle2);
+	void CrossCircleEllipse(CIRCLE circle, ELLIPSE ellipse);
 	void CrossCircleArc(CIRCLE c, ARC a);
 	void CrossArcs(ARC a1, ARC a2);
 

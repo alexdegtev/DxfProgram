@@ -31,6 +31,15 @@ struct LINE {
 	bool current;
 };
 
+struct LWPOLYLINE {
+	vector<POINT> p;
+	string layer;
+	int number;
+	bool current;
+	bool closed;
+	int width;
+};
+
 struct CIRCLE {
 	POINT p;
 	double r;
@@ -73,6 +82,7 @@ struct INSERT {
 struct ENTITIES {
 	vector<POINT> Points;
 	vector<LINE> Lines;
+	vector<LWPOLYLINE> Polylines;
 	vector<CIRCLE> Circles;
 	vector<ELLIPSE> Ellipses;
 	vector<ARC> Arcs;
@@ -97,73 +107,6 @@ struct CROSSPOINT {
 };
 
 class DXF {
-public:
-	/*struct POINT {
-		double x;
-		double y;
-		unsigned short int type;	//0 - обычная, 1 - пересечение, 2 - мнимое пресечение
-		string layer;
-		int number;
-	};
-
-	struct LINE {
-		POINT p[2];
-		unsigned short int type;	//0 - LINE, 1 - XLINE
-		string layer;
-		int number;
-	};
-
-	struct CIRCLE {
-		POINT p;
-		double r;
-		string layer;
-		int number;
-		bool current;
-	};
-
-	struct ELLIPSE {
-		POINT p;
-		double ratio;
-		double width;
-		double height;
-		double angle;	//угол поворота большей оси относительно OX
-		string layer;
-		int number;
-	};
-
-	struct ARC {
-		POINT p;
-		double r;
-		double angleStart;
-		double angleEnd;
-		string layer;
-		int number;
-	};
-
-	struct BLOCK {
-		int beginAddr;
-		string number;
-	};
-
-	struct INSERT {
-		string layer;
-		int number;
-		string blockNumber;
-	};
-
-	struct ENTITIES {
-		vector<POINT> Points;
-		vector<LINE> Lines;
-		vector<CIRCLE> Circles;
-		vector<ELLIPSE> Ellipses;
-		vector<ARC> Arcs;
-		vector<INSERT> Inserts;
-	};
-
-	struct SECTION {
-		ENTITIES Entities;
-	};*/
-
 private:
 	fstream file;
 	string fileName;
@@ -175,10 +118,12 @@ private:
 
 	int TextToHex(string str);
 	string LineToString(LINE l);
+	string PolylineToString(LWPOLYLINE l);
 	string CircleToString(CIRCLE c);
 	string ErrPointToString(CROSSPOINT point);
 	string LayerToString(string name);
 	void ReadLine();
+	void ReadPolyline();
 	void ReadXLine();
 	void ReadCircle();
 	void ReadBlock();
@@ -201,6 +146,8 @@ public:
 	int Read();
 	bool Save();
 	bool SaveErrorPoints(vector<CROSSPOINT> errPoints);
+
+	bool SavePolyLine(string _saveFileName, double **points, int size, bool closed);	//points[i][0] - координата X, points[i][1] - координата Y. closed == true, если замкнута.
 
 };
 #endif

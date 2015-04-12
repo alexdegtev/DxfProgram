@@ -324,34 +324,78 @@ void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse, unsigned char crossKind)
 	double tx2 = _tx2 + x0;
 	double ty2 = _ty2 + y0;
 
-	CROSSPOINT tmp;
-	if(IsPointOnLine(line, tx1, ty1)) tmp.type = true;
-	else tmp.type = false;
-	tmp.current = false;
-	tmp.isCrossPoint = true;
-	tmp.x = tx1;
-	tmp.y = ty1;
-	tmp.Lines.clear();
-	tmp.Circles.clear();
-	tmp.Ellipses.clear();
-	tmp.Arcs.clear();
-	tmp.Lines.push_back(line);
-	tmp.Ellipses.push_back(ellipse);
-	ErrPoints.push_back(tmp);
+	bool type = IsPointOnLine(line, tx1, ty1);
+	if(crossKind == 0 || crossKind == 1 && type || crossKind == 2 && !type) {
+		CROSSPOINT tmp;
+		if(type) tmp.type = true;
+		else tmp.type = false;
+		tmp.current = false;
+		tmp.isCrossPoint = true;
+		tmp.x = tx1;
+		tmp.y = ty1;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line);
+		tmp.Ellipses.push_back(ellipse);
+		ErrPoints.push_back(tmp);
+	}
 
-	if(IsPointOnLine(line, tx2, ty2)) tmp.type = true;
-	else tmp.type = false;
-	tmp.current = false;
-	tmp.isCrossPoint = true;
-	tmp.x = tx2;
-	tmp.y = ty2;
-	tmp.Lines.clear();
-	tmp.Circles.clear();
-	tmp.Ellipses.clear();
-	tmp.Arcs.clear();
-	tmp.Lines.push_back(line);
-	tmp.Ellipses.push_back(ellipse);
-	ErrPoints.push_back(tmp);
+	if(tx1 == tx2 && ty1 == ty2) return;
+
+	type = IsPointOnLine(line, tx2, ty2);
+	if(crossKind == 0 || crossKind == 1 && type || crossKind == 2 && !type) {
+		CROSSPOINT tmp;
+		if(type) tmp.type = true;
+		else tmp.type = false;
+		tmp.current = false;
+		tmp.isCrossPoint = true;
+		tmp.x = tx2;
+		tmp.y = ty2;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line);
+		tmp.Ellipses.push_back(ellipse);
+		ErrPoints.push_back(tmp);
+	}
+}
+
+void WORK::CrossCircleEllipse(CIRCLE circle, ELLIPSE ellipse) {
+	/*double x1 = circle.p.x;
+	double y1 = circle.p.y;
+	double r = circle.r;
+	double x2 = ellipse.p.x;
+	double y2 = ellipse.p.y;
+	double a = ellipse.width;
+	double b = ellipse.height;
+	double angle = ellipse.angle;
+
+	double _x1 = x1 - x2;
+	double _y1 = y1 - y2;
+
+	double r = GetDistance(0, 0, _x1, _y1);
+	double angle0 = GetAngle1(_x1, _y1, r);
+	double angle1 = angle0 - angle;
+	double __x1 = r * cos(angle1 * (PI / 180.0));
+	double __y1 = r * sin(angle1 * (PI / 180.0));
+
+	//Найти пересечения
+	double __tx1;
+	double __ty1;
+
+	double tr1 = GetDistance(0, 0, __tx1, __ty1);
+	double tangle0 = GetAngle1(__tx1, __ty1, tr1);
+	double tangle1 = tangle0 + angle;
+	double _tx1 = tr1 * cos(tangle1 * (PI / 180.0));
+	double _ty1 = tr1 * sin(tangle1 * (PI / 180.0));
+
+	double tx1 = _tx1 + x2;
+	double ty1 = _ty1 + y2;*/
+
+	 
 }
 
 void WORK::CrossCircleArc(CIRCLE circle, ARC arc) {
@@ -664,6 +708,12 @@ void WORK::CheckCross(BITSFIELD bitsfield) {
 			CrossCircles(Section.Entities.Circles[i], Section.Entities.Circles[j]);
 		}
 	}
+
+	if(bitsfield.circle_ellipse) for(i=0; i<Section.Entities.Circles.size(); i++) {
+		for(j=0; j<Section.Entities.Ellipses.size(); j++) {
+			CrossCircleEllipse(Section.Entities.Circles[i], Section.Entities.Ellipses[j]);
+		}
+	}
 	
 	if(bitsfield.circle_arc) for(i=0; i<Section.Entities.Circles.size(); i++) {
 		for(j=0; j<Section.Entities.Arcs.size(); j++) {
@@ -797,6 +847,7 @@ void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) 
 	int numRow = 0;
 	//Убрать метки
 	for(i=0; i<Section.Entities.Lines.size(); i++) if(Section.Entities.Lines[i].current) Section.Entities.Lines[i].current = false;
+	for(i=0; i<Section.Entities.Polylines.size(); i++) if(Section.Entities.Polylines[i].current) Section.Entities.Polylines[i].current = false;
 	for(i=0; i<Section.Entities.Circles.size(); i++) if(Section.Entities.Circles[i].current) Section.Entities.Circles[i].current = false;
 	for(i=0; i<Section.Entities.Arcs.size(); i++) if(Section.Entities.Arcs[i].current) Section.Entities.Arcs[i].current = false;
 	for(i=0; i<ErrPoints.size(); i++) if(ErrPoints[i].current) ErrPoints[i].current = false;
@@ -1006,6 +1057,23 @@ void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) 
 		}
 	}
 
+	for(i=0; i<Section.Entities.Polylines.size(); i++) {
+		for(j=1; j<Section.Entities.Polylines[i].p.size(); j++) {
+			if(Section.Entities.Polylines[i].current) return;
+			LINE tmpl;
+			tmpl.p[0].x = Section.Entities.Polylines[i].p[j-1].x;
+			tmpl.p[0].y = Section.Entities.Polylines[i].p[j-1].y;
+			tmpl.p[1].x = Section.Entities.Polylines[i].p[j].x;
+			tmpl.p[1].y = Section.Entities.Polylines[i].p[j].y;
+			if(IsLineCircleCross(tmpl, tmp)) {
+				
+
+				Section.Entities.Polylines[i].current = true;
+				return;
+			}
+		}
+	}
+
 	for(i=0; i<Section.Entities.Circles.size(); i++) {
 		if(IsCirclesCross(Section.Entities.Circles[i], tmp)) {
 			if(Section.Entities.Circles[i].current) return;
@@ -1066,6 +1134,7 @@ void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) 
 
 	//Убрать метки
 	for(i=0; i<Section.Entities.Lines.size(); i++) if(Section.Entities.Lines[i].current) Section.Entities.Lines[i].current = false;
+	for(i=0; i<Section.Entities.Polylines.size(); i++) if(Section.Entities.Polylines[i].current) Section.Entities.Polylines[i].current = false;
 	for(i=0; i<Section.Entities.Circles.size(); i++) if(Section.Entities.Circles[i].current) Section.Entities.Circles[i].current = false;
 	for(i=0; i<Section.Entities.Arcs.size(); i++) if(Section.Entities.Arcs[i].current) Section.Entities.Arcs[i].current = false;
 	for(i=0; i<ErrPoints.size(); i++) if(ErrPoints[i].current) ErrPoints[i].current = false;

@@ -80,6 +80,35 @@ void DXF::ReadLine() {
 	_Section.Entities.Lines.push_back(tmp);
 }
 
+void DXF::ReadPolyline() {
+	string line;
+	LWPOLYLINE tmp;
+	while(line != "AcDbEntity") file >> line;
+	file >> line >> line;
+	tmp.layer = line;
+	while(line != "AcDbPolyline") file >> line;
+	file >> line >> line >> line >> line;
+	if(line == "0") tmp.closed = false;
+	else tmp.closed = true;
+	file >> line >> line;
+	tmp.width = atof(line.c_str());
+	file >> line;
+	
+	while(line != "0") {
+		POINT point;
+		file >> line;
+		point.x = atof(line.c_str());
+		file >> line >> line;
+		point.y = atof(line.c_str());
+		tmp.p.push_back(point);
+		file >> line;
+	}
+
+	tmp.current = false;
+	EndEntitiesPointer = (int)file.tellg();
+	_Section.Entities.Polylines.push_back(tmp);
+}
+
 void DXF::ReadXLine() {
 	string line;
 	LINE tmp;
@@ -265,6 +294,7 @@ int DXF::Read() {
 	
 	while(line != "EOF") {
 		if(line == "LINE") ReadLine();
+		if(line == "LWPOLYLINE") ReadPolyline();
 		if(line == "XLINE") ReadXLine();
 		if(line == "CIRCLE") ReadCircle();
 		if(line == "ELLIPSE") ReadEllipse();
@@ -352,6 +382,58 @@ bool DXF::SaveErrorPoints(vector<CROSSPOINT> errPoints) {
 	return true;
 }
 
+bool DXF::SavePolyLine(string _saveFileName, double **points, int size, bool closed) {
+	saveFileName = _saveFileName;
+	if(saveFile.is_open()) saveFile.close();
+	saveFile.open(saveFileName);
+	if(!saveFile.is_open()) return false;
+	string line = "";
+	file.seekg(0, ios::beg);
+	bool fl_entities = false;
+	while(!file.eof()){
+		getline(file, line);
+
+		if(line == "$HANDSEED") {
+			saveFile << line << endl;
+			getline(file, line);
+			saveFile << line << endl;
+			getline(file, line);
+			saveFile << hex << uppercase << LastNumberOfObject + 2 << endl;
+			getline(file, line);
+		}
+
+		if(line == "ENTITIES") fl_entities = true;
+		if(fl_entities) if(line == "ENDSEC") break;
+		saveFile << line << endl;
+	}
+	
+
+	stringstream str;
+	str << "LWPOLYLINE\n  5\n" << hex << uppercase << ++LastNumberOfObject << "\n"
+		<< "330\n1F\n100\nAcDbEntity\n  8\n0\n"
+		<< "100\nAcDbPolyline\n 90\n        " << size << "\n" << "70\n     ";
+	if(closed) str << "1";
+	else str << "0";
+	str << "\n 43\n0.0\n";
+	for(int i=0; i<size; i++) {
+		str << setprecision(20)
+			<< " 10\n" << points[i][0] << "\n"
+			<< " 20\n" << points[i][1] << "\n";
+	}
+	str << "  0\n";
+
+
+	saveFile << str.str();
+
+	saveFile << "ENDSEC\n";
+	while(!file.eof()){
+		getline(file, line);
+		saveFile << line << endl;
+	}
+	saveFile.close();
+	return true;
+}
+
 string DXF::LineToString(LINE l) {
 	stringstream str;
 	str << "LINE\n  5\n" << hex << uppercase << ++LastNumberOfObject << "\n";
@@ -364,6 +446,25 @@ string DXF::LineToString(LINE l) {
 		<< " 11\n" << l.p[1].x + 50 << "\n"
 		<< " 21\n" << l.p[1].y + 50 << "\n"
 		<< " 31\n0.0\n  0\n";
+	return str.str();
+}
+
+string DXF::PolylineToString(LWPOLYLINE l) {
+	stringstream str;
+	str << "LWPOLYLINE\n  5\n" << hex << uppercase << ++LastNumberOfObject << "\n"
+		<< "330\n1F\n100\nAcDbEntity\n  8\n" << l.layer << "\n"
+		<< "100\nAcDbPolyline\n 90\n        " << l.p.size() << "\n" << "70\n     ";
+	if(l.closed) str << "1";
+	else str << "0";
+	str << "\n 43\n" << l.width << "\n";
+
+	for(int i=0; i<l.p.size(); i++) {
+		str << setprecision(20)
+			<< " 10\n" << l.p[0].x << "\n"
+			<< " 20\n" << l.p[0].y << "\n";
+	}
+
+	str << "  0\n";
 	return str.str();
 }
 

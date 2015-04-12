@@ -327,13 +327,13 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	dxfLocation.x = 0;
 	dxfLocation.y = 0;
 
-	if(!dxf.Open("DxfFiles\\CrossLineEllipse2.dxf")) {ShowErr(1); return;}
+	/*if(!dxf.Open("DxfFiles\\CrossLineEllipse2.dxf")) {ShowErr(1); return;}
 	int err = 0;
 	if((err = dxf.Read()) != 0) {ShowErr(2); return;}
 	work = new WORK(dxf._Section);
 	fileIsOpen = true;
 	richTextBox1->Text = "";
-	Painting();
+	Painting();*/
 }
 
 private: void Painting() {
@@ -351,6 +351,31 @@ private: void Painting() {
 					work->Section.Entities.Lines[i].p[1].y
 				);
 				if(work->Section.Entities.Lines[i].current) GLControl->SetColor(0.0, 0.0, 0.0);
+			}
+
+			if(work && !work->Section.Entities.Polylines.empty()) for(i=0; i<work->Section.Entities.Polylines.size(); i++) {
+				if(work->Section.Entities.Polylines[i].current) {
+					GLControl->SetColor(0.0, 0.0, 1.0);
+					for(j=0; j<work->Section.Entities.Polylines[i].p.size(); j++)
+						GLControl->DrawPoint(work->Section.Entities.Polylines[i].p[j].x, work->Section.Entities.Polylines[i].p[j].y, 3.0);
+				}
+				for(j=1; j<work->Section.Entities.Polylines[i].p.size(); j++) {
+					GLControl->DrawLine(
+						work->Section.Entities.Polylines[i].p[j-1].x,
+						work->Section.Entities.Polylines[i].p[j-1].y,
+						work->Section.Entities.Polylines[i].p[j].x,
+						work->Section.Entities.Polylines[i].p[j].y
+					);
+				}
+				if(work->Section.Entities.Polylines[i].closed) {
+					GLControl->DrawLine(
+						work->Section.Entities.Polylines[i].p[0].x,
+						work->Section.Entities.Polylines[i].p[0].y,
+						work->Section.Entities.Polylines[i].p[work->Section.Entities.Polylines[i].p.size() - 1].x,
+						work->Section.Entities.Polylines[i].p[work->Section.Entities.Polylines[i].p.size() - 1].y
+					);
+				}
+				if(work->Section.Entities.Polylines[i].current) GLControl->SetColor(0.0, 0.0, 0.0);
 			}
 
 			if(work && !work->Section.Entities.Circles.empty()) for(i=0; i<work->Section.Entities.Circles.size(); i++) {
