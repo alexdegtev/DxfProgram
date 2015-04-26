@@ -3,10 +3,24 @@
 
 #include "Cl_DxfLib.h"
 #include "Cl_GraphicsLib.h"
-//#include "Gte\GteIntrEllipse2Ellipse2.h"
+
+/*
+#include "Gte\GteIntrEllipse2Ellipse2.h"
+#include <deque>
+
+#include "boost/geometry.hpp"
+#include "boost/geometry/geometries/point_xy.hpp"
+#include "boost/geometry/geometries/polygon.hpp"
+#include "boost/geometry/io/wkt/wkt.hpp"
+#include "boost/foreach.hpp"
+*/
+
+namespace OBJECTS_SPACE {
 
 using namespace System;
 using namespace System::Windows::Forms;
+using namespace DXF_SPACE;
+
 
 class WORK: public DXF {
 private:
@@ -67,4 +81,5 @@ public:
 
 	void ClickOnObject(double x, double y, double scale, DataGridView^ table);
 };
+}
 #endif

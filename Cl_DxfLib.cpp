@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Cl_DxfLib.h"
+using namespace DXF_SPACE;
 
 DXF::DXF()	{
 	errPointR = 3;
@@ -34,7 +35,7 @@ string DXF::PrintDxf() {
 	stringstream str;
 
 
-	if(!_Section.Entities.Lines.empty()) for(int i=0;i<_Section.Entities.Lines.size();i++){
+	if(!_Section.Entities.Lines.empty()) for(unsigned int i=0;i<_Section.Entities.Lines.size();i++){
 		str << setprecision(20)
 			 << "LINE " << i << endl
 			 << "number: " << hex << _Section.Entities.Lines[i].number << endl
@@ -45,7 +46,7 @@ string DXF::PrintDxf() {
 			 << "Layer: " << _Section.Entities.Lines[i].layer << endl
 			 << "Type: " << _Section.Entities.Lines[i].type << endl << endl;
 	}
-	if(!_Section.Entities.Circles.empty()) for(int i=0;i<_Section.Entities.Circles.size();i++){
+	if(!_Section.Entities.Circles.empty()) for(unsigned int i=0;i<_Section.Entities.Circles.size();i++){
 		str << setprecision(20)
 			 << "CIRCLE " << i << endl
 			 << "number: " << _Section.Entities.Circles[i].number << endl
@@ -91,7 +92,7 @@ void DXF::ReadPolyline() {
 	if(line == "0") tmp.closed = false;
 	else tmp.closed = true;
 	file >> line >> line;
-	tmp.width = atof(line.c_str());
+	tmp.width = atoi(line.c_str());
 	file >> line;
 	
 	while(line != "0") {
@@ -321,8 +322,8 @@ bool DXF::Save() {
 		saveFile << line << endl;
 	}
 
-	if(!_Section.Entities.Lines.empty()) for(int i=0; i<_Section.Entities.Lines.size(); i++) saveFile << LineToString(_Section.Entities.Lines[i]);
-	if(!_Section.Entities.Circles.empty()) for(int i=0; i<_Section.Entities.Circles.size(); i++) saveFile << CircleToString(_Section.Entities.Circles[i]);
+	if(!_Section.Entities.Lines.empty()) for(unsigned int i=0; i<_Section.Entities.Lines.size(); i++) saveFile << LineToString(_Section.Entities.Lines[i]);
+	if(!_Section.Entities.Circles.empty()) for(unsigned int i=0; i<_Section.Entities.Circles.size(); i++) saveFile << CircleToString(_Section.Entities.Circles[i]);
 
 	saveFile << "ENDSEC\n";
 
@@ -458,7 +459,7 @@ string DXF::PolylineToString(LWPOLYLINE l) {
 	else str << "0";
 	str << "\n 43\n" << l.width << "\n";
 
-	for(int i=0; i<l.p.size(); i++) {
+	for(unsigned int i=0; i<l.p.size(); i++) {
 		str << setprecision(20)
 			<< " 10\n" << l.p[0].x << "\n"
 			<< " 20\n" << l.p[0].y << "\n";

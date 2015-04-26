@@ -19,7 +19,7 @@ namespace DxfProgram {
 	public ref class CheckDialog : public System::Windows::Forms::Form
 	{
 	public:
-		CheckDialog(WORK *w, bool fileIsOpen)
+		CheckDialog(OBJECTS_SPACE::WORK *w, bool fileIsOpen)
 		{
 			InitializeComponent();
 			//
@@ -77,7 +77,7 @@ namespace DxfProgram {
 	private: System::Windows::Forms::RadioButton^  radioButton1;
 
 
-		WORK *work;
+		OBJECTS_SPACE::WORK *work;
 		bool fl_fileIsOpen;
 
 #pragma region Windows Form Designer generated code
@@ -553,7 +553,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 				 return;
 			 }
 
-			 WORK::BITSFIELD f;
+			 OBJECTS_SPACE::WORK::BITSFIELD f;
 			 work->InitBitsField(f);
 
 			 if(radioButton1->Checked) f.crossKind = 0;

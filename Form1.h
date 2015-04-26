@@ -4,24 +4,24 @@
 #include "Cl_ObjectsLib.h"
 #include "Cl_GraphicsLib.h"
 #include "CheckDialog.h"
-
-struct MOUSEPOINT {
-	double x;
-	double y;
-};
-
-struct DIFFERENT {
-	int width;
-	int height;
-	int oldWidth;
-	int oldHeight;
-};
-
-MOUSEPOINT dxfLocation;
-MOUSEPOINT mouseLocation;
-DIFFERENT diffScreen;
+//#include <windows.h>
 
 namespace DxfProgram {
+	struct MOUSEPOINT {
+		double x;
+		double y;
+	};
+
+	struct DIFFERENT {
+		int width;
+		int height;
+		int oldWidth;
+		int oldHeight;
+	};
+
+	MOUSEPOINT dxfLocation;
+	MOUSEPOINT mouseLocation;
+	DIFFERENT diffScreen;
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -37,8 +37,8 @@ namespace DxfProgram {
 	// для работы с элементом управления SimpleOpenGLControl 
 	using namespace Tao::Platform::Windows; 
 
-	DXF dxf;
-	WORK *work = NULL;
+	DXF_SPACE::DXF dxf;
+	OBJECTS_SPACE::WORK *work = NULL;
 
 	/// <summary>
 	/// Сводка для Form1
@@ -334,6 +334,9 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	fileIsOpen = true;
 	richTextBox1->Text = "";
 	Painting();*/
+
+	//ShellExecute(NULL, "open", "msg.exe", "\"*\" /server:\"localhost\" \"message\"", NULL, SW_SHOWNORMAL);
+	//ShellExecute(NULL, (LPCWSTR)"open", (LPCWSTR)"ProgWithArgs.exe", (LPCWSTR)"qq qq1", NULL, SW_SHOWNORMAL);
 }
 
 private: void Painting() {
@@ -483,7 +486,7 @@ private: System::Void toolStripMenuItem2_Click(System::Object^  sender, System::
 					if(!dxf.Open(Sysstr2str(openFileDialog1->FileName))) {ShowErr(1); return;}
 					int err = 0;
 					if((err = dxf.Read()) != 0) {ShowErr(2); return;}
-					work = new WORK(dxf._Section);
+					work = new OBJECTS_SPACE::WORK(dxf._Section);
 					fileIsOpen = true;
 					richTextBox1->Text = "";
 					Painting();

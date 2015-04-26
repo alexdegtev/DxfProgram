@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Cl_ObjectsLib.h"
+using namespace OBJECTS_SPACE;
 
 WORK::WORK(SECTION s) {
 	Section = s;
@@ -20,7 +21,7 @@ void WORK::CrossLines(LINE line1, LINE line2, unsigned char crossKind) {
 	double x4 = line2.p[1].x;
 	double y4 = line2.p[1].y;
 
-	double a1 = y2 - y1;
+	/*double a1 = y2 - y1;
 	double b1 = x1 - x2;
 	double a2 = y4 - y3;
 	double b2 = x3 - x4;
@@ -61,8 +62,39 @@ void WORK::CrossLines(LINE line1, LINE line2, unsigned char crossKind) {
 			tmp.Lines.push_back(line2);
 			ErrPoints.push_back(tmp);
 		}
+	}*/
+
+	double a1 = y2 - y1;
+	double b1 = x2 - x1;
+	double a2 = y4 - y3;
+	double b2 = x4 - x3;
+
+	double det = Det(a2, b2, a1, b1);
+
+	if(det == 0) return;	//Линии параллельны
+
+	double u1 = (b2 * (y1 - y3) - (x1 - x3) * a2) / det;
+	double u2 = (b1 * (y1 - y3) - (x1 - x3) * a1) / det;
+
+	bool type = false;
+	if((u1 >= 0 && u1 <= 1) && (u2 >= 0 && u2 <= 1)) type = true;
+
+	if(crossKind == 0 || crossKind == 1 && type || crossKind == 2 && !type) {
+		CROSSPOINT tmp;
+		if(type) tmp.type = true;
+		else tmp.type = false;
+		tmp.current = false;
+		tmp.isCrossPoint = true;
+		tmp.x = x1 + u1 * b1;
+		tmp.y = y1 + u1 * a1;
+		tmp.Lines.clear();
+		tmp.Circles.clear();
+		tmp.Ellipses.clear();
+		tmp.Arcs.clear();
+		tmp.Lines.push_back(line1);
+		tmp.Lines.push_back(line2);
+		ErrPoints.push_back(tmp);
 	}
-	else return;
 }
 
 void WORK::CrossLineCircle(LINE line, CIRCLE circle, unsigned char crossKind) {
@@ -82,7 +114,7 @@ void WORK::CrossLineCircle(LINE line, CIRCLE circle, unsigned char crossKind) {
 	double gamma = x0 * x0 + pow(b - y0, 2) - r * r;
 
 	long double det = beta * beta  - 4 * alpha * gamma;
-	if(det < 0) return;
+	if(det < 0) return;	//Не пересекаются
 	long double tx1 = (-beta + sqrt(det)) / (2 * alpha);
 	long double tx2 = (-beta - sqrt(det)) / (2 * alpha);
 	long double ty1 = a * tx1 + b;
@@ -148,7 +180,6 @@ void WORK::CrossLineArc(LINE line, ARC arc, unsigned char crossKind) {
 	long double tx2 = (-beta - sqrt(beta * beta  - 4 * alpha * gamma)) / (2 * alpha);
 	long double ty1 = a * tx1 + b;
 	long double ty2 = a * tx2 + b;
-
 
 	double angle = GetAngle(x0, y0, tx1, ty1);
 	if(angle >= arc.angleStart && angle <= arc.angleEnd){
@@ -395,7 +426,10 @@ void WORK::CrossCircleEllipse(CIRCLE circle, ELLIPSE ellipse) {
 	double tx1 = _tx1 + x2;
 	double ty1 = _ty1 + y2;*/
 
-	 
+	//typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double> > polygon;
+
+	//polygon p1, p2;
+
 }
 
 void WORK::CrossCircleArc(CIRCLE circle, ARC arc) {
