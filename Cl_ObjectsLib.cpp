@@ -559,7 +559,8 @@ void WORK::CrossArcs(ARC arc1, ARC arc2) {
 }
 
 void WORK::OverlapLines(LINE line1, LINE line2) {
-	if((line1.p[0].x == line2.p[0].x) && (line1.p[1].x == line2.p[1].x) && (line1.p[0].y == line2.p[0].y) && (line1.p[1].y == line2.p[1].y)) {
+	if((line1.p[0].x == line2.p[0].x) && (line1.p[1].x == line2.p[1].x) && (line1.p[0].y == line2.p[0].y) && (line1.p[1].y == line2.p[1].y) ||
+		(line1.p[0].x == line2.p[1].x) && (line1.p[1].x == line2.p[0].x) && (line1.p[0].y == line2.p[1].y) && (line1.p[1].y == line2.p[0].y)) {
 		CROSSPOINT tmp;
 		tmp.current = false;
 		tmp.isCrossPoint = false;
@@ -615,22 +616,20 @@ void WORK::OverlapLines(LINE line1, LINE line2) {
 		y3 = tmp;
 	}
 
-	if(abs(x1) > abs(x3) && abs(x2) < abs(x4) && abs(y1) > abs(y3) && abs(y2) < abs(y4)) {
+	/*if(abs(x1) > abs(x3) && abs(x2) < abs(x4) && abs(y1) > abs(y3) && abs(y2) < abs(y4)) {
 		double tmp = x3; x3 = x1; x1 = tmp;
 		tmp = x4; x4 = x2; x2 = tmp;
 		tmp = y3; y3 = y1; y1 = tmp;
 		tmp = y4; y4 = y2; y2 = tmp;
-	}
+	}*/
 
-	/*if(x2 - x1 == 0) return false;						//!!!!!!!!
+	/*if(x2 - x1 == 0) return;						//!!!!!!!!
 	double a = (y2 - y1) / (x2 - x1);
 	double b = y1 - x1 * a;
-	if(x1 <= x3 && x2 >= x4 && y1 <= y3 && y2 >= y4 && ((float)y3 == (float)(a*x3 + b)) && ((float)y4 == (float)(a*x4 + b))) return true;
-	if(x1 <= x3 && x2 >= x4 && y1 >= y3 && y2 <= y4 && ((float)y3 == (float)(a*x3 + b)) && ((float)y4 == (float)(a*x4 + b))) return true;
-
-	return false;*/
-
-	if(IsPointOnLine(line1, x3, y3) && IsPointOnLine(line1, x4, y4)) {
+	if(!(x1 <= x3 && x2 >= x4 && y1 <= y3 && y2 >= y4 && ((float)y3 == (float)(a*x3 + b)) && ((float)y4 == (float)(a*x4 + b)))) return;
+	if(!(x1 <= x3 && x2 >= x4 && y1 >= y3 && y2 <= y4 && ((float)y3 == (float)(a*x3 + b)) && ((float)y4 == (float)(a*x4 + b)))) return;
+	*/
+	if(IsPointOnLine(line1, x3, y3) || IsPointOnLine(line1, x4, y4)) {
 		CROSSPOINT tmp;
 		tmp.current = false;
 		tmp.isCrossPoint = false;
@@ -638,11 +637,14 @@ void WORK::OverlapLines(LINE line1, LINE line2) {
 		tmp.Circles.clear();
 		tmp.Ellipses.clear();
 		tmp.Arcs.clear();
+		/*LINE line;
+		line.p[0].x = ;
+		line.p[0].y = ;
+		line.p[1].x = ;
+		line.p[1].y = ;*/
 		tmp.Lines.push_back(line1);	//Нужно сохранить только общую часть
 		ErrPoints.push_back(tmp);
-		//return true;
 	}
-	//return false;
 }
 
 void WORK::OverlapCircles(CIRCLE circle1, CIRCLE circle2) {
@@ -656,13 +658,11 @@ void WORK::OverlapCircles(CIRCLE circle1, CIRCLE circle2) {
 		tmp.Arcs.clear();
 		tmp.Circles.push_back(circle1);
 		ErrPoints.push_back(tmp);
-		//return true;
 	}
-	//return false;
 }
 
 void WORK::OverlapEllipses(ELLIPSE e1, ELLIPSE e2) {
-	if((e1.p.x == e2.p.x) && (e1.p.y == e2.p.y) && (e1.ratio == e1.ratio)) {
+	if((e1.p.x == e2.p.x) && (e1.p.y == e2.p.y) && (e1.height == e2.height) && (e1.width == e2.width) && (e1.angle == e2.angle)) {
 		CROSSPOINT tmp;
 		tmp.current = false;
 		tmp.isCrossPoint = false;
@@ -672,25 +672,26 @@ void WORK::OverlapEllipses(ELLIPSE e1, ELLIPSE e2) {
 		tmp.Arcs.clear();
 		tmp.Ellipses.push_back(e1);
 		ErrPoints.push_back(tmp);
-		//return true;
 	}
-	//return false;
 }
 
 void WORK::OverlapArcs(ARC a1, ARC a2) {
-	if((a1.p.x == a2.p.x) && (a1.p.y == a2.p.y) && (a1.r == a2.r) && (a1.angleStart == a2.angleStart) && (a1.angleEnd == a2.angleEnd)) {
-		CROSSPOINT tmp;
-		tmp.current = false;
-		tmp.isCrossPoint = false;
-		tmp.Lines.clear();
-		tmp.Circles.clear();
-		tmp.Ellipses.clear();
-		tmp.Arcs.clear();
-		tmp.Arcs.push_back(a1);
-		ErrPoints.push_back(tmp);
-		//return true;
+	if((a1.p.x == a2.p.x) && (a1.p.y == a2.p.y) && (a1.r == a2.r)) {
+		if((a1.angleStart == a2.angleStart) && (a1.angleEnd == a2.angleEnd)) {
+			CROSSPOINT tmp;
+			tmp.current = false;
+			tmp.isCrossPoint = false;
+			tmp.Lines.clear();
+			tmp.Circles.clear();
+			tmp.Ellipses.clear();
+			tmp.Arcs.clear();
+			tmp.Arcs.push_back(a1);
+			ErrPoints.push_back(tmp);
+		}
+		/*else {
+
+		}*/
 	}
-	//return false;
 }
 
 void WORK::OverlapCircleArc(CIRCLE c, ARC a) {
@@ -704,9 +705,7 @@ void WORK::OverlapCircleArc(CIRCLE c, ARC a) {
 		tmp.Arcs.clear();
 		tmp.Arcs.push_back(a);
 		ErrPoints.push_back(tmp);
-		//return true;
 	}
-	//return false;
 }
 
 void WORK::CheckCross(BITSFIELD bitsfield) {
@@ -896,7 +895,7 @@ void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) 
 		if(ErrPoints[i].isCrossPoint) {
 			numRow = 0;
 			CIRCLE err;
-			err.r = errPointR;
+			err.r = ErrPointRadius;
 			err.p.x = ErrPoints[i].x;
 			err.p.y = ErrPoints[i].y;
 
@@ -915,7 +914,7 @@ void WORK::ClickOnObject(double x, double y, double scale, DataGridView^ table) 
 				table->Rows[numRow++]->Cells[1]->Value = "" + ErrPoints[i].y;
 				table->Rows->Add();
 				table->Rows[numRow]->Cells[0]->Value = "Радиус";
-				table->Rows[numRow++]->Cells[1]->Value = "" + errPointR;
+				table->Rows[numRow++]->Cells[1]->Value = "" + ErrPointRadius;
 				table->Rows->Add();
 				table->Rows[numRow]->Cells[0]->Value = "Пересечение";
 				if(ErrPoints[i].type) table->Rows[numRow++]->Cells[1]->Value = "Действительное";

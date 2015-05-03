@@ -10,8 +10,9 @@ namespace DxfProgram {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace DxfProgram;
 
-	//WORK::BITSFIELD f;
+	extern bool checkDialogIsOpen;
 
 	/// <summary>
 	/// Сводка для CheckDialog
@@ -19,14 +20,13 @@ namespace DxfProgram {
 	public ref class CheckDialog : public System::Windows::Forms::Form
 	{
 	public:
-		CheckDialog(OBJECTS_SPACE::WORK *w, bool fileIsOpen)
+		CheckDialog(OBJECTS_SPACE::WORK *w)
 		{
 			InitializeComponent();
 			//
 			//TODO: добавьте код конструктора
 			//
 			work = w;
-			fl_fileIsOpen = fileIsOpen;
 		}
 
 	protected:
@@ -78,7 +78,6 @@ namespace DxfProgram {
 
 
 		OBJECTS_SPACE::WORK *work;
-		bool fl_fileIsOpen;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -526,6 +525,7 @@ namespace DxfProgram {
 			this->ShowInTaskbar = false;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Выбор проверок";
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &CheckDialog::CheckDialog_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &CheckDialog::CheckDialog_Load);
 			this->groupBox1->ResumeLayout(false);
 			this->tabControl1->ResumeLayout(false);
@@ -545,14 +545,10 @@ namespace DxfProgram {
 
 		}
 #pragma endregion
-	private: System::Void CheckDialog_Load(System::Object^  sender, System::EventArgs^  e) {
+
+private: System::Void CheckDialog_Load(System::Object^  sender, System::EventArgs^  e) {
 			 }
 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-			 if(!fl_fileIsOpen) {
-				 MessageBox::Show("Нет открытых файлов", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
-				 return;
-			 }
-
 			 OBJECTS_SPACE::WORK::BITSFIELD f;
 			 work->InitBitsField(f);
 
@@ -590,11 +586,10 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			 this->Close();
 		 }
 private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-			 //WORK::BITSFIELD f;
-			 //work->InitBitsField(f);
-			 //f.line_ellipse = true;
-			 //work->CheckCross(f);
 			 this->Close();
+		 }
+private: System::Void CheckDialog_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
+			 checkDialogIsOpen = false;
 		 }
 };
 }

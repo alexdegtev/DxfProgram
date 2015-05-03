@@ -3,7 +3,6 @@
 using namespace DXF_SPACE;
 
 DXF::DXF()	{
-	errPointR = 3;
 }
 
 DXF::~DXF()	{
@@ -24,6 +23,16 @@ bool DXF::Open(string dxfFileName) {
 
 	if(file.is_open()) return true;
 	else return false;
+}
+
+void DXF::Close() {
+	if(file.is_open()) file.close();
+	LastNumberOfObject = 0;
+	EndEntitiesPointer = 0;
+	Blocks.clear();
+	NumBlock = 0;
+	SECTION tmp;
+	_Section = tmp;
 }
 
 string DXF::PrintDxf() {
@@ -491,7 +500,7 @@ string DXF::ErrPointToString(CROSSPOINT point) {
 		<< " 10\n" << point.x << "\n"
 		<< " 20\n" << point.y << "\n"
 		<< " 30\n0.0\n"
-		<< " 40\n" << errPointR << "\n  0\n";
+		<< " 40\n" << ErrPointRadius << "\n  0\n";
 	return str.str();
 }
 

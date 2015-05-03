@@ -16,10 +16,9 @@ ref class GRAPHICS {
 
 private:
 	SimpleOpenGlControl^  OpenGlControl;
-
-public:
 	bool IsInit;
 
+public:
 	GRAPHICS();
 	~GRAPHICS();
 	void GetOpenGlControl(SimpleOpenGlControl^  simpleOpenGlControl);
@@ -38,5 +37,6 @@ public:
 	void DrawEllipse(double x, double y, double a, double b, double angle);
 	void PrintCursor(int x, int y);
 	void SetColor(float red, float green, float blue);
+	bool GetIsInit() { return IsInit; }
 };
 #endif

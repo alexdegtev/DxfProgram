@@ -14,6 +14,7 @@ using namespace std;
 #define EPS 1e-9
 #define PI 3.1415926535
 #define ErrorLayerName "ErrorsLayer"
+#define ErrPointRadius 3.0
 
 namespace DXF_SPACE {
 
@@ -117,6 +118,7 @@ namespace DXF_SPACE {
 	
 		int LastNumberOfObject;
 		int EndEntitiesPointer;
+		SECTION _Section;
 
 		int TextToHex(string str);
 		string LineToString(LINE l);
@@ -135,10 +137,7 @@ namespace DXF_SPACE {
 		string PrintDxf();
 
 	public:
-		SECTION _Section;	//сделать private или protected
-
 		int NumBlock;
-		float errPointR;
 		vector<BLOCK> Blocks;
 		//vector<int> beginBlocksPointers;
 
@@ -148,8 +147,9 @@ namespace DXF_SPACE {
 		int Read();
 		bool Save();
 		bool SaveErrorPoints(vector<CROSSPOINT> errPoints);
-
 		bool SavePolyLine(string _saveFileName, double **points, int size, bool closed);	//points[i][0] - координата X, points[i][1] - координата Y. closed == true, если замкнута.
+		void Close();
+		SECTION GetSection() const { return _Section; }
 	};
 }
 #endif

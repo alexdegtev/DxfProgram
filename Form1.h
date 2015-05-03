@@ -7,21 +7,6 @@
 //#include <windows.h>
 
 namespace DxfProgram {
-	struct MOUSEPOINT {
-		double x;
-		double y;
-	};
-
-	struct DIFFERENT {
-		int width;
-		int height;
-		int oldWidth;
-		int oldHeight;
-	};
-
-	MOUSEPOINT dxfLocation;
-	MOUSEPOINT mouseLocation;
-	DIFFERENT diffScreen;
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -37,8 +22,26 @@ namespace DxfProgram {
 	// для работы с элементом управления SimpleOpenGLControl 
 	using namespace Tao::Platform::Windows; 
 
+	//Положение курсора мыши
+	struct MOUSEPOINT {
+		double x;
+		double y;
+	};
+
+	//Разница между новым и старым положением мыши
+	struct DIFFERENT {
+		int width;
+		int height;
+		int oldWidth;
+		int oldHeight;
+	};
+
+	MOUSEPOINT dxfLocation;
+	MOUSEPOINT mouseLocation;
+	DIFFERENT diffScreen;
 	DXF_SPACE::DXF dxf;
 	OBJECTS_SPACE::WORK *work = NULL;
+	bool checkDialogIsOpen = false;
 
 	/// <summary>
 	/// Сводка для Form1
@@ -91,10 +94,8 @@ namespace DxfProgram {
 	private: Tao::Platform::Windows::SimpleOpenGlControl^  renderPanel;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column1;
 	private: System::Windows::Forms::Label^  coordLabel;
+	private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItem6;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column2;
-
-
-
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -112,6 +113,7 @@ namespace DxfProgram {
 			this->toolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem2 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem3 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->toolStripMenuItem6 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripSeparator1 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->toolStripMenuItem4 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem5 = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -134,40 +136,78 @@ namespace DxfProgram {
 			this->panel2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->ObjectInf))->BeginInit();
 			this->SuspendLayout();
+			// 
+			// openFileDialog1
+			// 
 			this->openFileDialog1->FileName = L"openFileDialog1";
+			// 
+			// timer1
+			// 
 			this->timer1->Enabled = true;
 			this->timer1->Interval = 30;
 			this->timer1->Tick += gcnew System::EventHandler(this, &Form1::timer1_Tick);
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {this->toolStripMenuItem1, this->toolStripMenuItem5});
+			// 
+			// menuStrip1
+			// 
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {this->toolStripMenuItem1, 
+				this->toolStripMenuItem5});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
 			this->menuStrip1->RenderMode = System::Windows::Forms::ToolStripRenderMode::System;
 			this->menuStrip1->Size = System::Drawing::Size(910, 24);
 			this->menuStrip1->TabIndex = 0;
 			this->menuStrip1->Text = L"menuStrip1";
-			this->toolStripMenuItem1->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {this->toolStripMenuItem2, 
-				this->toolStripMenuItem3, this->toolStripSeparator1, this->toolStripMenuItem4});
+			// 
+			// toolStripMenuItem1
+			// 
+			this->toolStripMenuItem1->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {this->toolStripMenuItem2, 
+				this->toolStripMenuItem3, this->toolStripMenuItem6, this->toolStripSeparator1, this->toolStripMenuItem4});
 			this->toolStripMenuItem1->Name = L"toolStripMenuItem1";
 			this->toolStripMenuItem1->Size = System::Drawing::Size(48, 20);
 			this->toolStripMenuItem1->Text = L"Файл";
+			// 
+			// toolStripMenuItem2
+			// 
 			this->toolStripMenuItem2->Name = L"toolStripMenuItem2";
 			this->toolStripMenuItem2->Size = System::Drawing::Size(132, 22);
 			this->toolStripMenuItem2->Text = L"Открыть";
 			this->toolStripMenuItem2->Click += gcnew System::EventHandler(this, &Form1::toolStripMenuItem2_Click);
+			// 
+			// toolStripMenuItem3
+			// 
 			this->toolStripMenuItem3->Name = L"toolStripMenuItem3";
 			this->toolStripMenuItem3->Size = System::Drawing::Size(132, 22);
 			this->toolStripMenuItem3->Text = L"Сохранить";
 			this->toolStripMenuItem3->Click += gcnew System::EventHandler(this, &Form1::toolStripMenuItem3_Click);
+			// 
+			// toolStripMenuItem6
+			// 
+			this->toolStripMenuItem6->Name = L"toolStripMenuItem6";
+			this->toolStripMenuItem6->Size = System::Drawing::Size(132, 22);
+			this->toolStripMenuItem6->Text = L"Закрыть";
+			this->toolStripMenuItem6->Click += gcnew System::EventHandler(this, &Form1::toolStripMenuItem6_Click);
+			// 
+			// toolStripSeparator1
+			// 
 			this->toolStripSeparator1->Name = L"toolStripSeparator1";
 			this->toolStripSeparator1->Size = System::Drawing::Size(129, 6);
+			// 
+			// toolStripMenuItem4
+			// 
 			this->toolStripMenuItem4->Name = L"toolStripMenuItem4";
 			this->toolStripMenuItem4->Size = System::Drawing::Size(132, 22);
 			this->toolStripMenuItem4->Text = L"Выход";
 			this->toolStripMenuItem4->Click += gcnew System::EventHandler(this, &Form1::toolStripMenuItem4_Click);
+			// 
+			// toolStripMenuItem5
+			// 
 			this->toolStripMenuItem5->Name = L"toolStripMenuItem5";
 			this->toolStripMenuItem5->Size = System::Drawing::Size(74, 20);
 			this->toolStripMenuItem5->Text = L"Проверки";
 			this->toolStripMenuItem5->Click += gcnew System::EventHandler(this, &Form1::toolStripMenuItem5_Click);
+			// 
+			// panel1
+			// 
 			this->panel1->BackColor = System::Drawing::Color::White;
 			this->panel1->Controls->Add(this->coordLabel);
 			this->panel1->Dock = System::Windows::Forms::DockStyle::Bottom;
@@ -176,6 +216,9 @@ namespace DxfProgram {
 			this->panel1->Padding = System::Windows::Forms::Padding(0, 3, 2, 0);
 			this->panel1->Size = System::Drawing::Size(910, 20);
 			this->panel1->TabIndex = 1;
+			// 
+			// coordLabel
+			// 
 			this->coordLabel->AutoSize = true;
 			this->coordLabel->Dock = System::Windows::Forms::DockStyle::Right;
 			this->coordLabel->Location = System::Drawing::Point(886, 3);
@@ -183,6 +226,9 @@ namespace DxfProgram {
 			this->coordLabel->Size = System::Drawing::Size(22, 13);
 			this->coordLabel->TabIndex = 6;
 			this->coordLabel->Text = L"0 0";
+			// 
+			// panel2
+			// 
 			this->panel2->BackColor = System::Drawing::Color::White;
 			this->panel2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->panel2->Controls->Add(this->buttonRight);
@@ -196,6 +242,9 @@ namespace DxfProgram {
 			this->panel2->Name = L"panel2";
 			this->panel2->Size = System::Drawing::Size(47, 457);
 			this->panel2->TabIndex = 2;
+			// 
+			// buttonRight
+			// 
 			this->buttonRight->Location = System::Drawing::Point(12, 161);
 			this->buttonRight->Name = L"buttonRight";
 			this->buttonRight->Size = System::Drawing::Size(23, 23);
@@ -203,6 +252,9 @@ namespace DxfProgram {
 			this->buttonRight->Text = L"→";
 			this->buttonRight->UseVisualStyleBackColor = true;
 			this->buttonRight->Click += gcnew System::EventHandler(this, &Form1::buttonRight_Click);
+			// 
+			// buttonLeft
+			// 
 			this->buttonLeft->Location = System::Drawing::Point(12, 132);
 			this->buttonLeft->Name = L"buttonLeft";
 			this->buttonLeft->Size = System::Drawing::Size(23, 23);
@@ -210,6 +262,9 @@ namespace DxfProgram {
 			this->buttonLeft->Text = L"←";
 			this->buttonLeft->UseVisualStyleBackColor = true;
 			this->buttonLeft->Click += gcnew System::EventHandler(this, &Form1::buttonLeft_Click);
+			// 
+			// buttonBottom
+			// 
 			this->buttonBottom->Location = System::Drawing::Point(12, 103);
 			this->buttonBottom->Name = L"buttonBottom";
 			this->buttonBottom->Size = System::Drawing::Size(23, 23);
@@ -217,6 +272,9 @@ namespace DxfProgram {
 			this->buttonBottom->Text = L"↓";
 			this->buttonBottom->UseVisualStyleBackColor = true;
 			this->buttonBottom->Click += gcnew System::EventHandler(this, &Form1::buttonBottom_Click);
+			// 
+			// buttonTop
+			// 
 			this->buttonTop->Location = System::Drawing::Point(12, 74);
 			this->buttonTop->Name = L"buttonTop";
 			this->buttonTop->Size = System::Drawing::Size(23, 23);
@@ -224,6 +282,9 @@ namespace DxfProgram {
 			this->buttonTop->Text = L"↑";
 			this->buttonTop->UseVisualStyleBackColor = true;
 			this->buttonTop->Click += gcnew System::EventHandler(this, &Form1::buttonTop_Click);
+			// 
+			// buttonMinus
+			// 
 			this->buttonMinus->Location = System::Drawing::Point(12, 32);
 			this->buttonMinus->Name = L"buttonMinus";
 			this->buttonMinus->Size = System::Drawing::Size(23, 23);
@@ -231,6 +292,9 @@ namespace DxfProgram {
 			this->buttonMinus->Text = L"-";
 			this->buttonMinus->UseVisualStyleBackColor = true;
 			this->buttonMinus->Click += gcnew System::EventHandler(this, &Form1::buttonMinus_Click);
+			// 
+			// buttonPlus
+			// 
 			this->buttonPlus->Location = System::Drawing::Point(12, 3);
 			this->buttonPlus->Name = L"buttonPlus";
 			this->buttonPlus->Size = System::Drawing::Size(23, 23);
@@ -238,6 +302,9 @@ namespace DxfProgram {
 			this->buttonPlus->Text = L"+";
 			this->buttonPlus->UseVisualStyleBackColor = true;
 			this->buttonPlus->Click += gcnew System::EventHandler(this, &Form1::buttonPlus_Click);
+			// 
+			// richTextBox1
+			// 
 			this->richTextBox1->Dock = System::Windows::Forms::DockStyle::Right;
 			this->richTextBox1->Location = System::Drawing::Point(810, 24);
 			this->richTextBox1->Name = L"richTextBox1";
@@ -245,6 +312,9 @@ namespace DxfProgram {
 			this->richTextBox1->TabIndex = 3;
 			this->richTextBox1->Text = L"";
 			this->richTextBox1->Visible = false;
+			// 
+			// ObjectInf
+			// 
 			this->ObjectInf->AllowUserToAddRows = false;
 			this->ObjectInf->AllowUserToDeleteRows = false;
 			this->ObjectInf->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
@@ -257,14 +327,23 @@ namespace DxfProgram {
 			this->ObjectInf->Size = System::Drawing::Size(250, 457);
 			this->ObjectInf->TabIndex = 0;
 			this->ObjectInf->SizeChanged += gcnew System::EventHandler(this, &Form1::ObjectInf_SizeChanged);
+			// 
+			// Column1
+			// 
 			this->Column1->HeaderText = L"Свойство";
 			this->Column1->Name = L"Column1";
 			this->Column1->ReadOnly = true;
 			this->Column1->Width = 123;
+			// 
+			// Column2
+			// 
 			this->Column2->HeaderText = L"Значение";
 			this->Column2->Name = L"Column2";
 			this->Column2->ReadOnly = true;
 			this->Column2->Width = 123;
+			// 
+			// renderPanel
+			// 
 			this->renderPanel->AccumBits = static_cast<System::Byte>(0);
 			this->renderPanel->AutoCheckErrors = false;
 			this->renderPanel->AutoFinish = false;
@@ -286,6 +365,9 @@ namespace DxfProgram {
 			this->renderPanel->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::renderPanel_MouseMove);
 			this->renderPanel->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::renderPanel_MouseUp);
 			this->renderPanel->MouseWheel += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::renderPanel_MouseWheel);
+			// 
+			// Form1
+			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(910, 501);
@@ -339,7 +421,7 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	//ShellExecute(NULL, (LPCWSTR)"open", (LPCWSTR)"ProgWithArgs.exe", (LPCWSTR)"qq qq1", NULL, SW_SHOWNORMAL);
 }
 
-private: void Painting() {
+private: System::Void Painting() {
 			unsigned int i, j;
 			if(work && !work->Section.Entities.Lines.empty()) for(i=0; i<work->Section.Entities.Lines.size(); i++) {
 				if(work->Section.Entities.Lines[i].current) {
@@ -430,7 +512,7 @@ private: void Painting() {
 					GLControl->DrawCircle(
 						work->ErrPoints[i].x,
 						work->ErrPoints[i].y,
-						work->errPointR
+						ErrPointRadius
 					);
 					GLControl->SetColor(0.0, 0.0, 0.0);
 				}
@@ -486,7 +568,7 @@ private: System::Void toolStripMenuItem2_Click(System::Object^  sender, System::
 					if(!dxf.Open(Sysstr2str(openFileDialog1->FileName))) {ShowErr(1); return;}
 					int err = 0;
 					if((err = dxf.Read()) != 0) {ShowErr(2); return;}
-					work = new OBJECTS_SPACE::WORK(dxf._Section);
+					work = new OBJECTS_SPACE::WORK(dxf.GetSection());
 					fileIsOpen = true;
 					richTextBox1->Text = "";
 					Painting();
@@ -500,13 +582,22 @@ private: System::Void toolStripMenuItem3_Click(System::Object^  sender, System::
 			 */
 		 }
 private: System::Void toolStripMenuItem5_Click(System::Object^  sender, System::EventArgs^  e) {
+			 if(!fileIsOpen) { MessageBox::Show("Нет открытых файлов", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning); return; }
+			 if(checkDialogIsOpen) { formCheckDialog->Focus(); return; }
+			 checkDialogIsOpen = true;
 			 richTextBox1->Text = "";
-			 formCheckDialog = gcnew CheckDialog(work, fileIsOpen);
+			 formCheckDialog = gcnew CheckDialog(work);
 			 formCheckDialog->Show();
 			 formCheckDialog->Activate();
 			 formCheckDialog->Focus();
 		 }
-
+private: System::Void toolStripMenuItem6_Click(System::Object^  sender, System::EventArgs^  e) {
+			dxf.Close();
+			work = new OBJECTS_SPACE::WORK(dxf.GetSection());
+			fileIsOpen = false;
+			richTextBox1->Text = "";
+			Painting();
+		 }
 private: System::Void toolStripMenuItem4_Click(System::Object^  sender, System::EventArgs^  e) {
 			 Application::Exit();
 		 }
@@ -560,7 +651,7 @@ private: System::Void buttonRight_Click(System::Object^  sender, System::EventAr
 		 }
 
 private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-			 if(GLControl->IsInit) {
+			 if(GLControl->GetIsInit()) { 
 				 GLControl->Render();
 				 Painting();
 				 GLControl->SwapBuffers();
