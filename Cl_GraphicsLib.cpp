@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Cl_GraphicsLib.h"
+using namespace GRAPHICS_SPACE;
 
 GRAPHICS::GRAPHICS() {
 	IsInit = false;

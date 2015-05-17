@@ -217,13 +217,13 @@ namespace DxfProgram {
 			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
 			this->tabPage1->Size = System::Drawing::Size(397, 223);
 			this->tabPage1->TabIndex = 0;
-			this->tabPage1->Text = L"Прямая";
+			this->tabPage1->Text = L"Отрезок";
 			this->tabPage1->UseVisualStyleBackColor = true;
 			// 
 			// checkBox14
 			// 
 			this->checkBox14->AutoSize = true;
-			this->checkBox14->Location = System::Drawing::Point(6, 75);
+			this->checkBox14->Location = System::Drawing::Point(6, 52);
 			this->checkBox14->Name = L"checkBox14";
 			this->checkBox14->Size = System::Drawing::Size(51, 17);
 			this->checkBox14->TabIndex = 3;
@@ -233,7 +233,7 @@ namespace DxfProgram {
 			// checkBox3
 			// 
 			this->checkBox3->AutoSize = true;
-			this->checkBox3->Location = System::Drawing::Point(6, 52);
+			this->checkBox3->Location = System::Drawing::Point(6, 75);
 			this->checkBox3->Name = L"checkBox3";
 			this->checkBox3->Size = System::Drawing::Size(63, 17);
 			this->checkBox3->TabIndex = 2;
@@ -255,9 +255,9 @@ namespace DxfProgram {
 			this->checkBox1->AutoSize = true;
 			this->checkBox1->Location = System::Drawing::Point(6, 6);
 			this->checkBox1->Name = L"checkBox1";
-			this->checkBox1->Size = System::Drawing::Size(66, 17);
+			this->checkBox1->Size = System::Drawing::Size(69, 17);
 			this->checkBox1->TabIndex = 0;
-			this->checkBox1->Text = L"Прямая";
+			this->checkBox1->Text = L"Отрезок";
 			this->checkBox1->UseVisualStyleBackColor = true;
 			// 
 			// tabPage2
@@ -277,7 +277,7 @@ namespace DxfProgram {
 			// checkBox15
 			// 
 			this->checkBox15->AutoSize = true;
-			this->checkBox15->Location = System::Drawing::Point(6, 75);
+			this->checkBox15->Location = System::Drawing::Point(6, 52);
 			this->checkBox15->Name = L"checkBox15";
 			this->checkBox15->Size = System::Drawing::Size(51, 17);
 			this->checkBox15->TabIndex = 3;
@@ -287,12 +287,13 @@ namespace DxfProgram {
 			// checkBox6
 			// 
 			this->checkBox6->AutoSize = true;
-			this->checkBox6->Location = System::Drawing::Point(6, 52);
+			this->checkBox6->Location = System::Drawing::Point(6, 75);
 			this->checkBox6->Name = L"checkBox6";
 			this->checkBox6->Size = System::Drawing::Size(63, 17);
 			this->checkBox6->TabIndex = 2;
 			this->checkBox6->Text = L"Эллипс";
 			this->checkBox6->UseVisualStyleBackColor = true;
+			this->checkBox6->Visible = false;
 			// 
 			// checkBox5
 			// 
@@ -309,9 +310,9 @@ namespace DxfProgram {
 			this->checkBox4->AutoSize = true;
 			this->checkBox4->Location = System::Drawing::Point(6, 6);
 			this->checkBox4->Name = L"checkBox4";
-			this->checkBox4->Size = System::Drawing::Size(66, 17);
+			this->checkBox4->Size = System::Drawing::Size(69, 17);
 			this->checkBox4->TabIndex = 0;
-			this->checkBox4->Text = L"Прямая";
+			this->checkBox4->Text = L"Отрезок";
 			this->checkBox4->UseVisualStyleBackColor = true;
 			// 
 			// tabPage3
@@ -330,7 +331,7 @@ namespace DxfProgram {
 			// checkBox16
 			// 
 			this->checkBox16->AutoSize = true;
-			this->checkBox16->Location = System::Drawing::Point(6, 75);
+			this->checkBox16->Location = System::Drawing::Point(6, 52);
 			this->checkBox16->Name = L"checkBox16";
 			this->checkBox16->Size = System::Drawing::Size(51, 17);
 			this->checkBox16->TabIndex = 3;
@@ -340,12 +341,13 @@ namespace DxfProgram {
 			// checkBox9
 			// 
 			this->checkBox9->AutoSize = true;
-			this->checkBox9->Location = System::Drawing::Point(6, 52);
+			this->checkBox9->Location = System::Drawing::Point(6, 75);
 			this->checkBox9->Name = L"checkBox9";
 			this->checkBox9->Size = System::Drawing::Size(63, 17);
 			this->checkBox9->TabIndex = 2;
 			this->checkBox9->Text = L"Эллипс";
 			this->checkBox9->UseVisualStyleBackColor = true;
+			this->checkBox9->Visible = false;
 			// 
 			// checkBox8
 			// 
@@ -362,9 +364,9 @@ namespace DxfProgram {
 			this->checkBox7->AutoSize = true;
 			this->checkBox7->Location = System::Drawing::Point(6, 6);
 			this->checkBox7->Name = L"checkBox7";
-			this->checkBox7->Size = System::Drawing::Size(66, 17);
+			this->checkBox7->Size = System::Drawing::Size(69, 17);
 			this->checkBox7->TabIndex = 0;
-			this->checkBox7->Text = L"Прямая";
+			this->checkBox7->Text = L"Отрезок";
 			this->checkBox7->UseVisualStyleBackColor = true;
 			// 
 			// tabPage5
@@ -384,7 +386,7 @@ namespace DxfProgram {
 			// checkBox20
 			// 
 			this->checkBox20->AutoSize = true;
-			this->checkBox20->Location = System::Drawing::Point(6, 75);
+			this->checkBox20->Location = System::Drawing::Point(6, 52);
 			this->checkBox20->Name = L"checkBox20";
 			this->checkBox20->Size = System::Drawing::Size(51, 17);
 			this->checkBox20->TabIndex = 3;
@@ -394,12 +396,13 @@ namespace DxfProgram {
 			// checkBox19
 			// 
 			this->checkBox19->AutoSize = true;
-			this->checkBox19->Location = System::Drawing::Point(6, 52);
+			this->checkBox19->Location = System::Drawing::Point(6, 75);
 			this->checkBox19->Name = L"checkBox19";
 			this->checkBox19->Size = System::Drawing::Size(63, 17);
 			this->checkBox19->TabIndex = 2;
 			this->checkBox19->Text = L"Эллипс";
 			this->checkBox19->UseVisualStyleBackColor = true;
+			this->checkBox19->Visible = false;
 			// 
 			// checkBox18
 			// 
@@ -416,9 +419,9 @@ namespace DxfProgram {
 			this->checkBox17->AutoSize = true;
 			this->checkBox17->Location = System::Drawing::Point(6, 6);
 			this->checkBox17->Name = L"checkBox17";
-			this->checkBox17->Size = System::Drawing::Size(66, 17);
+			this->checkBox17->Size = System::Drawing::Size(69, 17);
 			this->checkBox17->TabIndex = 0;
-			this->checkBox17->Text = L"Прямая";
+			this->checkBox17->Text = L"Отрезок";
 			this->checkBox17->UseVisualStyleBackColor = true;
 			// 
 			// tabPage4
@@ -439,7 +442,7 @@ namespace DxfProgram {
 			// checkBox21
 			// 
 			this->checkBox21->AutoSize = true;
-			this->checkBox21->Location = System::Drawing::Point(6, 75);
+			this->checkBox21->Location = System::Drawing::Point(6, 52);
 			this->checkBox21->Name = L"checkBox21";
 			this->checkBox21->Size = System::Drawing::Size(51, 17);
 			this->checkBox21->TabIndex = 4;
@@ -459,7 +462,7 @@ namespace DxfProgram {
 			// checkBox12
 			// 
 			this->checkBox12->AutoSize = true;
-			this->checkBox12->Location = System::Drawing::Point(6, 52);
+			this->checkBox12->Location = System::Drawing::Point(6, 75);
 			this->checkBox12->Name = L"checkBox12";
 			this->checkBox12->Size = System::Drawing::Size(71, 17);
 			this->checkBox12->TabIndex = 2;
@@ -481,9 +484,9 @@ namespace DxfProgram {
 			this->checkBox10->AutoSize = true;
 			this->checkBox10->Location = System::Drawing::Point(6, 6);
 			this->checkBox10->Name = L"checkBox10";
-			this->checkBox10->Size = System::Drawing::Size(68, 17);
+			this->checkBox10->Size = System::Drawing::Size(69, 17);
 			this->checkBox10->TabIndex = 0;
-			this->checkBox10->Text = L"Прямые";
+			this->checkBox10->Text = L"Отрезки";
 			this->checkBox10->UseVisualStyleBackColor = true;
 			// 
 			// button1
