@@ -1,6 +1,8 @@
 #pragma once
 
 #include <time.h>
+#include "Cl_DxfLib.h"
+#include "Cl_ObjectsLib.h"
 #include "Cl_MySQLLib.h"
 
 namespace DxfProgram {
@@ -13,6 +15,8 @@ namespace DxfProgram {
 	using namespace System::Drawing;
 
 	extern bool saveDialogIsOpen;
+	extern DXF_SPACE::DXF dxf;
+	extern OBJECTS_SPACE::WORK *work;
 
 	/// <summary>
 	/// Сводка для SaveDialog
@@ -20,7 +24,7 @@ namespace DxfProgram {
 	public ref class SaveDialog : public System::Windows::Forms::Form
 	{
 	public:
-		SaveDialog(void)
+		SaveDialog()
 		{
 			InitializeComponent();
 			//
@@ -239,6 +243,7 @@ namespace DxfProgram {
 #pragma endregion
 
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+				 //Запись в БД
 				 if(checkBox1->Checked) {
 					 if(surname->Text == "" || name->Text == "" || description->Text == "") {
 						 MessageBox::Show("Не все поля заполнены", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
@@ -260,6 +265,9 @@ namespace DxfProgram {
 					 sql.Insert(surname->Text, name->Text, patronymic->Text, description->Text, date, time, mini);
 					 sql.Close();
 				 }
+
+				 //Запись файла на диск
+				 if(!dxf.SaveErrorPoints(work->ErrPoints)) MessageBox::Show("Ошибка записи", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 
 				 this->Close();
 			 }

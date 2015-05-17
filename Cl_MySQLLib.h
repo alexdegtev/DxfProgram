@@ -33,7 +33,7 @@ namespace MySQL_SPACE {
 		void Close();
 		int Insert(String ^surname, String ^name, String ^patronymic, String ^description, String ^date, String ^time, String ^mini);	//Возвращает кол-во обработанных строк(>= 0), -1 при ошибке обратотки, -2 при отсутствии установленного соединения с базой данных
 		int Delete();	//Возвращает кол-во обработанных строк(>= 0), -1 при ошибке обратотки, -2 при отсутствии установленного соединения с базой данных
-		int Select(string **result, int *numRows, int *numColls);
+		int Select(string **result, int *numRows, int *numColls);	//Возвращает все строки таблицы
 	};
 }
 #endif

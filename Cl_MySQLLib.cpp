@@ -60,6 +60,7 @@ int MySQL::Delete() {
 	if(!IsConnected) return -2;
 	cmd = gcnew MySqlCommand("DELETE FROM " + dbName + " WHERE `value`='this_value'", connection);
 	int res = cmd->ExecuteNonQuery();
+
 	return res;
 }
 

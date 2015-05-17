@@ -340,13 +340,13 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	richTextBox1->Text = "";
 	Painting();*/
 
-	MySQL_SPACE::MySQL q;
+	/*MySQL_SPACE::MySQL q;
 	if(!q.Connect("localhost", "root", "root", "mydb", "3306")) MessageBox::Show("Ошибка соединения с базой данных", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 	q.dbName = "dxf_table";
 	string **res;
 	int numRows, numColls;
 	q.Select(res, &numRows, &numColls);
-	q.Close();
+	q.Close();*/
 
 	fstream file;
 	//file.open("D:\\tiger.jpg");
@@ -527,17 +527,13 @@ private: System::Void toolStripMenuItem2_Click(System::Object^  sender, System::
 				}
 		 }
 private: System::Void toolStripMenuItem3_Click(System::Object^  sender, System::EventArgs^  e) {
+			 if(!fileIsOpen) { MessageBox::Show("Нет открытых файлов", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning); return; }
 			 if(saveDialogIsOpen) { formSaveDialog->Focus(); return; }
-
 			 saveDialogIsOpen = true;
 			 formSaveDialog = gcnew SaveDialog();
 			 formSaveDialog->Show();
 			 formSaveDialog->Activate();
 			 formSaveDialog->Focus();
-
-
-			 //if(dxf.SaveErrorPoints(work->ErrPoints)) MessageBox::Show("Записано");
-			 //else MessageBox::Show("Ошибка записи", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 		 }
 private: System::Void toolStripMenuItem5_Click(System::Object^  sender, System::EventArgs^  e) {
 			 if(!fileIsOpen) { MessageBox::Show("Нет открытых файлов", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning); return; }
