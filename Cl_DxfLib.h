@@ -21,23 +21,23 @@ namespace DXF_SPACE {
 	struct POINT {
 		double x;
 		double y;
-		unsigned short int type;
+		//unsigned short int type;
 		string layer;
-		int number;
+		//int number;
 	};
 
 	struct LINE {
 		POINT p[2];
 		unsigned short int type;	//0 - LINE, 1 - XLINE
 		string layer;
-		int number;
+		//int number;
 		bool current;
 	};
 
 	struct LWPOLYLINE {
 		vector<POINT> p;
 		string layer;
-		int number;
+		//int number;
 		bool current;
 		bool closed;
 		double width;
@@ -47,7 +47,7 @@ namespace DXF_SPACE {
 		POINT p;
 		double r;
 		string layer;
-		int number;
+		//int number;
 		bool current;
 	};
 
@@ -58,7 +58,7 @@ namespace DXF_SPACE {
 		double height;
 		double angle;	//угол поворота большей оси относительно OX
 		string layer;
-		int number;
+		//int number;
 	};
 
 	struct ARC {
@@ -67,7 +67,7 @@ namespace DXF_SPACE {
 		double angleStart;
 		double angleEnd;
 		string layer;
-		int number;
+		//int number;
 		bool current;
 	};
 
@@ -78,7 +78,7 @@ namespace DXF_SPACE {
 
 	struct INSERT {
 		string layer;
-		int number;
+		//int number;
 		string blockNumber;
 	};
 
@@ -134,9 +134,10 @@ namespace DXF_SPACE {
 		void ReadInsert();
 		void ReadEllipse();
 		void ReadArc();
-		string PrintDxf();
+		//string PrintDxf();
 
 	public:
+		
 		int NumBlock;
 		vector<BLOCK> Blocks;
 		//vector<int> beginBlocksPointers;
@@ -145,11 +146,12 @@ namespace DXF_SPACE {
 		~DXF();
 		bool Open(string dxfFileName);
 		int Read();
-		bool Save();
+		//bool Save();
 		bool SaveErrorPoints(vector<CROSSPOINT> errPoints);
 		bool SavePolyLine(string _saveFileName, double **points, int size, bool closed);	//points[i][0] - координата X, points[i][1] - координата Y. closed == true, если замкнута.
 		void Close();
 		SECTION GetSection() const { return _Section; }
+		string GetSaveFilePath() const { return saveFileName; }
 	};
 }
 #endif

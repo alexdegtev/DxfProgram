@@ -553,7 +553,7 @@ private: System::Void CheckDialog_Load(System::Object^  sender, System::EventArg
 			 }
 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 			 OBJECTS_SPACE::WORK::BITSFIELD f;
-			 work->InitBitsField(f);
+			 work->InitBitsField(&f);
 
 			 if(radioButton1->Checked) f.crossKind = 0;
 			 else if(radioButton2->Checked) f.crossKind = 1;

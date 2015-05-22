@@ -24,12 +24,13 @@ namespace DxfProgram {
 	public ref class SaveDialog : public System::Windows::Forms::Form
 	{
 	public:
-		SaveDialog()
+		SaveDialog(string _filePath)
 		{
 			InitializeComponent();
 			//
 			//TODO: добавьте код конструктора
 			//
+			filePath = gcnew System::String(_filePath.c_str());
 		}
 
 	protected:
@@ -43,6 +44,7 @@ namespace DxfProgram {
 				delete components;
 			}
 		}
+	private: System::String ^filePath;
 	private: System::Windows::Forms::CheckBox^  checkBox1;
 	private: System::Windows::Forms::Button^  button1;
 	private: System::Windows::Forms::Button^  button2;
@@ -262,7 +264,7 @@ namespace DxfProgram {
 					 String ^time = "" + tim->tm_hour + ":" + tim->tm_min + ":" + tim->tm_sec;
 					 String ^mini = "";
 					 if(checkBox2->Checked) {/*добавление картинки*/}
-					 sql.Insert(surname->Text, name->Text, patronymic->Text, description->Text, date, time, mini);
+					 sql.Insert(surname->Text, name->Text, patronymic->Text, description->Text, date, time, mini, filePath);
 					 sql.Close();
 				 }
 

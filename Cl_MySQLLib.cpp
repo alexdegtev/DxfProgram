@@ -39,18 +39,18 @@ int MySQL::GetNumRows() {
 }
 
 string MySQL::SysToStd(System::String^ SysStr) {
-    using namespace Runtime::InteropServices;
-    char *v = (char*) (Marshal::StringToHGlobalAnsi(SysStr)).ToPointer() ;
-    std::string result = std::string(v);
-    Marshal::FreeHGlobal(System::IntPtr((void*)v));
-    return result;
+	using namespace Runtime::InteropServices;
+	char *v = (char*)(Marshal::StringToHGlobalAnsi(SysStr)).ToPointer();
+	std::string result = std::string(v);
+	Marshal::FreeHGlobal(System::IntPtr((void*)v));
+	return result;
 }
 
-int MySQL::Insert(String ^surname, String ^name, String ^patronymic, String ^description, String ^date, String ^time, String ^mini) {
+int MySQL::Insert(String ^surname, String ^name, String ^patronymic, String ^description, String ^date, String ^time, String ^mini, String ^patchDxf) {
 	if(!IsConnected) return -2;
 	int res = 0;
-	cmd = gcnew MySqlCommand("INSERT INTO " + dbName + " (id, surname, name, patronymic, description, mini, date, time) VALUES \
-		('" + (GetNumRows()+1) + "', '" + surname + "', '" + name + "', '" + patronymic + "', '" + description + "', '" + mini + "', '" + date + "', '" + time + "')", connection);
+	cmd = gcnew MySqlCommand("INSERT INTO " + dbName + " (id, surname, name, patronymic, description, mini, date, time, patch_dxf) VALUES \
+		('" + (GetNumRows()+1) + "', '" + surname + "', '" + name + "', '" + patronymic + "', '" + description + "', '" + mini + "', '" + date + "', '" + time + "', '" + patchDxf  + "')", connection);
 	res = cmd->ExecuteNonQuery();
 
 	return res;

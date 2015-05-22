@@ -6,12 +6,9 @@
 namespace GRAPHICS_SPACE {
 
 	using namespace System::Windows::Forms;
-	// для работы с библиотекой OpenGL 
-	using namespace Tao::OpenGl;
-	// для работы с библиотекой FreeGLUT 
-	using namespace Tao::FreeGlut;
-	// для работы с элементом управления SimpleOpenGLControl 
-	using namespace Tao::Platform::Windows;
+	using namespace Tao::OpenGl;	//для работы с библиотекой OpenGL 
+	using namespace Tao::FreeGlut;	//для работы с библиотекой FreeGLUT 
+	using namespace Tao::Platform::Windows;	//для работы с элементом управления SimpleOpenGLControl 
 
 	ref class GRAPHICS {
 	private:
@@ -23,7 +20,7 @@ namespace GRAPHICS_SPACE {
 		~GRAPHICS();
 		void GetOpenGlControl(SimpleOpenGlControl^  simpleOpenGlControl);
 		int InitGL();
-		void Resize(int width, int height);
+		//void Resize(int width, int height);
 		void Resize(double width, double height);
 		void Render();
 		void SwapBuffers();
@@ -35,7 +32,7 @@ namespace GRAPHICS_SPACE {
 		void DrawErrorPoint(double x, double y, double r);
 		void DrawArc(double x, double y, double r, double begin, double end);
 		void DrawEllipse(double x, double y, double a, double b, double angle);
-		void PrintCursor(int x, int y);
+		//void PrintCursor(int x, int y);
 		void SetColor(float red, float green, float blue);
 		bool GetIsInit() { return IsInit; }
 	};

@@ -29,7 +29,7 @@ int GRAPHICS::InitGL() {
 	return 0;
 }
 
-void GRAPHICS::Resize(int width, int height) {
+/*void GRAPHICS::Resize(int width, int height) {
 	if(height == 0) height = 1;
 
 	Gl::glViewport(0, 0, width, height);
@@ -43,7 +43,7 @@ void GRAPHICS::Resize(int width, int height) {
 
 	Gl::glMatrixMode(Gl::GL_MODELVIEW);
 	Gl::glLoadIdentity();
-}
+}*/
 
 void GRAPHICS::Resize(double width, double height) {
 	if(height == 0.0) height = 1.0;
@@ -187,7 +187,7 @@ void GRAPHICS::DrawEllipse(double x, double y, double a, double b, double angle)
 }
 */
 
-void GRAPHICS::PrintCursor(int x, int y) {
+/*void GRAPHICS::PrintCursor(int x, int y) {
 	Gl::glColor3f(1.0f, 0.0f, 0.0f);
 	Gl::glPointSize(20.0);
 	Gl::glBegin(Gl::GL_POINTS);
@@ -195,6 +195,6 @@ void GRAPHICS::PrintCursor(int x, int y) {
 	Gl::glEnd();
 	Gl::glPointSize(1.0);
 	Gl::glColor3f(0.0f, 0.0f, 0.0f);
-}
+}*/
 
 void GRAPHICS::SetColor(float red, float green, float blue) { Gl::glColor3f(red, green, blue); }

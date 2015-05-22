@@ -6,13 +6,17 @@ DXF::DXF()	{
 }
 
 DXF::~DXF()	{
-	file.close();
+	if(file.is_open()) file.close();
 }
 
 bool DXF::Open(string dxfFileName) {
 	if(file.is_open()) file.close();
 
 	fileName = dxfFileName;
+
+	for(int i=0; i<fileName.length()-4; i++) saveFileName += fileName[i];
+	saveFileName += "_c.dxf";
+
 	file.open(fileName);
 	LastNumberOfObject = 0;
 	EndEntitiesPointer = 0;
@@ -35,19 +39,19 @@ void DXF::Close() {
 	_Section = tmp;
 }
 
-string DXF::PrintDxf() {
+/*string DXF::PrintDxf() {
 	string line;
-	/*while(line != "EOF"){
-		file >> line;
-		cout << line << endl;
-	}*/
+	//while(line != "EOF"){
+	//	file >> line;
+	//	cout << line << endl;
+	//}
 	stringstream str;
 
 
 	if(!_Section.Entities.Lines.empty()) for(unsigned int i=0;i<_Section.Entities.Lines.size();i++){
 		str << setprecision(20)
 			 << "LINE " << i << endl
-			 << "number: " << hex << _Section.Entities.Lines[i].number << endl
+			// << "number: " << hex << _Section.Entities.Lines[i].number << endl
 			 << "x0: " << _Section.Entities.Lines[i].p[0].x << endl
 			 << "y0: " << _Section.Entities.Lines[i].p[0].y << endl
 			 << "x1: " << _Section.Entities.Lines[i].p[1].x << endl
@@ -58,14 +62,14 @@ string DXF::PrintDxf() {
 	if(!_Section.Entities.Circles.empty()) for(unsigned int i=0;i<_Section.Entities.Circles.size();i++){
 		str << setprecision(20)
 			 << "CIRCLE " << i << endl
-			 << "number: " << _Section.Entities.Circles[i].number << endl
+			// << "number: " << _Section.Entities.Circles[i].number << endl
 			 << "x: " << _Section.Entities.Circles[i].p.x << endl
 			 << "y: " << _Section.Entities.Circles[i].p.y << endl
 			 << "r: " << _Section.Entities.Circles[i].r << endl
 			 << "Layer: " << _Section.Entities.Circles[i].layer << endl << endl;
 	}
 	return str.str();
-}
+}*/
 
 void DXF::ReadLine() {
 	string line;
@@ -315,7 +319,7 @@ int DXF::Read() {
 	return 0;
 }
 
-bool DXF::Save() {
+/*bool DXF::Save() {
 	saveFileName = "_" + fileName;
 	string line;
 	
@@ -343,12 +347,11 @@ bool DXF::Save() {
 	file.close();
 	saveFile.close();
 	return true;
-}
+}*/
 
 bool DXF::SaveErrorPoints(vector<CROSSPOINT> errPoints) {
 	if(saveFile.is_open()) saveFile.close();
 
-	saveFileName = fileName + "_";
 	string line;
 
 	saveFile.open(saveFileName);

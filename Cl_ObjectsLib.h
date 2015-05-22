@@ -34,7 +34,7 @@ namespace OBJECTS_SPACE {
 		void CrossLineEllipse(LINE line, ELLIPSE ellipse, unsigned char crossKind);
 		void CrossLineArc(LINE line, ARC arc, unsigned char crossKind);
 		void CrossCircles(CIRCLE circle1, CIRCLE circle2);
-		void CrossCircleEllipse(CIRCLE circle, ELLIPSE ellipse);
+		//void CrossCircleEllipse(CIRCLE circle, ELLIPSE ellipse);
 		void CrossCircleArc(CIRCLE c, ARC a);
 		void CrossArcs(ARC a1, ARC a2);
 
@@ -76,7 +76,7 @@ namespace OBJECTS_SPACE {
 
 		WORK(SECTION s);
 		void CheckCross(BITSFIELD bitsfield);
-		void InitBitsField(BITSFIELD &field);
+		void InitBitsField(BITSFIELD *field);
 
 		void ClickOnObject(double x, double y, double scale, DataGridView^ table);
 	};

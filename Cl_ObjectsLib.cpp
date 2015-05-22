@@ -394,43 +394,43 @@ void WORK::CrossLineEllipse(LINE line, ELLIPSE ellipse, unsigned char crossKind)
 	}
 }
 
-void WORK::CrossCircleEllipse(CIRCLE circle, ELLIPSE ellipse) {
-	/*double x1 = circle.p.x;
-	double y1 = circle.p.y;
-	double r = circle.r;
-	double x2 = ellipse.p.x;
-	double y2 = ellipse.p.y;
-	double a = ellipse.width;
-	double b = ellipse.height;
-	double angle = ellipse.angle;
+/*void WORK::CrossCircleEllipse(CIRCLE circle, ELLIPSE ellipse) {
+	//double x1 = circle.p.x;
+	//double y1 = circle.p.y;
+	//double r = circle.r;
+	//double x2 = ellipse.p.x;
+	//double y2 = ellipse.p.y;
+	//double a = ellipse.width;
+	//double b = ellipse.height;
+	//double angle = ellipse.angle;
 
-	double _x1 = x1 - x2;
-	double _y1 = y1 - y2;
+	//double _x1 = x1 - x2;
+	//double _y1 = y1 - y2;
 
-	double r = GetDistance(0, 0, _x1, _y1);
-	double angle0 = GetAngle1(_x1, _y1, r);
-	double angle1 = angle0 - angle;
-	double __x1 = r * cos(angle1 * (PI / 180.0));
-	double __y1 = r * sin(angle1 * (PI / 180.0));
+	//double r = GetDistance(0, 0, _x1, _y1);
+	//double angle0 = GetAngle1(_x1, _y1, r);
+	//double angle1 = angle0 - angle;
+	//double __x1 = r * cos(angle1 * (PI / 180.0));
+	//double __y1 = r * sin(angle1 * (PI / 180.0));
 
-	//Найти пересечения
-	double __tx1;
-	double __ty1;
+	////Найти пересечения
+	//double __tx1;
+	//double __ty1;
 
-	double tr1 = GetDistance(0, 0, __tx1, __ty1);
-	double tangle0 = GetAngle1(__tx1, __ty1, tr1);
-	double tangle1 = tangle0 + angle;
-	double _tx1 = tr1 * cos(tangle1 * (PI / 180.0));
-	double _ty1 = tr1 * sin(tangle1 * (PI / 180.0));
+	//double tr1 = GetDistance(0, 0, __tx1, __ty1);
+	//double tangle0 = GetAngle1(__tx1, __ty1, tr1);
+	//double tangle1 = tangle0 + angle;
+	//double _tx1 = tr1 * cos(tangle1 * (PI / 180.0));
+	//double _ty1 = tr1 * sin(tangle1 * (PI / 180.0));
 
-	double tx1 = _tx1 + x2;
-	double ty1 = _ty1 + y2;*/
+	//double tx1 = _tx1 + x2;
+	//double ty1 = _ty1 + y2;
 
 	//typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double> > polygon;
 
 	//polygon p1, p2;
 
-}
+}*/
 
 void WORK::CrossCircleArc(CIRCLE circle, ARC arc) {
 	double x1 = circle.p.x;
@@ -742,11 +742,11 @@ void WORK::CheckCross(BITSFIELD bitsfield) {
 		}
 	}
 
-	if(bitsfield.circle_ellipse) for(i=0; i<Section.Entities.Circles.size(); i++) {
+	/*if(bitsfield.circle_ellipse) for(i=0; i<Section.Entities.Circles.size(); i++) {
 		for(j=0; j<Section.Entities.Ellipses.size(); j++) {
 			CrossCircleEllipse(Section.Entities.Circles[i], Section.Entities.Ellipses[j]);
 		}
-	}
+	}*/
 	
 	if(bitsfield.circle_arc) for(i=0; i<Section.Entities.Circles.size(); i++) {
 		for(j=0; j<Section.Entities.Arcs.size(); j++) {
@@ -791,23 +791,23 @@ void WORK::CheckCross(BITSFIELD bitsfield) {
 	}
 }
 
-void WORK::InitBitsField(BITSFIELD &field) {
-	field.crossKind = 0;
-	field.line_line = false;
-	field.line_circle = false;
-	field.line_ellipse = false;
-	field.line_arc = false;
-	field.circle_circle = false;
-	field.circle_ellipse = false;
-	field.circle_arc = false;
-	field.ellipse_ellipse = false;
-	field.ellipse_arc = false;
-	field.arc_arc = false;
-	field.overlap_lines = false;
-	field.overlap_circles = false;
-	field.overlap_ellipses = false;
-	field.overlap_arcs = false;
-	field.overlap_circle_arc = false;
+void WORK::InitBitsField(BITSFIELD *field) {
+	field->crossKind = 0;
+	field->line_line = false;
+	field->line_circle = false;
+	field->line_ellipse = false;
+	field->line_arc = false;
+	field->circle_circle = false;
+	field->circle_ellipse = false;
+	field->circle_arc = false;
+	field->ellipse_ellipse = false;
+	field->ellipse_arc = false;
+	field->arc_arc = false;
+	field->overlap_lines = false;
+	field->overlap_circles = false;
+	field->overlap_ellipses = false;
+	field->overlap_arcs = false;
+	field->overlap_circle_arc = false;
 }
 
 double WORK::GetAngle(double x0, double y0, double x1, double y1) {
