@@ -721,14 +721,14 @@ namespace DxfProgram {
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 				 //Запись в БД
 				 if(checkBox1->Checked) {
-					 /*if(radioButton1->Checked && (textBox1->Text == "" || textBox2->Text == "" || textBox3->Text == "" || textBox4->Text == "" || textBox5->Text == "" || 
+					 if(radioButton1->Checked && (textBox1->Text == "" || textBox2->Text == "" || textBox3->Text == "" || textBox4->Text == "" || textBox5->Text == "" || 
 						textBox6->Text == "" || textBox7->Text == "" || textBox9->Text == "" || textBox11->Text == "" || textBox13->Text == "" || 
 						textBox14->Text == "" || textBox15->Text == "" || textBox16->Text == "") ||
 						radioButton2->Checked && (comboBox1->Text == "" || textBox8->Text == "" || textBox10->Text == "" || textBox12->Text == "" ||
 						textBox17->Text == "" || dateTimePicker5->Text == "")) {
 						 MessageBox::Show("Не все поля заполнены", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 						 return;
-					 }*/
+					 }
 					 
 					 if(radioButton1->Checked) sql.Insert(textBox1->Text, textBox2->Text, textBox3->Text, textBox4->Text, textBox5->Text, textBox6->Text, textBox7->Text,
 						 dateTimePicker1->Text, textBox9->Text, dateTimePicker2->Text, textBox11->Text, dateTimePicker3->Text, textBox13->Text,

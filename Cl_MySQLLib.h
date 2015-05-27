@@ -16,32 +16,28 @@ namespace MySQL_SPACE {
 
 	ref class MySQL {
 	private:
-		bool IsConnected;
-		MySqlConnection ^connection;
-		MySqlCommand ^cmd;
-		int nextTime;
-		IAsyncResult ^asyncResult;
-		DateTime start;
-		String ^shemaName;
-		
+		bool IsConnected;	//frue - подключено к БД, false - не подключено
+		MySqlConnection ^connection;	//Переменная БД
+		MySqlCommand ^cmd;	//Переменная для передачи запросов в БД
+		String ^shemaName;	//Имя схемы
 		
 	public:
-		String ^dbName1;
-		String ^dbName2;
-		int GetNumRows();
-		string SysToStd(System::String^ SysStr);
+		String ^dbName1;	//Имя первой базы данных
+		String ^dbName2;	//Имя второй базы данных
+		int GetNumRows();	//Возвращает количество строк из первой БД
+		string SysToStd(System::String^ SysStr);	//System::String в std::string
 
 		MySQL();
 		~MySQL();
 		bool Connect(String ^server, String ^user, String ^password, String ^database, String ^port);
 		void Close();
 		int Insert(String ^s1, String ^s2, String ^s3, String ^s4, String ^s5, String ^s6, String ^s7, String ^s8, String ^s9, String ^s10,
-			   String ^s11, String ^s12, String ^s13, String ^s14, String ^s15, String ^s16, String ^s17, String ^filePath);	// Возвращает кол-во обработанных строк(>= 0), -1 при ошибке обратотки, -2 при отсутствии установленного соединения с базой данных
-		int Insert(String ^s1, String ^s2, String ^s3, String ^s4, String ^s5, String ^s6, String ^filePath);
-		int Delete();	//Возвращает кол-во обработанных строк(>= 0), -1 при ошибке обратотки, -2 при отсутствии установленного соединения с базой данных
+			   String ^s11, String ^s12, String ^s13, String ^s14, String ^s15, String ^s16, String ^s17, String ^filePath);	//Запись в первую БД. Возвращает кол-во обработанных строк(>= 0), -1 при ошибке обратотки, -2 при отсутствии установленного соединения с базой данных
+		int Insert(String ^s1, String ^s2, String ^s3, String ^s4, String ^s5, String ^s6, String ^filePath);	//Запись во вторую БД. Возвращает кол-во обработанных строк(>= 0), -1 при ошибке обратотки, -2 при отсутствии установленного соединения с базой данных
+		int Delete();	//Удаляет из первой БД. Возвращает кол-во обработанных строк(>= 0), -1 при ошибке обратотки, -2 при отсутствии установленного соединения с базой данных
 		//int Select(string **result, int *numRows, int *numColls);
 		int Select(String ^fild, string *result);	//В result возвращает все строки таблицы
-		String ^AddSlashes(String ^InputTxt);
+		//String ^AddSlashes(String ^InputTxt);
 	};
 }
 #endif

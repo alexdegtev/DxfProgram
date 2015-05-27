@@ -45,7 +45,7 @@ string MySQL::SysToStd(String^ SysStr) {
 	return result;
 }
 
-System::String ^MySQL::AddSlashes(System::String ^InputTxt) {
+/*System::String ^MySQL::AddSlashes(System::String ^InputTxt) {
     // List of characters handled:
     // \000 null
     // \010 backspace
@@ -71,7 +71,7 @@ System::String ^MySQL::AddSlashes(System::String ^InputTxt) {
     }
 
     return Result;
-}
+}*/
 
 /*int MySQL::Insert(String ^surname, String ^name, String ^patronymic, String ^description, String ^date, String ^time, String ^mini, String ^patchDxf) {
 	if(!IsConnected) return -2;
@@ -114,6 +114,10 @@ int MySQL::Insert(String ^s1, String ^s2, String ^s3, String ^s4, String ^s5, St
 			`дата приемки дубликата`, `номер решения об утверждении документации`, `год утверждения документации`, `подпись должностного лица`, `расшифровка подписи`, `дата визирования`) VALUES \
 			('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', {13}, '{14}', '{15}', '{16}')",
 			s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17);
+	cmd = gcnew MySqlCommand(StrCom, connection);
+	res = cmd->ExecuteNonQuery();
+
+	StrCom = String::Format("INSERT INTO `" + dbName2 + "` (`ссылка на чертеж`) VALUES ('{0}')", filePath);
 	cmd = gcnew MySqlCommand(StrCom, connection);
 	res = cmd->ExecuteNonQuery();
 
