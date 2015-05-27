@@ -64,14 +64,41 @@ void GRAPHICS::Render() {
 	Gl::glColor3f(0.0f, 0.0f, 0.0f);
 			
 	Gl::glColor3f(0.8f, 0.8f, 0.8f);
-	Gl::glBegin(Gl::GL_LINE_STRIP);    // OX
+
+	Gl::glBegin(Gl::GL_LINE_STRIP);    // OX --
 		Gl::glVertex2f(0,0);
 		Gl::glVertex2f(100,0);
 	Gl::glEnd();
-	Gl::glBegin(Gl::GL_LINE_STRIP);    // OY
+	Gl::glBegin(Gl::GL_LINE_STRIP);    // OX ->
+		Gl::glVertex2f(90,3);
+		Gl::glVertex2f(100,0);
+		Gl::glVertex2f(90,-3);
+	Gl::glEnd();
+	/*Gl::glBegin(Gl::GL_LINES);    // X
+		Gl::glVertex2f(107,5);
+		Gl::glVertex2f(113,-5);
+		Gl::glVertex2f(107,-5);
+		Gl::glVertex2f(113,5);
+	Gl::glEnd();*/
+
+	Gl::glBegin(Gl::GL_LINE_STRIP);    // OY --
 		Gl::glVertex2f(0,0);
 		Gl::glVertex2f(0,100);
 	Gl::glEnd();
+	Gl::glBegin(Gl::GL_LINE_STRIP);    // OY ->
+		Gl::glVertex2f(-3,90);
+		Gl::glVertex2f(0,100);
+		Gl::glVertex2f(3,90);
+	Gl::glEnd();
+	/*Gl::glBegin(Gl::GL_LINES);    // Y
+		Gl::glVertex2f(-3,113);
+		Gl::glVertex2f(0,110);
+		Gl::glVertex2f(0,110);
+		Gl::glVertex2f(3,113);
+		Gl::glVertex2f(0,110);
+		Gl::glVertex2f(0,107);
+	Gl::glEnd();*/
+
 	Gl::glColor3f(0.0f, 0.0f, 0.0f);
 }
 

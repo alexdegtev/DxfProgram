@@ -14,7 +14,7 @@ bool DXF::Open(string dxfFileName) {
 
 	fileName = dxfFileName;
 
-	for(int i=0; i<fileName.length()-4; i++) saveFileName += fileName[i];
+	for(unsigned int i=0; i<fileName.length()-4; i++) saveFileName += fileName[i];
 	saveFileName += "_c.dxf";
 
 	file.open(fileName);

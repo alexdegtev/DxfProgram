@@ -380,7 +380,6 @@ namespace DxfProgram {
 			this->Name = L"Form1";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"DxfReader";
-			this->WindowState = System::Windows::Forms::FormWindowState::Maximized;
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
 			this->SizeChanged += gcnew System::EventHandler(this, &Form1::Form1_SizeChanged);
 			this->menuStrip1->ResumeLayout(false);
@@ -411,7 +410,7 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	/*if(!dxf.Open("DxfFiles\\CrossLineEllipse2.dxf")) {ShowErr(1); return;}
 	int err = 0;
 	if((err = dxf.Read()) != 0) {ShowErr(2); return;}
-	work = new WORK(dxf._Section);
+	work = new OBJECTS_SPACE::WORK(dxf.GetSection());
 	fileIsOpen = true;
 	richTextBox1->Text = "";
 	Painting();*/
@@ -424,13 +423,17 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	q.Select(res, &numRows, &numColls);
 	q.Close();*/
 
+	//INSERT INTO table SET fblob=LOAD_FILE("image.gif")
+
+
 	fstream file;
 	//file.open("D:\\tiger.jpg");
 	
 	//file.close();
 
 	/*FILE* file1;
-	file1 = fopen("pic1.png", "rb");
+	//file1 = fopen("pic1.png", "rb");
+	file1 = fopen("D:\\tiger.jpg", "rb");
 
 	//получение размера файла
 	fseek(file1, 0, SEEK_END);
@@ -438,14 +441,20 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	fseek(file1, 0, SEEK_SET);
 
 	//Чтение файла
-	char *buffer = new char [size];
-	size_t result = fread(buffer, 1, size, file1);
+	//char *buffer = new char [size];
+	//size_t result = fread(buffer, 1, size, file1);
+	string pic = "";
+	for(int i=0; i<size; i++) pic += fgetc(file1);
+	//size_t result = fread(pic, 1, size, file1);
 
 	//запись файла
 	FILE *ofile;
 	ofile = fopen("qq.png", "wb");
-	fwrite(buffer, 1, size, ofile);
+	//fwrite(buffer, 1, size, ofile);
+	fwrite(pic.c_str(), 1, size, ofile);
 	fclose(ofile);*/
+
+
 
 }
 
